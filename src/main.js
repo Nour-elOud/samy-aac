@@ -1833,18 +1833,24 @@ function shouldUseArabicWomanAudioFallback() {
 function playArabicWomanAudio(text, runId) {
   if (runId !== speechRunId) return;
   const query = encodeURIComponent(text.slice(0, 190));
-  const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ar-EG&q=${query}`);
+  const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ar&q=${query}`);
+  let started = false;
   currentAudio = audio;
   audio.preload = "auto";
   audio.volume = 1;
+  audio.onplaying = () => {
+    started = true;
+  };
   audio.onended = () => {
     if (currentAudio === audio) currentAudio = null;
   };
   audio.onerror = () => {
     if (currentAudio === audio) currentAudio = null;
+    if (!started && runId === speechRunId) speakWithSpeechSynthesis(text, "word", { retryWithoutVoice: false, useSelectedVoice: false });
   };
   audio.play().catch(() => {
     if (currentAudio === audio) currentAudio = null;
+    if (!started && runId === speechRunId) speakWithSpeechSynthesis(text, "word", { retryWithoutVoice: false, useSelectedVoice: false });
   });
 }
 
