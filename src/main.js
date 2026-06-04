@@ -1265,11 +1265,11 @@ const voiceCache = new Map();
 const warmedVoiceKeys = new Set();
 const audioTtsProfiles = {
   ar: {
-    languages: ["ar", "ar-EG"],
+    language: "ar",
     label: "Arabic woman"
   },
   "fr-FR": {
-    languages: ["fr-FR", "fr"],
+    language: "fr-FR",
     label: "Denise"
   }
 };
@@ -1797,7 +1797,7 @@ function speakAddedWord(label) {
   const phrase = getSpeechText(label);
   if (!phrase) return;
   if (shouldUseAudioTts()) {
-    speakText(phrase, { interrupt: false, mode: "word" });
+    speakText(phrase, { interrupt: true, mode: "word" });
     return;
   }
   const chunks = phrase.split(/\s+/).filter(Boolean);
@@ -1809,18 +1809,15 @@ function speakAddedWord(label) {
 function speakText(text, { interrupt = false, mode = "word" } = {}) {
   const phrase = String(text || "").trim();
   if (!phrase) return;
+  const useAudioTts = shouldUseAudioTts();
 
+  if (useAudioTts && isDuplicateAudioSpeech(phrase, mode)) return;
   if (warmupPending || interrupt) {
-    stopSpeech();
+    stopSpeech({ resetDuplicateMemory: !useAudioTts });
   }
 
-  if (shouldUseAudioTts()) {
-    if (isDuplicateAudioSpeech(phrase, mode)) return;
-    if (interrupt || !currentAudio) {
-      audioQueue = playAudioTts(phrase, mode, speechRunId);
-    } else {
-      queueAudioTts(phrase, mode, speechRunId);
-    }
+  if (useAudioTts) {
+    audioQueue = playAudioTts(phrase, mode, speechRunId);
     return;
   }
 
@@ -1840,7 +1837,7 @@ function shouldUseAudioTts() {
 function isDuplicateAudioSpeech(text, mode) {
   const now = performance.now();
   const key = `${state.language}:${state.voiceProfile}:${mode}:${text}`;
-  const isDuplicate = lastAudioSpeech.key === key && now - lastAudioSpeech.time < 450;
+  const isDuplicate = lastAudioSpeech.key === key && now - lastAudioSpeech.time < 1200;
   lastAudioSpeech = { key, time: now };
   return isDuplicate;
 }
@@ -1860,20 +1857,10 @@ function queueAudioTts(text, mode, runId) {
 }
 
 function playAudioTts(text, mode, runId) {
-  const urls = getAudioTtsUrls(text);
-  if (runId !== speechRunId) return Promise.resolve();
-  if (!urls.length) {
-    speakWithSpeechSynthesis(text, mode);
-    return Promise.resolve();
-  }
-  return playAudioTtsCandidates(urls, text, mode, runId);
-}
-
-function playAudioTtsCandidates(urls, text, mode, runId, index = 0) {
-  const url = urls[index];
+  const url = getAudioTtsUrl(text);
   if (runId !== speechRunId) return Promise.resolve();
   if (!url) {
-    maybeFallbackFromAudio(text, mode, runId, false);
+    speakWithSpeechSynthesis(text, mode);
     return Promise.resolve();
   }
   return new Promise((resolve) => {
@@ -1891,19 +1878,13 @@ function playAudioTtsCandidates(urls, text, mode, runId, index = 0) {
     };
     audio.onerror = () => {
       if (currentAudio === audio) currentAudio = null;
-      if (playbackStarted) {
-        resolve();
-        return;
-      }
-      playAudioTtsCandidates(urls, text, mode, runId, index + 1).then(resolve);
+      maybeFallbackFromAudio(text, mode, runId, playbackStarted);
+      resolve();
     };
     audio.play().catch(() => {
       if (currentAudio === audio) currentAudio = null;
-      if (playbackStarted) {
-        resolve();
-        return;
-      }
-      playAudioTtsCandidates(urls, text, mode, runId, index + 1).then(resolve);
+      maybeFallbackFromAudio(text, mode, runId, playbackStarted);
+      resolve();
     });
   });
 }
@@ -1916,14 +1897,11 @@ function maybeFallbackFromAudio(text, mode, runId, playbackStarted) {
   speakWithSpeechSynthesis(text, mode);
 }
 
-function getAudioTtsUrls(text) {
+function getAudioTtsUrl(text) {
   const profile = audioTtsProfiles[state.language];
-  if (!profile) return [];
+  if (!profile) return "";
   const query = encodeURIComponent(text.slice(0, 190));
-  return profile.languages.map(
-    (language) =>
-      `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${encodeURIComponent(language)}&q=${query}`
-  );
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${encodeURIComponent(profile.language)}&q=${query}`;
 }
 
 function getSpeechText(label) {
@@ -1963,9 +1941,9 @@ function getMessageSpeechText() {
   return state.message.map((word) => getSpeechText(word.label)).join(" ");
 }
 
-function stopSpeech() {
+function stopSpeech({ resetDuplicateMemory = true } = {}) {
   speechRunId += 1;
-  lastAudioSpeech = { key: "", time: 0 };
+  if (resetDuplicateMemory) lastAudioSpeech = { key: "", time: 0 };
   if ("speechSynthesis" in window) window.speechSynthesis.cancel();
   if (currentAudio) {
     currentAudio.pause();
