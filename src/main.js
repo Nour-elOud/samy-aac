@@ -3,6 +3,10 @@ const translations = {
     "Space": "Space",
     "No photo selected": "No photo selected",
     "Choose photo": "Choose photo",
+    "Boy": "Boy",
+    "Girl": "Girl",
+    "Woman": "Woman",
+    "Man": "Man",
     mom: "mom",
     dad: "dad"
   },
@@ -66,6 +70,10 @@ const translations = {
     "No photo selected": "لا توجد صورة",
     "Choose photo": "اختر صورة",
     "Add button": "إضافة زر",
+    "Boy": "ولد",
+    "Girl": "بنت",
+    "Woman": "امرأة",
+    "Man": "رجل",
     "Core": "الأساسية",
     "People": "الأشخاص",
     "Food": "الطعام",
@@ -270,6 +278,10 @@ const translations = {
     "No photo selected": "Aucune photo",
     "Choose photo": "Choisir une photo",
     "Add button": "Ajouter un bouton",
+    "Boy": "Garçon",
+    "Girl": "Fille",
+    "Woman": "Femme",
+    "Man": "Homme",
     "Device default voice": "Voix par défaut de l'appareil",
     "Speech unavailable": "Synthèse vocale indisponible",
     "Loading voices": "Chargement des voix",
@@ -477,6 +489,10 @@ const translations = {
     "No photo selected": "Geen foto gekozen",
     "Choose photo": "Kies foto",
     "Add button": "Knop toevoegen",
+    "Boy": "Jongen",
+    "Girl": "Meisje",
+    "Woman": "Vrouw",
+    "Man": "Man",
     "Device default voice": "Standaardstem van apparaat",
     "Speech unavailable": "Spraak is niet beschikbaar",
     "Loading voices": "Stemmen laden",
@@ -814,6 +830,39 @@ const predictions = [
   "happy"
 ];
 
+const voiceProfiles = {
+  boy: {
+    label: "Boy",
+    pitch: 1.18,
+    rate: 0.86,
+    keywords: ["boy", "child", "kid", "junior", "young", "aaron", "eddy", "rocko", "sandy"]
+  },
+  girl: {
+    label: "Girl",
+    pitch: 1.22,
+    rate: 0.86,
+    keywords: ["girl", "child", "kid", "junior", "young", "kathy", "flo", "shelley", "sandy"]
+  },
+  woman: {
+    label: "Woman",
+    pitch: 1,
+    rate: 0.9,
+    keywords: ["woman", "female", "samantha", "karen", "moira", "tessa", "martha", "flo", "shelley", "grandma"]
+  },
+  man: {
+    label: "Man",
+    pitch: 0.88,
+    rate: 0.9,
+    keywords: ["man", "male", "daniel", "arthur", "fred", "ralph", "majed", "tarik", "grandpa"]
+  }
+};
+
+const voiceProfileOrder = ["boy", "girl", "woman", "man"];
+const voiceCache = new Map();
+const warmedVoiceKeys = new Set();
+const speechSettingsKey = "samy-aac-speech-settings";
+let warmupPending = false;
+
 const state = {
   category: "Core",
   level: "intermediate",
@@ -823,6 +872,7 @@ const state = {
   message: [],
   voices: [],
   selectedVoiceURI: "",
+  voiceProfile: loadSavedVoiceProfile(),
   personalWords: [
     ["🎮", "Minecraft", "noun", "beginner"],
     ["🧱", "Roblox", "noun", "beginner"],
@@ -857,6 +907,40 @@ function translate(label) {
   if (langMap[lowerKey]) return langMap[lowerKey];
   const caseInsensitiveMatch = Object.entries(langMap).find(([mapKey]) => mapKey.toLowerCase() === lowerKey);
   return caseInsensitiveMatch?.[1] || key;
+}
+
+function loadSavedVoiceProfile() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(speechSettingsKey) || "{}");
+    return voiceProfiles[saved.voiceProfile] ? saved.voiceProfile : "boy";
+  } catch {
+    return "boy";
+  }
+}
+
+function saveVoiceProfile() {
+  try {
+    localStorage.setItem(speechSettingsKey, JSON.stringify({ voiceProfile: state.voiceProfile }));
+  } catch {
+    // Browser storage is optional; speech still works without it.
+  }
+}
+
+function languageBase(language = state.language) {
+  return language.toLowerCase().split("-")[0];
+}
+
+function renderVoiceProfileOptions() {
+  if (!("speechSynthesis" in window)) {
+    elements.voiceSelect.innerHTML = `<option value="">${escapeHtml(translate("Speech unavailable"))}</option>`;
+    elements.voiceSelect.disabled = true;
+    return;
+  }
+  elements.voiceSelect.disabled = false;
+  elements.voiceSelect.innerHTML = voiceProfileOrder
+    .map((profile) => `<option value="${profile}">${escapeHtml(translate(voiceProfiles[profile].label))}</option>`)
+    .join("");
+  elements.voiceSelect.value = state.voiceProfile;
 }
 
 function folderEyebrow(category) {
@@ -951,6 +1035,7 @@ function renderStaticText() {
     ["fr-FR", "French"],
     ["nl-NL", "Dutch"]
   ]);
+  renderVoiceProfileOptions();
 
   document.querySelectorAll(".folder").forEach((folder) => {
     folder.querySelector("strong").textContent = translate(folder.dataset.category);
@@ -1118,18 +1203,46 @@ function addWord(label, symbol = "⌨") {
   if (!phrase) return;
   state.message.push({ label: phrase, symbol });
   renderMessage();
+  speakAddedWord(label);
 }
 
 function speak(text = getMessageText()) {
-  const phrase = text.trim();
+  speakText(text, { interrupt: true, mode: "sentence" });
+}
+
+function speakAddedWord(label) {
+  const phrase = translate(label).trim();
   if (!phrase) return;
-  if (!("speechSynthesis" in window)) return;
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(phrase);
-  utterance.lang = state.language;
-  const voice = state.voices.find((item) => item.voiceURI === state.selectedVoiceURI);
-  if (voice) utterance.voice = voice;
+  const chunks = phrase.split(/\s+/).filter(Boolean);
+  (chunks.length ? chunks : [phrase]).forEach((chunk) => {
+    speakText(chunk, { interrupt: false, mode: "word" });
+  });
+}
+
+function speakText(text, { interrupt = false, mode = "word" } = {}) {
+  const phrase = String(text || "").trim();
+  if (!phrase || !("speechSynthesis" in window)) return;
+
+  if (warmupPending || interrupt) {
+    window.speechSynthesis.cancel();
+    warmupPending = false;
+  }
+
+  const utterance = createSpeechUtterance(phrase, mode);
   window.speechSynthesis.speak(utterance);
+}
+
+function createSpeechUtterance(text, mode = "word") {
+  const utterance = new SpeechSynthesisUtterance(text);
+  const profile = voiceProfiles[state.voiceProfile] || voiceProfiles.boy;
+  utterance.lang = state.language;
+  utterance.volume = 1;
+  utterance.rate = mode === "word" ? Math.max(0.78, profile.rate - 0.04) : profile.rate;
+  utterance.pitch = profile.pitch;
+
+  const voice = resolveSelectedVoice();
+  if (voice) utterance.voice = voice;
+  return utterance;
 }
 
 function getMessageText() {
@@ -1138,22 +1251,76 @@ function getMessageText() {
 
 function populateVoices() {
   state.voices = window.speechSynthesis?.getVoices?.() || [];
-  const voicesForLanguage = state.voices.filter((voice) =>
-    voice.lang.toLowerCase().startsWith(state.language.toLowerCase().slice(0, 2))
-  );
-  const usableVoices = voicesForLanguage.length ? voicesForLanguage : state.voices;
-  if (!usableVoices.length) {
-    elements.voiceSelect.innerHTML = `<option value="">${escapeHtml(translate("Device default voice"))}</option>`;
-    return;
+  renderVoiceProfileOptions();
+  state.selectedVoiceURI = resolveSelectedVoice()?.voiceURI || "";
+  warmSelectedVoice();
+}
+
+function resolveSelectedVoice() {
+  const key = `${state.language}:${state.voiceProfile}`;
+  const cachedVoiceURI = voiceCache.get(key);
+  const cachedVoice = state.voices.find((voice) => voice.voiceURI === cachedVoiceURI);
+  if (cachedVoice) return cachedVoice;
+
+  const voice = chooseVoiceForProfile();
+  if (voice) {
+    voiceCache.set(key, voice.voiceURI);
+    state.selectedVoiceURI = voice.voiceURI;
   }
-  elements.voiceSelect.innerHTML = usableVoices
-    .slice(0, 100)
-    .map((voice) => `<option value="${escapeHtml(voice.voiceURI)}">${escapeHtml(voice.name)} (${voice.lang})</option>`)
-    .join("");
-  if (!usableVoices.some((voice) => voice.voiceURI === state.selectedVoiceURI)) {
-    state.selectedVoiceURI = usableVoices[0]?.voiceURI || "";
+  return voice;
+}
+
+function chooseVoiceForProfile() {
+  if (!state.voices.length) return null;
+  const base = languageBase();
+  const exactLanguage = state.language.toLowerCase();
+  const profile = voiceProfiles[state.voiceProfile] || voiceProfiles.boy;
+  const candidates = state.voices.filter((voice) => voice.lang.toLowerCase().startsWith(base));
+  const pool = candidates.length ? candidates : state.voices;
+
+  return pool
+    .map((voice) => ({ voice, score: scoreVoice(voice, exactLanguage, base, profile) }))
+    .sort((a, b) => b.score - a.score)[0]?.voice || null;
+}
+
+function scoreVoice(voice, exactLanguage, base, profile) {
+  const name = voice.name.toLowerCase();
+  const lang = voice.lang.toLowerCase();
+  let score = 0;
+  if (lang === exactLanguage) score += 100;
+  else if (lang.startsWith(base)) score += 75;
+  if (voice.default) score += 8;
+  profile.keywords.forEach((keyword, index) => {
+    if (name.includes(keyword)) score += 30 - Math.min(index, 20);
+  });
+  if (profile === voiceProfiles.boy || profile === voiceProfiles.man) {
+    if (/(male|man|boy|junior|daniel|arthur|fred|ralph|majed|tarik|aaron)/i.test(name)) score += 18;
+    if (/(female|woman|girl|samantha|karen|moira|tessa|martha|shelley)/i.test(name)) score -= 10;
   }
-  elements.voiceSelect.value = state.selectedVoiceURI;
+  if (profile === voiceProfiles.girl || profile === voiceProfiles.woman) {
+    if (/(female|woman|girl|samantha|karen|moira|tessa|martha|flo|shelley|kathy)/i.test(name)) score += 18;
+    if (/(male|man|boy|daniel|arthur|fred|ralph|majed|tarik)/i.test(name)) score -= 10;
+  }
+  return score;
+}
+
+function warmSelectedVoice() {
+  if (!("speechSynthesis" in window) || !state.voices.length) return;
+  const key = `${state.language}:${state.voiceProfile}`;
+  if (warmedVoiceKeys.has(key)) return;
+
+  const utterance = createSpeechUtterance(".", "word");
+  utterance.volume = 0;
+  utterance.onend = () => {
+    warmupPending = false;
+    warmedVoiceKeys.add(key);
+  };
+  utterance.onerror = () => {
+    warmupPending = false;
+  };
+
+  warmupPending = true;
+  window.speechSynthesis.speak(utterance);
 }
 
 function setMode(mode) {
@@ -1286,7 +1453,10 @@ elements.languageSelect.addEventListener("change", (event) => {
   renderPersonalWords();
 });
 elements.voiceSelect.addEventListener("change", (event) => {
-  state.selectedVoiceURI = event.target.value;
+  state.voiceProfile = voiceProfiles[event.target.value] ? event.target.value : "boy";
+  saveVoiceProfile();
+  state.selectedVoiceURI = resolveSelectedVoice()?.voiceURI || "";
+  warmSelectedVoice();
 });
 elements.typedInput.addEventListener("input", renderPredictions);
 elements.typedInput.addEventListener("keydown", (event) => {
