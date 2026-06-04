@@ -1860,41 +1860,26 @@ function playAudioTts(text, mode, runId) {
   const url = getAudioTtsUrl(text);
   if (runId !== speechRunId) return Promise.resolve();
   if (!url) {
-    speakWithSpeechSynthesis(text, mode);
     return Promise.resolve();
   }
   return new Promise((resolve) => {
     const audio = new Audio(url);
-    let playbackStarted = false;
     currentAudio = audio;
     audio.preload = "auto";
     audio.volume = 1;
-    audio.onplaying = () => {
-      playbackStarted = true;
-    };
     audio.onended = () => {
       if (currentAudio === audio) currentAudio = null;
       resolve();
     };
     audio.onerror = () => {
       if (currentAudio === audio) currentAudio = null;
-      maybeFallbackFromAudio(text, mode, runId, playbackStarted);
       resolve();
     };
     audio.play().catch(() => {
       if (currentAudio === audio) currentAudio = null;
-      maybeFallbackFromAudio(text, mode, runId, playbackStarted);
       resolve();
     });
   });
-}
-
-function maybeFallbackFromAudio(text, mode, runId, playbackStarted) {
-  if (playbackStarted || runId !== speechRunId) return;
-  const voice = resolveSelectedVoice();
-  const canUseSelectedWomanVoice = voice && femaleVoiceNames.test(voice.name) && !maleVoiceNames.test(voice.name);
-  if (state.voiceProfile === "woman" && !canUseSelectedWomanVoice && state.language !== "ar") return;
-  speakWithSpeechSynthesis(text, mode);
 }
 
 function getAudioTtsUrl(text) {
