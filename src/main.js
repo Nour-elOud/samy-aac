@@ -1172,7 +1172,7 @@ const preferredVoiceNames = {
     ]
   },
   ar: {
-    woman: ["Microsoft Hoda Online (Natural) - Arabic (Egypt)", "Hoda"],
+    woman: ["Microsoft Hoda Online (Natural) - Arabic (Egypt)", "Hoda", "Microsoft Fatima Online (Natural) - Arabic (United Arab Emirates)", "Fatima"],
     man: ["Majed", "Maged", "Tarik", "Naayf", "Microsoft Hamed Online (Natural) - Arabic (Saudi Arabia)", "Google العربية"]
   },
   "fr-FR": {
@@ -1200,7 +1200,7 @@ const preferredVoiceNames = {
 };
 const reliableVoiceNames = {
   ar: {
-    woman: ["Microsoft Hoda Online (Natural) - Arabic (Egypt)", "Hoda"]
+    woman: ["Microsoft Hoda Online (Natural) - Arabic (Egypt)", "Hoda", "Microsoft Fatima Online (Natural) - Arabic (United Arab Emirates)", "Fatima"]
   },
   "fr-FR": {
     woman: ["Amélie", "Amelie", "Thomas", "Google français"]
@@ -1261,6 +1261,7 @@ const voiceCache = new Map();
 const warmedVoiceKeys = new Set();
 let speechRunId = 0;
 let lastSpeech = { key: "", time: 0 };
+let currentAudio = null;
 const speechSettingsKey = "samy-aac-speech-settings";
 let warmupPending = false;
 
@@ -1786,10 +1787,16 @@ function speakAddedWord(label) {
 function speakText(text, { interrupt = false, mode = "word" } = {}) {
   const phrase = String(text || "").trim();
   if (!phrase) return;
+  const useAudioFallback = shouldUseArabicWomanAudioFallback();
 
   if (mode === "word" && isDuplicateSpeech(phrase, mode)) return;
   if (warmupPending || interrupt) {
     stopSpeech({ resetDuplicateMemory: false });
+  }
+
+  if (useAudioFallback) {
+    playArabicWomanAudio(phrase, speechRunId);
+    return;
   }
 
   speakWithSpeechSynthesis(phrase, mode);
@@ -1816,6 +1823,29 @@ function isDuplicateSpeech(text, mode) {
   const isDuplicate = lastSpeech.key === key && now - lastSpeech.time < 1200;
   lastSpeech = { key, time: now };
   return isDuplicate;
+}
+
+function shouldUseArabicWomanAudioFallback() {
+  if (state.language !== "ar" || state.voiceProfile !== "woman") return false;
+  return !resolveSelectedVoice();
+}
+
+function playArabicWomanAudio(text, runId) {
+  if (runId !== speechRunId) return;
+  const query = encodeURIComponent(text.slice(0, 190));
+  const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ar-EG&q=${query}`);
+  currentAudio = audio;
+  audio.preload = "auto";
+  audio.volume = 1;
+  audio.onended = () => {
+    if (currentAudio === audio) currentAudio = null;
+  };
+  audio.onerror = () => {
+    if (currentAudio === audio) currentAudio = null;
+  };
+  audio.play().catch(() => {
+    if (currentAudio === audio) currentAudio = null;
+  });
 }
 
 function getSpeechText(label) {
@@ -1859,6 +1889,11 @@ function stopSpeech({ resetDuplicateMemory = true } = {}) {
   speechRunId += 1;
   if (resetDuplicateMemory) lastSpeech = { key: "", time: 0 };
   if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    currentAudio = null;
+  }
   warmupPending = false;
 }
 
@@ -1900,6 +1935,7 @@ function chooseVoiceForProfile() {
   });
   const reliableVoice = chooseReliableVoice(candidates);
   if (reliableVoice) return reliableVoice;
+  if (reliableVoiceNames[state.language]?.[state.voiceProfile]?.length) return null;
   const profileCandidates = filterVoicesForProfile(candidates, profile);
   const fallbackProfileVoices = filterVoicesForProfile(state.voices, profile);
   const pool = profileCandidates.length
