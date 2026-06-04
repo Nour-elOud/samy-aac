@@ -16,7 +16,10 @@ const translations = {
     "QuickPhrases": "Quick Phrases",
     "Favorites": "Favorites",
     "Delete favorite": "Delete favorite",
+    "Edit favorite": "Edit favorite",
     "Favorite word": "Favorite word",
+    "Save button": "Save button",
+    "Emoji choices": "Emoji choices",
     mom: "mom",
     dad: "dad"
   },
@@ -74,7 +77,10 @@ const translations = {
     "Personal vocabulary": "المفردات الشخصية",
     "Favorites": "المفضلة",
     "Delete favorite": "حذف من المفضلة",
+    "Edit favorite": "تعديل المفضلة",
     "Favorite word": "كلمة مفضلة",
+    "Save button": "حفظ الزر",
+    "Emoji choices": "اختيارات الرموز",
     "Word": "الكلمة",
     "Symbol": "الرمز",
     "Photo": "الصورة",
@@ -346,7 +352,10 @@ const translations = {
     "Space": "Espace",
     "Favorites": "Favoris",
     "Delete favorite": "Supprimer le favori",
+    "Edit favorite": "Modifier le favori",
     "Favorite word": "Mot favori",
+    "Save button": "Enregistrer le bouton",
+    "Emoji choices": "Choix d'emojis",
     "Word": "Mot",
     "Symbol": "Symbole",
     "Photo": "Photo",
@@ -621,7 +630,10 @@ const translations = {
     "Space": "Spatie",
     "Favorites": "Favorieten",
     "Delete favorite": "Favoriet verwijderen",
+    "Edit favorite": "Favoriet bewerken",
     "Favorite word": "Favoriet woord",
+    "Save button": "Knop opslaan",
+    "Emoji choices": "Emoji-keuzes",
     "Word": "Woord",
     "Symbol": "Symbool",
     "Photo": "Foto",
@@ -1105,6 +1117,12 @@ const stableCoreKeySet = new Set(stableCoreKeys);
 const stableCoreSlots = stableCoreKeys.length;
 const favoriteStorageKey = "samy-aac-favorites";
 const symbolAssets = {};
+const emojiChoices = [
+  "⭐", "❤️", "💛", "😊", "😢", "😡", "😴", "🤒", "🙋", "🙏",
+  "👦", "👧", "👩", "👨", "👵", "👴", "👶", "👥", "🏠", "🏫",
+  "🍕", "🍎", "🍌", "🍽️", "🥤", "💧", "🧃", "🚌", "🚻", "🚑",
+  "🎮", "🧸", "📚", "🩹", "💊", "🔥", "❓", "✅", "✖️", "➕"
+];
 
 const predictions = [
   "I want",
@@ -1124,8 +1142,8 @@ const voiceProfiles = {
   woman: {
     label: "Woman",
     targetGender: "female",
-    pitch: 1.04,
-    rate: 0.88,
+    pitch: 1.18,
+    rate: 0.86,
     keywords: ["samantha", "karen", "moira", "tessa", "flo", "shelley", "sandy", "marie", "amélie", "ellen", "laila", "zeina", "amira", "woman", "female"]
   },
   man: {
@@ -1144,7 +1162,7 @@ const preferredVoiceNames = {
     man: ["Daniel", "Daniel (English (United Kingdom))", "Google UK English Male", "Arthur", "Reed (English (US))", "Rocko (English (US))", "Aaron"]
   },
   ar: {
-    woman: ["Laila", "Zeina", "Amira", "Google العربية", "Majed"],
+    woman: ["Laila", "Zeina", "Amira", "Mariam", "Salma", "Google العربية"],
     man: ["Majed", "Tarik", "Google العربية"]
   },
   "fr-FR": {
@@ -1184,6 +1202,7 @@ const state = {
   selectedVoiceURI: "",
   childMode: false,
   voiceProfile: loadSavedVoiceProfile(),
+  editingPersonalIndex: null,
   personalWords: loadPersonalWords()
 };
 
@@ -1206,9 +1225,13 @@ const elements = {
   predictionRow: document.querySelector("#predictionRow"),
   typedInput: document.querySelector("#typedInput"),
   personalList: document.querySelector("#personalList"),
+  customWord: document.querySelector("#customWord"),
+  customSymbol: document.querySelector("#customSymbol"),
   customImage: document.querySelector("#customImage"),
   fileStatus: document.querySelector("#fileStatus"),
-  fileButtonText: document.querySelector("#fileButtonText")
+  fileButtonText: document.querySelector("#fileButtonText"),
+  addCustomButton: document.querySelector("#addCustomButton"),
+  emojiPalette: document.querySelector("#emojiPalette")
 };
 
 function translate(label) {
@@ -1248,11 +1271,29 @@ function loadPersonalWords() {
 }
 
 function normalizePersonalWord(item) {
-  if (!Array.isArray(item)) return null;
-  const [symbol, label] = item;
+  const source = Array.isArray(item)
+    ? {
+        symbol: item[0],
+        label: item[1],
+        type: item[2],
+        level: item[3],
+        id: item[4],
+        category: item[5]
+      }
+    : item;
+  if (!source || typeof source !== "object") return null;
+  const { symbol, label } = source;
   const cleanLabel = String(label || "").trim();
   if (!cleanLabel) return null;
-  return [String(symbol || "⭐"), cleanLabel, "noun", "beginner", `favorite:${cleanLabel.toLowerCase()}`];
+  const cleanCategory = vocabulary[source.category] && source.category !== "Core" ? source.category : "Family";
+  return {
+    symbol: String(symbol || "⭐"),
+    label: cleanLabel,
+    type: source.type || "noun",
+    level: source.level || "beginner",
+    id: source.id || `favorite:${cleanCategory}:${cleanLabel.toLowerCase()}`,
+    category: cleanCategory
+  };
 }
 
 function savePersonalWords() {
@@ -1340,6 +1381,7 @@ function renderStaticText() {
   setAria(".prediction-row", "Word predictions");
   setAria(".letter-grid", "Keyboard");
   setAria(".personal-panel", "Personal vocabulary");
+  setAria("#emojiPalette", "Emoji choices");
   setAria(".voice-stack", "Voice examples");
   setAria("#homeButton", "Return to home category");
   setAria("#speakButton", "Speak message");
@@ -1352,7 +1394,7 @@ function renderStaticText() {
   setText("#speakButton span:last-child", "Speak");
   setText(".control-strip summary", "Customize");
   setText(".personal-panel h2", "Favorites");
-  setText("#addCustomButton", "Add button");
+  elements.addCustomButton.textContent = translate(state.editingPersonalIndex === null ? "Add button" : "Save button");
   setText("#addTypedButton", "Add");
 
   document.querySelector("#levelSelect").closest("label").querySelector("span").textContent = translate("Level");
@@ -1389,14 +1431,15 @@ function renderStaticText() {
   });
 
   elements.typedInput.placeholder = translate("Type a word or sentence");
-  document.querySelector("#customWord").placeholder = translate("Favorite word");
-  document.querySelector("#customSymbol").placeholder = "⭐";
+  elements.customWord.placeholder = translate("Favorite word");
+  elements.customSymbol.placeholder = "⭐";
   document.querySelector(".personal-form label:nth-child(1) span").textContent = translate("Word");
   document.querySelector(".personal-form label:nth-child(2) span").textContent = translate("Symbol");
   document.querySelector(".file-picker > span:first-child").textContent = translate("Photo");
   updateFileStatus();
   renderStats();
   renderContentSections();
+  renderEmojiPalette();
 }
 
 function renderContentSections() {
@@ -1443,21 +1486,35 @@ function renderContentSections() {
 }
 
 function wordObject(item, category = "Core", position = 0) {
-  const [symbol, label, type, level, symbolId] = item;
+  const source = Array.isArray(item)
+    ? {
+        symbol: item[0],
+        label: item[1],
+        type: item[2],
+        level: item[3],
+        symbolId: item[4],
+        category
+      }
+    : item;
+  const { symbol, label, type, level } = source;
+  const itemCategory = source.category || category;
+  const symbolId = source.symbolId || source.id;
   const stableSymbolId = symbolId || String(label).toLowerCase().replace(/\s+/g, "-");
   return {
-    id: `${category}:${stableSymbolId}`,
+    id: `${itemCategory}:${stableSymbolId}`,
     arabicLabel: translations.ar?.[label] || translations.ar?.[String(label).toLowerCase()] || label,
     englishKey: label,
-    category,
+    category: itemCategory,
     symbol: resolveSymbol(symbol, stableSymbolId),
     colorType: type,
-    isCore: category === "Core",
+    isCore: itemCategory === "Core",
     position,
     symbolId: stableSymbolId,
     label,
     type,
-    level
+    level,
+    custom: Boolean(source.custom || source.id?.startsWith?.("favorite:")),
+    favoriteIndex: source.favoriteIndex
   };
 }
 
@@ -1489,13 +1546,17 @@ function getBoardLayout() {
 function getFringeWords() {
   if (state.category === "Core") return [];
   const maxLevel = levelOrder[state.level];
-  const categoryWords = (vocabulary[state.category] || []).filter((item) => {
+  const builtInWords = (vocabulary[state.category] || []).filter((item) => {
     return levelOrder[item[3]] <= maxLevel && !stableCoreKeySet.has(item[1]);
   });
+  const personalWords = state.personalWords
+    .map((item, favoriteIndex) => ({ ...item, favoriteIndex, custom: true }))
+    .filter((item) => item.category === state.category && levelOrder[item.level] <= maxLevel);
+  const categoryWords = [...personalWords, ...builtInWords];
   const seen = new Set();
   return categoryWords
     .filter((item) => {
-      const key = item[1];
+      const key = Array.isArray(item) ? item[1] : item.id || item.label;
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
@@ -1530,8 +1591,8 @@ function renderSlots(items, count, options = {}) {
     const item = items[index];
     if (!item) return renderSpacer();
     if (options.keepHiddenSlots && !isVisibleAtLevel(item)) return renderSpacer();
-    const word = Array.isArray(item) ? wordObject(item, options.category, index) : { ...item, position: item.position ?? index };
-    return renderWordButton(word);
+    const word = wordObject(item, options.category, index);
+    return word.custom && options.editableCustoms ? renderEditableWordButton(word) : renderWordButton(word);
   }).join("");
 }
 
@@ -1545,7 +1606,7 @@ function renderWords() {
   elements.wordGrid.style.setProperty("--cols", columns);
   elements.wordGrid.style.setProperty("--fringe-cols", columns);
   elements.wordGrid.innerHTML = `
-    <div class="fringe-grid">${renderSlots(fringeWords, fringeSlots, { category: state.category })}</div>
+    <div class="fringe-grid">${renderSlots(fringeWords, fringeSlots, { category: state.category, editableCustoms: true })}</div>
     <div class="core-grid">${renderSlots(vocabulary.Core, coreSlots, { keepHiddenSlots: true, category: "Core" })}</div>
   `;
   elements.categoryTitle.textContent = translate(folderTitles[state.category]);
@@ -1556,12 +1617,23 @@ function renderWordButton(word) {
   const image = word.symbol.startsWith("data:")
     ? `<img src="${word.symbol}" alt="" />`
     : word.symbol;
+  const favoriteIndex = Number.isInteger(word.favoriteIndex) ? ` data-favorite-index="${word.favoriteIndex}"` : "";
   return `
-    <button class="word-button ${word.colorType || word.type}" type="button" data-id="${escapeHtml(word.id)}" data-word="${escapeHtml(word.label)}" data-english-key="${escapeHtml(word.englishKey)}" data-arabic-label="${escapeHtml(word.arabicLabel)}" data-category="${escapeHtml(word.category)}" data-core="${word.isCore ? "true" : "false"}" data-position="${word.position}" data-symbol="${escapeHtml(word.symbol)}" data-symbol-id="${escapeHtml(word.symbolId)}" aria-label="${escapeHtml(translate(word.label))}">
+    <button class="word-button ${word.colorType || word.type}" type="button" data-id="${escapeHtml(word.id)}" data-word="${escapeHtml(word.label)}" data-english-key="${escapeHtml(word.englishKey)}" data-arabic-label="${escapeHtml(word.arabicLabel)}" data-category="${escapeHtml(word.category)}" data-core="${word.isCore ? "true" : "false"}" data-custom="${word.custom ? "true" : "false"}"${favoriteIndex} data-position="${word.position}" data-symbol="${escapeHtml(word.symbol)}" data-symbol-id="${escapeHtml(word.symbolId)}" aria-label="${escapeHtml(translate(word.label))}">
       <span class="corner" aria-hidden="true"></span>
       <span class="symbol" aria-hidden="true">${image}</span>
       <span class="label">${escapeHtml(translate(word.label))}</span>
     </button>
+  `;
+}
+
+function renderEditableWordButton(word) {
+  return `
+    <div class="editable-word-item">
+      ${renderWordButton(word)}
+      <button class="edit-favorite inline-edit" type="button" data-edit-favorite="${word.favoriteIndex}" aria-label="${escapeHtml(translate("Edit favorite"))}">✎</button>
+      <button class="delete-favorite inline-delete" type="button" data-delete-favorite="${word.favoriteIndex}" aria-label="${escapeHtml(translate("Delete favorite"))}">×</button>
+    </div>
   `;
 }
 
@@ -1605,7 +1677,7 @@ function renderPredictions() {
 
 function renderPersonalWords() {
   elements.personalList.innerHTML = state.personalWords
-    .map((item, index) => wordObject(item, "Favorites", index))
+    .map((item, index) => wordObject({ ...item, favoriteIndex: index, custom: true }, item.category || "Favorites", index))
     .map((word, index) => renderFavoriteButton(word, index))
     .join("");
 }
@@ -1614,6 +1686,7 @@ function renderFavoriteButton(word, index) {
   return `
     <div class="favorite-item">
       ${renderWordButton(word)}
+      <button class="edit-favorite" type="button" data-edit-favorite="${index}" aria-label="${escapeHtml(translate("Edit favorite"))}">✎</button>
       <button class="delete-favorite" type="button" data-delete-favorite="${index}" aria-label="${escapeHtml(translate("Delete favorite"))}">×</button>
     </div>
   `;
@@ -1674,6 +1747,9 @@ function createSpeechUtterance(text, mode = "word") {
 }
 
 function getSpeechTuning(profile) {
+  if (state.language === "ar" && state.voiceProfile === "woman") {
+    return { pitch: 1.36, rate: 0.84 };
+  }
   return { pitch: profile.pitch, rate: profile.rate };
 }
 
@@ -1718,11 +1794,36 @@ function chooseVoiceForProfile() {
     const name = voice.name.toLowerCase();
     return voice.lang.toLowerCase().startsWith(base) && !unclearVoiceNames.test(name);
   });
-  const pool = candidates.length ? candidates : state.voices;
+  const profileCandidates = filterVoicesForProfile(candidates, profile);
+  if (base === "ar" && profile.targetGender === "female" && candidates.length && !profileCandidates.length) {
+    return null;
+  }
+  const fallbackProfileVoices = filterVoicesForProfile(state.voices, profile);
+  const pool = profileCandidates.length
+    ? profileCandidates
+    : candidates.length
+      ? candidates
+      : fallbackProfileVoices.length
+        ? fallbackProfileVoices
+        : state.voices;
 
   return pool
     .map((voice) => ({ voice, score: scoreVoice(voice, exactLanguage, base, profile) }))
     .sort((a, b) => b.score - a.score)[0]?.voice || null;
+}
+
+function filterVoicesForProfile(voices, profile) {
+  if (profile.targetGender === "female") {
+    const femaleVoices = voices.filter((voice) => femaleVoiceNames.test(voice.name));
+    if (femaleVoices.length) return femaleVoices;
+    return voices.filter((voice) => !maleVoiceNames.test(voice.name));
+  }
+  if (profile.targetGender === "male") {
+    const maleVoices = voices.filter((voice) => maleVoiceNames.test(voice.name));
+    if (maleVoices.length) return maleVoices;
+    return voices.filter((voice) => !femaleVoiceNames.test(voice.name));
+  }
+  return voices;
 }
 
 function scoreVoice(voice, exactLanguage, base, profile) {
@@ -1809,41 +1910,103 @@ function setMode(mode) {
   }
 }
 
+function renderEmojiPalette() {
+  elements.emojiPalette.innerHTML = emojiChoices
+    .map((emoji) => `<button type="button" data-emoji-choice="${escapeHtml(emoji)}" aria-label="${escapeHtml(emoji)}">${emoji}</button>`)
+    .join("");
+}
+
+function showEmojiPalette() {
+  elements.emojiPalette.hidden = false;
+}
+
+function hideEmojiPalette() {
+  elements.emojiPalette.hidden = true;
+}
+
+function getPersonalTargetCategory() {
+  return state.category === "Core" ? "Family" : state.category;
+}
+
+function getPersonalWordId(category, label) {
+  return `favorite:${category}:${label.toLowerCase().replace(/\s+/g, "-")}:${Date.now()}`;
+}
+
+function updatePersonalFormMode() {
+  elements.addCustomButton.textContent = translate(state.editingPersonalIndex === null ? "Add button" : "Save button");
+}
+
+function resetPersonalForm() {
+  state.editingPersonalIndex = null;
+  elements.customWord.value = "";
+  elements.customSymbol.value = "";
+  elements.customImage.value = "";
+  updateFileStatus();
+  updatePersonalFormMode();
+}
+
 function addCustomWord() {
-  const wordInput = document.querySelector("#customWord");
-  const symbolInput = document.querySelector("#customSymbol");
-  const imageInput = document.querySelector("#customImage");
-  const label = wordInput.value.trim();
+  const label = elements.customWord.value.trim();
   if (!label) return;
-  const file = imageInput.files?.[0];
+  const file = elements.customImage.files?.[0];
+  const editingItem = state.editingPersonalIndex === null ? null : state.personalWords[state.editingPersonalIndex];
+  const category = editingItem?.category || getPersonalTargetCategory();
+  const applyPersonalWord = (symbol) => {
+    const nextWord = {
+      symbol,
+      label,
+      type: "noun",
+      level: "beginner",
+      id: editingItem?.id || getPersonalWordId(category, label),
+      category
+    };
+    if (editingItem) {
+      state.personalWords[state.editingPersonalIndex] = nextWord;
+    } else {
+      state.personalWords.push(nextWord);
+    }
+    savePersonalWords();
+    selectCategory(category);
+    renderPersonalWords();
+    resetPersonalForm();
+  };
+
   if (file) {
     const reader = new FileReader();
     reader.addEventListener("load", () => {
-      state.personalWords.push([reader.result, label, "noun", "beginner", `favorite:${label.toLowerCase()}`]);
-      savePersonalWords();
-      wordInput.value = "";
-      symbolInput.value = "";
-      imageInput.value = "";
-      updateFileStatus();
-      renderWords();
-      renderPersonalWords();
+      applyPersonalWord(reader.result);
     });
     reader.readAsDataURL(file);
     return;
   }
-  state.personalWords.push([symbolInput.value.trim() || "⭐", label, "noun", "beginner", `favorite:${label.toLowerCase()}`]);
-  savePersonalWords();
-  wordInput.value = "";
-  symbolInput.value = "";
+  applyPersonalWord(elements.customSymbol.value.trim() || editingItem?.symbol || "⭐");
+}
+
+function startEditPersonalWord(index) {
+  if (!Number.isInteger(index) || index < 0 || index >= state.personalWords.length) return;
+  const item = state.personalWords[index];
+  state.editingPersonalIndex = index;
+  elements.customWord.value = item.label;
+  elements.customSymbol.value = item.symbol.startsWith("data:") ? "" : item.symbol;
+  elements.customImage.value = "";
+  updateFileStatus();
+  updatePersonalFormMode();
+  elements.customWord.focus();
+}
+
+function finishPersonalWordMutation() {
   renderWords();
   renderPersonalWords();
+  updatePersonalFormMode();
 }
 
 function deletePersonalWord(index) {
   if (!Number.isInteger(index) || index < 0 || index >= state.personalWords.length) return;
   state.personalWords.splice(index, 1);
+  if (state.editingPersonalIndex === index) resetPersonalForm();
+  if (state.editingPersonalIndex !== null && state.editingPersonalIndex > index) state.editingPersonalIndex -= 1;
   savePersonalWords();
-  renderPersonalWords();
+  finishPersonalWordMutation();
 }
 
 function escapeHtml(value) {
@@ -1855,6 +2018,22 @@ function escapeHtml(value) {
 }
 
 document.addEventListener("click", (event) => {
+  const emojiChoice = event.target.closest("[data-emoji-choice]");
+  if (emojiChoice) {
+    elements.customSymbol.value = emojiChoice.dataset.emojiChoice;
+    hideEmojiPalette();
+    elements.customSymbol.focus();
+    return;
+  }
+
+  if (!event.target.closest(".symbol-picker")) hideEmojiPalette();
+
+  const editFavorite = event.target.closest("[data-edit-favorite]");
+  if (editFavorite) {
+    startEditPersonalWord(Number(editFavorite.dataset.editFavorite));
+    return;
+  }
+
   const deleteFavorite = event.target.closest("[data-delete-favorite]");
   if (deleteFavorite) {
     deletePersonalWord(Number(deleteFavorite.dataset.deleteFavorite));
@@ -1917,7 +2096,9 @@ document.querySelector("#addTypedButton").addEventListener("click", () => {
   elements.typedInput.value = "";
   renderPredictions();
 });
-document.querySelector("#addCustomButton").addEventListener("click", addCustomWord);
+elements.addCustomButton.addEventListener("click", addCustomWord);
+elements.customSymbol.addEventListener("focus", showEmojiPalette);
+elements.customSymbol.addEventListener("click", showEmojiPalette);
 elements.customImage.addEventListener("change", updateFileStatus);
 
 document.querySelectorAll(".voice-stack button").forEach((button) => {
