@@ -1142,32 +1142,68 @@ const voiceProfiles = {
   woman: {
     label: "Woman",
     targetGender: "female",
-    pitch: 1.18,
-    rate: 0.86,
-    keywords: ["samantha", "karen", "moira", "tessa", "flo", "shelley", "sandy", "marie", "amélie", "ellen", "laila", "zeina", "amira", "woman", "female"]
+    pitch: 1.12,
+    rate: 0.88,
+    keywords: ["samantha", "karen", "moira", "tessa", "ava", "victoria", "allison", "susan", "zoe", "marie", "amélie", "audrey", "aurélie", "denise", "hortense", "sylvie", "ellen", "hoda", "salma", "zariyah", "fatima", "laila", "zeina", "amira", "mariam", "woman", "female"]
   },
   man: {
     label: "Man",
     targetGender: "male",
-    pitch: 0.88,
-    rate: 0.88,
-    keywords: ["daniel", "thomas", "jacques", "xander", "arthur", "reed", "rocko", "man", "male"]
+    pitch: 0.82,
+    rate: 0.9,
+    keywords: ["guy", "davis", "ryan", "daniel", "alex", "oliver", "arthur", "thomas", "jacques", "xander", "majed", "tarik", "naayf", "man", "male"]
   }
 };
 
 const voiceProfileOrder = ["woman", "man"];
 const preferredVoiceNames = {
   "en-US": {
-    woman: ["Samantha", "Karen", "Moira", "Tessa", "Google US English", "Google UK English Female"],
-    man: ["Daniel", "Daniel (English (United Kingdom))", "Google UK English Male", "Arthur", "Reed (English (US))", "Rocko (English (US))", "Aaron"]
+    woman: ["Samantha", "Ava", "Victoria", "Karen", "Moira", "Tessa", "Google US English", "Google UK English Female"],
+    man: [
+      "Microsoft Guy Online (Natural) - English (United States)",
+      "Microsoft Davis Online (Natural) - English (United States)",
+      "Microsoft Ryan Online (Natural) - English (United Kingdom)",
+      "Google UK English Male",
+      "Daniel",
+      "Daniel (English (United Kingdom))",
+      "Alex",
+      "Oliver",
+      "Arthur"
+    ]
   },
   ar: {
-    woman: ["Laila", "Zeina", "Amira", "Mariam", "Salma", "Google العربية"],
-    man: ["Majed", "Tarik", "Google العربية"]
+    woman: [
+      "Microsoft Hoda Online (Natural) - Arabic (Egypt)",
+      "Microsoft Salma Online (Natural) - Arabic (Egypt)",
+      "Microsoft Zariyah Online (Natural) - Arabic (Saudi Arabia)",
+      "Microsoft Fatima Online (Natural) - Arabic (United Arab Emirates)",
+      "Hoda",
+      "Salma",
+      "Zariyah",
+      "Fatima",
+      "Laila",
+      "Zeina",
+      "Amira",
+      "Mariam",
+      "Google العربية"
+    ],
+    man: ["Majed", "Maged", "Tarik", "Naayf", "Microsoft Hamed Online (Natural) - Arabic (Saudi Arabia)", "Google العربية"]
   },
   "fr-FR": {
-    woman: ["Flo (French (France))", "Shelley (French (France))", "Marie", "Amélie"],
-    man: ["Thomas", "Jacques", "Daniel (French (France))"]
+    woman: [
+      "Microsoft Denise Online (Natural) - French (France)",
+      "Microsoft Eloise Online (Natural) - French (France)",
+      "Microsoft Sylvie Online (Natural) - French (France)",
+      "Amélie",
+      "Amelie",
+      "Audrey",
+      "Aurélie",
+      "Aurelie",
+      "Marie",
+      "Hortense",
+      "Google français"
+    ],
+    man: ["Thomas", "Jacques", "Henri", "Daniel (French (France))"]
   },
   "nl-NL": {
     woman: ["Ellen"],
@@ -1180,14 +1216,56 @@ const speechTextOverrides = {
     "I want": "eye want",
     "I need": "eye need",
     "I would rather": "eye would rather",
-    "don't": "do not"
+    "don't": "do not",
+    "all done": "all done",
+    read: "reed"
+  },
+  ar: {
+    I: "أَنا",
+    you: "أَنْتَ",
+    want: "أُريد",
+    go: "إِذْهَب",
+    stop: "تَوَقَّف",
+    help: "مُساعَدَة",
+    more: "المَزيد",
+    "all done": "اِنْتَهَيْت",
+    eat: "أَكْل",
+    drink: "أَشْرَب",
+    like: "أُحِب",
+    can: "أَسْتَطيع",
+    yes: "نَعَم",
+    no: "لا",
+    "do not want": "لا أُريد",
+    "I want": "أَنا أُريد",
+    "want help": "أُريدُ مُساعَدَة",
+    "I am tired": "أَنا تَعْبان",
+    "I am hungry": "أَنا جائِع",
+    "I am thirsty": "أَنا عَطْشان"
+  },
+  "fr-FR": {
+    I: "je",
+    want: "veux",
+    "I want": "je veux",
+    "I need": "j'ai besoin",
+    thanks: "merci",
+    please: "s'il te plaît"
   }
 };
-const femaleVoiceNames = /\b(samantha|karen|moira|tessa|martha|flo|shelley|sandy|kathy|nicky|marie|amélie|ellen|grandma|female|woman|girl)\b/i;
-const maleVoiceNames = /\b(daniel|aaron|arthur|thomas|jacques|xander|majed|eddy|reed|rocko|grandpa|male|man|boy)\b/i;
-const unclearVoiceNames = /(bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|albert|fred|ralph|junior)/i;
+const femaleVoiceNames = /\b(samantha|ava|victoria|allison|susan|zoe|karen|moira|tessa|martha|flo|shelley|sandy|kathy|nicky|marie|am[eé]lie|audrey|aur[eé]lie|denise|eloise|sylvie|hortense|ellen|hoda|salma|zariyah|fatima|laila|zeina|amira|mariam|grandma|female|woman|girl)\b/i;
+const maleVoiceNames = /\b(guy|davis|ryan|daniel|alex|oliver|aaron|arthur|thomas|jacques|henri|xander|majed|maged|tarik|naayf|hamed|eddy|reed|rocko|grandpa|male|man|boy)\b/i;
+const unclearVoiceNames = /(bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|albert|fred|ralph|junior|rocko|reed|shelley|sandy)/i;
+const highQualityVoiceNames = /(natural|neural|online|premium|enhanced|google|microsoft|samantha|alex|daniel|ava|victoria|am[eé]lie|audrey|aur[eé]lie|denise|eloise|sylvie|hoda|salma|zariyah|fatima)/i;
+const speechLanguageFallbacks = {
+  ar: "ar-SA",
+  "en-US": "en-US",
+  "fr-FR": "fr-FR",
+  "nl-NL": "nl-NL"
+};
 const voiceCache = new Map();
 const warmedVoiceKeys = new Set();
+let audioQueue = Promise.resolve();
+let currentAudio = null;
+let speechRunId = 0;
 const speechSettingsKey = "samy-aac-speech-settings";
 let warmupPending = false;
 
@@ -1715,15 +1793,77 @@ function speakAddedWord(label) {
 
 function speakText(text, { interrupt = false, mode = "word" } = {}) {
   const phrase = String(text || "").trim();
-  if (!phrase || !("speechSynthesis" in window)) return;
+  if (!phrase) return;
 
   if (warmupPending || interrupt) {
-    window.speechSynthesis.cancel();
-    warmupPending = false;
+    stopSpeech();
   }
 
-  const utterance = createSpeechUtterance(phrase, mode);
+  if (shouldUseAudioTts()) {
+    queueAudioTts(phrase, mode, speechRunId);
+    return;
+  }
+
+  speakWithSpeechSynthesis(phrase, mode);
+}
+
+function speakWithSpeechSynthesis(text, mode = "word") {
+  if (!("speechSynthesis" in window)) return;
+  const utterance = createSpeechUtterance(text, mode);
   window.speechSynthesis.speak(utterance);
+}
+
+function shouldUseAudioTts() {
+  return state.voiceProfile === "woman" && (state.language === "ar" || state.language === "fr-FR");
+}
+
+function queueAudioTts(text, mode, runId) {
+  const phrase = String(text || "").trim();
+  if (!phrase) return;
+  audioQueue = audioQueue
+    .then(() => {
+      if (runId !== speechRunId) return undefined;
+      return playAudioTts(phrase, mode, runId);
+    })
+    .catch(() => {
+      if (runId !== speechRunId) return undefined;
+      return playAudioTts(phrase, mode, runId);
+    });
+}
+
+function playAudioTts(text, mode, runId) {
+  const url = getAudioTtsUrl(text);
+  if (runId !== speechRunId) return Promise.resolve();
+  if (!url) {
+    speakWithSpeechSynthesis(text, mode);
+    return Promise.resolve();
+  }
+  return new Promise((resolve) => {
+    const audio = new Audio(url);
+    currentAudio = audio;
+    audio.volume = 1;
+    audio.onended = () => {
+      if (currentAudio === audio) currentAudio = null;
+      resolve();
+    };
+    audio.onerror = () => {
+      if (currentAudio === audio) currentAudio = null;
+      if (runId === speechRunId) speakWithSpeechSynthesis(text, mode);
+      resolve();
+    };
+    audio.play().catch(() => {
+      if (currentAudio === audio) currentAudio = null;
+      if (runId === speechRunId) speakWithSpeechSynthesis(text, mode);
+      resolve();
+    });
+  });
+}
+
+function getAudioTtsUrl(text) {
+  const language = state.language === "fr-FR" ? "fr" : languageBase();
+  if (language !== "ar" && language !== "fr") return "";
+  const query = encodeURIComponent(text.slice(0, 190));
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${encodeURIComponent(language)}&q=${query}`;
 }
 
 function getSpeechText(label) {
@@ -1741,14 +1881,20 @@ function createSpeechUtterance(text, mode = "word") {
   utterance.rate = mode === "word" ? Math.max(0.82, tuning.rate - 0.02) : tuning.rate;
   utterance.pitch = tuning.pitch;
 
-  utterance.lang = voice?.lang || state.language;
+  utterance.lang = voice?.lang || speechLanguageFallbacks[state.language] || state.language;
   if (voice) utterance.voice = voice;
   return utterance;
 }
 
 function getSpeechTuning(profile) {
   if (state.language === "ar" && state.voiceProfile === "woman") {
-    return { pitch: 1.36, rate: 0.84 };
+    return { pitch: 1.55, rate: 0.8 };
+  }
+  if (state.language === "en-US" && state.voiceProfile === "man") {
+    return { pitch: 0.78, rate: 0.88 };
+  }
+  if (state.language === "fr-FR" && state.voiceProfile === "woman") {
+    return { pitch: 1.08, rate: 0.86 };
   }
   return { pitch: profile.pitch, rate: profile.rate };
 }
@@ -1758,8 +1904,14 @@ function getMessageSpeechText() {
 }
 
 function stopSpeech() {
-  if (!("speechSynthesis" in window)) return;
-  window.speechSynthesis.cancel();
+  speechRunId += 1;
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    currentAudio = null;
+  }
+  audioQueue = Promise.resolve();
   warmupPending = false;
 }
 
@@ -1816,12 +1968,12 @@ function filterVoicesForProfile(voices, profile) {
   if (profile.targetGender === "female") {
     const femaleVoices = voices.filter((voice) => femaleVoiceNames.test(voice.name));
     if (femaleVoices.length) return femaleVoices;
-    return voices.filter((voice) => !maleVoiceNames.test(voice.name));
+    return voices.filter((voice) => !maleVoiceNames.test(voice.name) && !unclearVoiceNames.test(voice.name));
   }
   if (profile.targetGender === "male") {
     const maleVoices = voices.filter((voice) => maleVoiceNames.test(voice.name));
     if (maleVoices.length) return maleVoices;
-    return voices.filter((voice) => !femaleVoiceNames.test(voice.name));
+    return voices.filter((voice) => !femaleVoiceNames.test(voice.name) && !unclearVoiceNames.test(voice.name));
   }
   return voices;
 }
@@ -1838,18 +1990,20 @@ function scoreVoice(voice, exactLanguage, base, profile) {
   if (voice.localService) score += 20;
   if (voice.default) score += 6;
   if (unclearVoiceNames.test(name)) score -= 500;
+  if (highQualityVoiceNames.test(voice.name)) score += 120;
+  if (name.includes("compact")) score -= 80;
 
   profile.keywords.forEach((keyword, index) => {
     if (name.includes(keyword)) score += 22 - Math.min(index, 14);
   });
 
   if (profile.targetGender === "male") {
-    if (maleVoiceNames.test(voice.name)) score += 80;
-    if (femaleVoiceNames.test(voice.name)) score -= 140;
+    if (maleVoiceNames.test(voice.name)) score += 180;
+    if (femaleVoiceNames.test(voice.name)) score -= 500;
   }
   if (profile.targetGender === "female") {
-    if (femaleVoiceNames.test(voice.name)) score += 80;
-    if (maleVoiceNames.test(voice.name)) score -= 140;
+    if (femaleVoiceNames.test(voice.name)) score += 180;
+    if (maleVoiceNames.test(voice.name)) score -= 500;
   }
   return score;
 }
