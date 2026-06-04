@@ -1265,11 +1265,11 @@ const voiceCache = new Map();
 const warmedVoiceKeys = new Set();
 const audioTtsProfiles = {
   ar: {
-    language: "ar-EG",
-    label: "Hoda"
+    languages: ["ar", "ar-EG"],
+    label: "Arabic woman"
   },
   "fr-FR": {
-    language: "fr-FR",
+    languages: ["fr-FR", "fr"],
     label: "Denise"
   }
 };
@@ -1816,7 +1816,11 @@ function speakText(text, { interrupt = false, mode = "word" } = {}) {
 
   if (shouldUseAudioTts()) {
     if (isDuplicateAudioSpeech(phrase, mode)) return;
-    queueAudioTts(phrase, mode, speechRunId);
+    if (interrupt || !currentAudio) {
+      audioQueue = playAudioTts(phrase, mode, speechRunId);
+    } else {
+      queueAudioTts(phrase, mode, speechRunId);
+    }
     return;
   }
 
@@ -1856,10 +1860,20 @@ function queueAudioTts(text, mode, runId) {
 }
 
 function playAudioTts(text, mode, runId) {
-  const url = getAudioTtsUrl(text);
+  const urls = getAudioTtsUrls(text);
+  if (runId !== speechRunId) return Promise.resolve();
+  if (!urls.length) {
+    speakWithSpeechSynthesis(text, mode);
+    return Promise.resolve();
+  }
+  return playAudioTtsCandidates(urls, text, mode, runId);
+}
+
+function playAudioTtsCandidates(urls, text, mode, runId, index = 0) {
+  const url = urls[index];
   if (runId !== speechRunId) return Promise.resolve();
   if (!url) {
-    speakWithSpeechSynthesis(text, mode);
+    maybeFallbackFromAudio(text, mode, runId, false);
     return Promise.resolve();
   }
   return new Promise((resolve) => {
@@ -1877,13 +1891,19 @@ function playAudioTts(text, mode, runId) {
     };
     audio.onerror = () => {
       if (currentAudio === audio) currentAudio = null;
-      maybeFallbackFromAudio(text, mode, runId, playbackStarted);
-      resolve();
+      if (playbackStarted) {
+        resolve();
+        return;
+      }
+      playAudioTtsCandidates(urls, text, mode, runId, index + 1).then(resolve);
     };
     audio.play().catch(() => {
       if (currentAudio === audio) currentAudio = null;
-      maybeFallbackFromAudio(text, mode, runId, playbackStarted);
-      resolve();
+      if (playbackStarted) {
+        resolve();
+        return;
+      }
+      playAudioTtsCandidates(urls, text, mode, runId, index + 1).then(resolve);
     });
   });
 }
@@ -1892,15 +1912,18 @@ function maybeFallbackFromAudio(text, mode, runId, playbackStarted) {
   if (playbackStarted || runId !== speechRunId) return;
   const voice = resolveSelectedVoice();
   const canUseSelectedWomanVoice = voice && femaleVoiceNames.test(voice.name) && !maleVoiceNames.test(voice.name);
-  if (state.voiceProfile === "woman" && !canUseSelectedWomanVoice) return;
+  if (state.voiceProfile === "woman" && !canUseSelectedWomanVoice && state.language !== "ar") return;
   speakWithSpeechSynthesis(text, mode);
 }
 
-function getAudioTtsUrl(text) {
+function getAudioTtsUrls(text) {
   const profile = audioTtsProfiles[state.language];
-  if (!profile) return "";
+  if (!profile) return [];
   const query = encodeURIComponent(text.slice(0, 190));
-  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${encodeURIComponent(profile.language)}&q=${query}`;
+  return profile.languages.map(
+    (language) =>
+      `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${encodeURIComponent(language)}&q=${query}`
+  );
 }
 
 function getSpeechText(label) {
