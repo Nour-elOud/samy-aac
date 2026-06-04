@@ -595,7 +595,39 @@ h2 {
 }
 
 .file-picker input {
-  padding: 7px;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.file-control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  padding: 6px 8px;
+  text-transform: none;
+}
+
+.file-control span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-control span:last-child {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #f2f5f9;
+  padding: 4px 7px;
 }
 
 .personal-form button {
