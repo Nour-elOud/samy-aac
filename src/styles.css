@@ -37,6 +37,10 @@ body {
     linear-gradient(180deg, #fef7f1 0%, #f8fbff 45%, #fffaf6 100%);
 }
 
+html[dir="rtl"] body {
+  direction: rtl;
+}
+
 button,
 input,
 select {
@@ -159,9 +163,10 @@ a {
 
 .control-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(124px, 1fr)) auto;
+  grid-template-columns: repeat(4, minmax(124px, 1fr));
   gap: 8px;
   margin-top: 10px;
+  direction: ltr;
 }
 
 .control-strip:not([open]) .control-grid {
@@ -171,6 +176,10 @@ a {
 .control-grid label {
   display: grid;
   gap: 4px;
+}
+
+html[dir="rtl"] .control-grid label {
+  direction: rtl;
 }
 
 .control-grid label > span {
@@ -194,8 +203,10 @@ a {
 
 .toggle-row {
   display: flex;
+  grid-column: 1 / -1;
   align-items: end;
   gap: 8px;
+  direction: ltr;
 }
 
 .toggle {
@@ -205,6 +216,10 @@ a {
   border: 2px solid #fff;
   border-radius: 8px;
   padding: 8px 10px;
+}
+
+html[dir="rtl"] .toggle {
+  direction: rtl;
 }
 
 .toggle input {
@@ -299,8 +314,12 @@ a {
 
 .workspace {
   display: grid;
-  grid-template-columns: 118px minmax(0, 1fr) 218px;
+  grid-template-columns: 118px minmax(0, 1fr);
   background: #050505;
+}
+
+body.edit-mode .workspace {
+  grid-template-columns: 118px minmax(0, 1fr) 218px;
 }
 
 .category-rail {
@@ -310,6 +329,7 @@ a {
   padding: 10px;
   border-right: 5px solid #050505;
   background: #050505;
+  direction: ltr;
 }
 
 .folder {
@@ -321,6 +341,7 @@ a {
   border-radius: 8px;
   background: #1a1b1e;
   color: #fff;
+  direction: rtl;
   font-weight: 900;
 }
 
@@ -419,6 +440,7 @@ h2 {
   --fringe-cols: var(--cols);
   display: grid;
   gap: var(--gap);
+  direction: ltr;
 }
 
 .fringe-grid,
@@ -426,6 +448,7 @@ h2 {
   display: grid;
   grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
   gap: var(--gap);
+  direction: ltr;
 }
 
 .fringe-grid {
@@ -454,6 +477,7 @@ h2 {
   transition:
     transform 150ms ease,
     box-shadow 150ms ease;
+  direction: rtl;
 }
 
 .word-spacer {
@@ -616,6 +640,11 @@ h2 {
   padding: 12px;
   border-left: 5px solid #050505;
   background: #fff8ec;
+}
+
+body:not(.edit-mode) .personal-panel,
+body.child-mode .personal-panel {
+  display: none;
 }
 
 .personal-panel h2 {
@@ -878,6 +907,36 @@ body.large-mode {
   --tile-min: 116px;
 }
 
+body.child-mode {
+  --tile-min: 124px;
+}
+
+body.child-mode .advanced-control,
+body.child-mode .board-tabs,
+body.child-mode .site-topbar nav,
+body.child-mode .info-band,
+body.child-mode .voice-band,
+body.child-mode .access-band,
+body.child-mode .fit-band {
+  display: none;
+}
+
+body.child-mode .app-stage {
+  padding: 8px;
+}
+
+body.child-mode .control-strip {
+  padding: 6px;
+}
+
+body.child-mode .control-grid {
+  grid-template-columns: auto;
+}
+
+body.child-mode .message-window {
+  min-height: 104px;
+}
+
 body.keyguard-mode {
   --gap: 15px;
 }
@@ -904,6 +963,25 @@ body.contrast-mode .word-button {
   box-shadow: none;
 }
 
+html[dir="rtl"] .message-content {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] .token {
+  direction: rtl;
+}
+
+html[dir="rtl"] .control-strip summary::before {
+  margin-right: 0;
+  margin-left: 8px;
+}
+
+html[dir="rtl"] .delete-favorite {
+  right: auto;
+  left: 5px;
+}
+
 @media (max-width: 1180px) {
   .control-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -915,6 +993,10 @@ body.contrast-mode .word-button {
   }
 
   .workspace {
+    grid-template-columns: 104px minmax(0, 1fr);
+  }
+
+  body.edit-mode .workspace {
     grid-template-columns: 104px minmax(0, 1fr);
   }
 
@@ -1009,31 +1091,26 @@ body.contrast-mode .word-button {
   }
 
   .control-grid {
-    display: flex;
-    align-items: end;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: stretch;
     gap: 8px;
-    overflow-x: auto;
+    overflow: visible;
     padding-bottom: 12px;
-    scroll-snap-type: x proximity;
   }
 
   .control-grid label {
-    flex: 0 0 156px;
-    scroll-snap-align: start;
+    min-width: 0;
   }
 
   .control-grid label:nth-child(4) {
-    flex-basis: 224px;
+    min-width: 0;
   }
 
   .control-grid select,
   .control-grid input {
     min-height: 42px;
     padding: 7px 9px;
-  }
-
-  .toggle-row {
-    flex: 0 0 auto;
   }
 
   .toggle-row {

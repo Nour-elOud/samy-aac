@@ -3,10 +3,17 @@ const translations = {
     "Space": "Space",
     "No photo selected": "No photo selected",
     "Choose photo": "Choose photo",
-    "Boy": "Boy",
-    "Girl": "Girl",
     "Woman": "Woman",
     "Man": "Man",
+    "Woman voice": "Woman voice",
+    "Man voice": "Man voice",
+    "Arabic sentence": "Arabic sentence",
+    "I want pizza now": "I want pizza now",
+    "Child Mode": "Child Mode",
+    "Grammar": "Grammar",
+    "Time": "Time",
+    "Quick Phrases": "Quick Phrases",
+    "QuickPhrases": "Quick Phrases",
     "Favorites": "Favorites",
     "Delete favorite": "Delete favorite",
     "Favorite word": "Favorite word",
@@ -74,10 +81,13 @@ const translations = {
     "No photo selected": "لا توجد صورة",
     "Choose photo": "اختر صورة",
     "Add button": "إضافة زر",
-    "Boy": "ولد",
-    "Girl": "بنت",
     "Woman": "امرأة",
     "Man": "رجل",
+    "Woman voice": "صوت امرأة",
+    "Man voice": "صوت رجل",
+    "Arabic sentence": "جملة عربية",
+    "I want pizza now": "أنا أريد بيتزا الآن",
+    "Child Mode": "وضع الطفل",
     "Core": "الأساسية",
     "People": "الأشخاص",
     "Food": "الطعام",
@@ -85,6 +95,10 @@ const translations = {
     "Actions": "الأفعال",
     "Feelings": "المشاعر",
     "Questions": "الأسئلة",
+    "Grammar": "القواعد",
+    "Time": "الوقت",
+    "Quick Phrases": "عبارات سريعة",
+    "QuickPhrases": "عبارات سريعة",
     "Places": "الأماكن",
     "Medical": "طبي",
     "Family": "العائلة",
@@ -95,6 +109,9 @@ const translations = {
     "Action words for doing and requesting": "كلمات الأفعال للفعل والطلب",
     "Feelings, body state, and self-advocacy": "المشاعر وحالة الجسم والتعبير عن الاحتياج",
     "Question words for conversation": "كلمات الأسئلة للمحادثة",
+    "Grammar words for Arabic sentence building": "كلمات القواعد لبناء الجمل العربية",
+    "Time words for routines and waiting": "كلمات الوقت للروتين والانتظار",
+    "Quick phrases for urgent everyday messages": "عبارات سريعة لرسائل يومية مهمة",
     "Places for school, home, and community": "أماكن المدرسة والمنزل والمجتمع",
     "Health words for urgent needs": "كلمات صحية للاحتياجات العاجلة",
     "Family names and familiar people": "أسماء العائلة والأشخاص المألوفون",
@@ -109,10 +126,8 @@ const translations = {
     "Pronouns are yellow, verbs green, nouns orange, descriptors blue, and social words pink.": "الضمائر باللون الأصفر، والأفعال بالأخضر، والأسماء بالبرتقالي، والصفات بالأزرق، والكلمات الاجتماعية بالوردي.",
     "Voices and languages": "الأصوات واللغات",
     "Communication can sound like the person using it.": "يمكن أن يبدو التواصل بصوت يشبه الشخص الذي يستخدمه.",
-    "Samy supports child, teen, and adult voice choices across English, Arabic, French, and Dutch, including bilingual sentences when families use more than one language.": "يدعم Samy أصوات الأطفال والمراهقين والبالغين بالإنجليزية والعربية والفرنسية والهولندية، بما في ذلك الجمل ثنائية اللغة عندما تستخدم الأسرة أكثر من لغة.",
+    "Samy supports clear woman and man voice profiles across English, Arabic, French, and Dutch, including bilingual sentences when families use more than one language.": "يدعم Samy ملفات صوت واضحة لامرأة ورجل بالإنجليزية والعربية والفرنسية والهولندية، بما في ذلك الجمل ثنائية اللغة عندما تستخدم الأسرة أكثر من لغة.",
     "Voice examples": "أمثلة على الأصوات",
-    "Child voice": "صوت طفل",
-    "Adult voice": "صوت بالغ",
     "Bilingual sentence": "جملة ثنائية اللغة",
     "I want to play": "أريد أن ألعب",
     "I need help because I feel tired": "أحتاج مساعدة لأنني أشعر بالتعب",
@@ -147,7 +162,7 @@ const translations = {
     can: "أستطيع",
     where: "أين",
     what: "ماذا",
-    eat: "آكل",
+    eat: "أكل",
     drink: "أشرب",
     need: "أحتاج",
     because: "لأن",
@@ -191,16 +206,16 @@ const translations = {
     play: "ألعب",
     see: "أرى",
     write: "أكتب",
-    listen: "أستمع",
+    listen: "اسمع",
     read: "أقرأ",
     wash: "أغسل",
     sleep: "أنام",
-    give: "أعطي",
+    give: "أعطني",
     put: "أضع",
     sad: "حزين",
     mad: "غاضب",
     scared: "خائف",
-    tired: "متعب",
+    tired: "تعبان",
     sick: "مريض",
     excited: "متحمس",
     calm: "هادئ",
@@ -220,14 +235,41 @@ const translations = {
     finished: "انتهى",
     open: "افتح",
     close: "أغلق",
+    come: "تعال",
+    "want more": "أريد المزيد",
+    "do not want": "لا أريد",
     am: "أكون",
     is: "يكون",
     are: "يكونون",
+    was: "كان",
+    under: "تحت",
+    to: "إلى",
+    from: "من",
+    "for me": "لي",
+    have: "لدي",
+    mine: "ملكي",
+    this: "هذا",
+    "this feminine": "هذه",
+    that: "ذلك",
+    there: "هناك",
     my: "لي",
     your: "لك",
     in: "في",
     on: "على",
     with: "مع",
+    "question marker": "هل",
+    which: "أي",
+    "how many": "كم",
+    now: "الآن",
+    later: "لاحقاً",
+    today: "اليوم",
+    yesterday: "أمس",
+    tomorrow: "غداً",
+    morning: "صباح",
+    evening: "مساء",
+    before: "قبل",
+    after: "بعد",
+    wait: "انتظر",
     home: "المنزل",
     school: "المدرسة",
     park: "الحديقة",
@@ -246,6 +288,17 @@ const translations = {
     headache: "صداع",
     breathe: "أتنفس",
     emergency: "طوارئ",
+    "pain here": "ألم هنا",
+    "need help": "أحتاج مساعدة",
+    "want help": "أريد مساعدة",
+    "I am tired": "أنا تعبان",
+    "want bathroom": "أريد الحمام",
+    "go home": "أريد الذهاب إلى المنزل",
+    "I am hungry": "أنا جائع",
+    "I am thirsty": "أنا عطشان",
+    "I am sad": "أنا حزين",
+    "I am happy": "أنا سعيد",
+    "stop please": "توقف من فضلك",
     break: "استراحة",
     mom: "أمي",
     dad: "أبي",
@@ -256,7 +309,7 @@ const translations = {
     dog: "كلب",
     cat: "قطة",
     "school bus": "حافلة المدرسة",
-    "I want": "أريد",
+    "I want": "أنا أريد",
     "I need": "أحتاج"
   },
   "fr-FR": {
@@ -300,10 +353,17 @@ const translations = {
     "No photo selected": "Aucune photo",
     "Choose photo": "Choisir une photo",
     "Add button": "Ajouter un bouton",
-    "Boy": "Garçon",
-    "Girl": "Fille",
     "Woman": "Femme",
     "Man": "Homme",
+    "Woman voice": "Voix femme",
+    "Man voice": "Voix homme",
+    "Arabic sentence": "Phrase arabe",
+    "I want pizza now": "je veux une pizza maintenant",
+    "Child Mode": "Mode enfant",
+    "Grammar": "Grammaire",
+    "Time": "Temps",
+    "Quick Phrases": "Phrases rapides",
+    "QuickPhrases": "Phrases rapides",
     "Device default voice": "Voix par défaut de l'appareil",
     "Speech unavailable": "Synthèse vocale indisponible",
     "Loading voices": "Chargement des voix",
@@ -324,6 +384,9 @@ const translations = {
     "Action words for doing and requesting": "Verbes pour agir et demander",
     "Feelings, body state, and self-advocacy": "Émotions, état du corps et besoins",
     "Question words for conversation": "Mots de question pour converser",
+    "Grammar words for Arabic sentence building": "Mots de grammaire pour construire des phrases arabes",
+    "Time words for routines and waiting": "Mots de temps pour les routines et l'attente",
+    "Quick phrases for urgent everyday messages": "Phrases rapides pour les messages importants du quotidien",
     "Places for school, home, and community": "Lieux de l'école, de la maison et de la communauté",
     "Health words for urgent needs": "Mots de santé pour les besoins urgents",
     "Family names and familiar people": "Noms de famille et personnes familières",
@@ -339,9 +402,7 @@ const translations = {
     "Pronouns are yellow, verbs green, nouns orange, descriptors blue, and social words pink.": "Les pronoms sont jaunes, les verbes verts, les noms orange, les descriptifs bleus et les mots sociaux roses.",
     "Voices and languages": "Voix et langues",
     "Communication can sound like the person using it.": "La communication peut avoir une voix qui ressemble à la personne qui l'utilise.",
-    "Samy supports child, teen, and adult voice choices across English, Arabic, French, and Dutch, including bilingual sentences when families use more than one language.": "Samy prend en charge des voix d'enfant, d'adolescent et d'adulte en anglais, arabe, français et néerlandais, y compris des phrases bilingues.",
-    "Child voice": "Voix d'enfant",
-    "Adult voice": "Voix adulte",
+    "Samy supports clear woman and man voice profiles across English, Arabic, French, and Dutch, including bilingual sentences when families use more than one language.": "Samy prend en charge des profils de voix clairs femme et homme en anglais, arabe, français et néerlandais, y compris des phrases bilingues.",
     "Bilingual sentence": "Phrase bilingue",
     "I want to play": "je veux jouer",
     "I need help because I feel tired": "j'ai besoin d'aide parce que je suis fatigué",
@@ -449,14 +510,41 @@ const translations = {
     finished: "terminé",
     open: "ouvrir",
     close: "fermer",
+    come: "viens",
+    "want more": "veux encore",
+    "do not want": "je ne veux pas",
     am: "suis",
     is: "est",
     are: "sont",
+    was: "était",
+    under: "sous",
+    to: "à",
+    from: "de",
+    "for me": "pour moi",
+    have: "ai",
+    mine: "à moi",
+    this: "ceci",
+    "this feminine": "cette",
+    that: "cela",
+    there: "là-bas",
     my: "mon",
     your: "ton",
     in: "dans",
     on: "sur",
     with: "avec",
+    "question marker": "est-ce que",
+    which: "quel",
+    "how many": "combien",
+    now: "maintenant",
+    later: "plus tard",
+    today: "aujourd'hui",
+    yesterday: "hier",
+    tomorrow: "demain",
+    morning: "matin",
+    evening: "soir",
+    before: "avant",
+    after: "après",
+    wait: "attendre",
     home: "maison",
     school: "école",
     park: "parc",
@@ -475,6 +563,17 @@ const translations = {
     headache: "mal de tête",
     breathe: "respirer",
     emergency: "urgence",
+    "pain here": "douleur ici",
+    "need help": "besoin d'aide",
+    "want help": "je veux de l'aide",
+    "I am tired": "je suis fatigué",
+    "want bathroom": "je veux les toilettes",
+    "go home": "je veux rentrer à la maison",
+    "I am hungry": "j'ai faim",
+    "I am thirsty": "j'ai soif",
+    "I am sad": "je suis triste",
+    "I am happy": "je suis content",
+    "stop please": "stop s'il te plaît",
     break: "pause",
     mom: "maman",
     dad: "papa",
@@ -529,10 +628,17 @@ const translations = {
     "No photo selected": "Geen foto gekozen",
     "Choose photo": "Kies foto",
     "Add button": "Knop toevoegen",
-    "Boy": "Jongen",
-    "Girl": "Meisje",
     "Woman": "Vrouw",
     "Man": "Man",
+    "Woman voice": "Vrouwenstem",
+    "Man voice": "Mannenstem",
+    "Arabic sentence": "Arabische zin",
+    "I want pizza now": "ik wil nu pizza",
+    "Child Mode": "Kindmodus",
+    "Grammar": "Grammatica",
+    "Time": "Tijd",
+    "Quick Phrases": "Snelle zinnen",
+    "QuickPhrases": "Snelle zinnen",
     "Device default voice": "Standaardstem van apparaat",
     "Speech unavailable": "Spraak is niet beschikbaar",
     "Loading voices": "Stemmen laden",
@@ -553,6 +659,9 @@ const translations = {
     "Action words for doing and requesting": "Actiewoorden om te doen en te vragen",
     "Feelings, body state, and self-advocacy": "Gevoelens, lichaamstoestand en hulp vragen",
     "Question words for conversation": "Vraagwoorden voor gesprekken",
+    "Grammar words for Arabic sentence building": "Grammaticale woorden voor Arabische zinnen",
+    "Time words for routines and waiting": "Tijdwoorden voor routines en wachten",
+    "Quick phrases for urgent everyday messages": "Snelle zinnen voor belangrijke dagelijkse boodschappen",
     "Places for school, home, and community": "Plaatsen voor school, thuis en buurt",
     "Health words for urgent needs": "Gezondheidswoorden voor dringende behoeften",
     "Family names and familiar people": "Familienamen en bekende mensen",
@@ -568,9 +677,7 @@ const translations = {
     "Pronouns are yellow, verbs green, nouns orange, descriptors blue, and social words pink.": "Voornaamwoorden zijn geel, werkwoorden groen, zelfstandige naamwoorden oranje, beschrijvende woorden blauw en sociale woorden roze.",
     "Voices and languages": "Stemmen en talen",
     "Communication can sound like the person using it.": "Communicatie kan klinken als de persoon die het gebruikt.",
-    "Samy supports child, teen, and adult voice choices across English, Arabic, French, and Dutch, including bilingual sentences when families use more than one language.": "Samy ondersteunt kinder-, tiener- en volwassen stemmen in Engels, Arabisch, Frans en Nederlands, inclusief tweetalige zinnen.",
-    "Child voice": "Kinderstem",
-    "Adult voice": "Volwassen stem",
+    "Samy supports clear woman and man voice profiles across English, Arabic, French, and Dutch, including bilingual sentences when families use more than one language.": "Samy ondersteunt duidelijke vrouwen- en mannenstemprofielen in Engels, Arabisch, Frans en Nederlands, inclusief tweetalige zinnen.",
     "Bilingual sentence": "Tweetalige zin",
     "I want to play": "ik wil spelen",
     "I need help because I feel tired": "ik heb hulp nodig omdat ik moe ben",
@@ -678,14 +785,41 @@ const translations = {
     finished: "klaar",
     open: "open",
     close: "dicht",
+    come: "kom",
+    "want more": "wil meer",
+    "do not want": "ik wil niet",
     am: "ben",
     is: "is",
     are: "zijn",
+    was: "was",
+    under: "onder",
+    to: "naar",
+    from: "van",
+    "for me": "voor mij",
+    have: "heb",
+    mine: "van mij",
+    this: "dit",
+    "this feminine": "deze",
+    that: "dat",
+    there: "daar",
     my: "mijn",
     your: "jouw",
     in: "in",
     on: "op",
     with: "met",
+    "question marker": "vraag",
+    which: "welke",
+    "how many": "hoeveel",
+    now: "nu",
+    later: "later",
+    today: "vandaag",
+    yesterday: "gisteren",
+    tomorrow: "morgen",
+    morning: "ochtend",
+    evening: "avond",
+    before: "voor",
+    after: "na",
+    wait: "wacht",
     home: "thuis",
     school: "school",
     park: "park",
@@ -704,6 +838,17 @@ const translations = {
     headache: "hoofdpijn",
     breathe: "ademen",
     emergency: "noodgeval",
+    "pain here": "pijn hier",
+    "need help": "hulp nodig",
+    "want help": "ik wil hulp",
+    "I am tired": "ik ben moe",
+    "want bathroom": "ik wil naar de wc",
+    "go home": "ik wil naar huis",
+    "I am hungry": "ik heb honger",
+    "I am thirsty": "ik heb dorst",
+    "I am sad": "ik ben verdrietig",
+    "I am happy": "ik ben blij",
+    "stop please": "stop alsjeblieft",
     break: "pauze",
     mom: "mama",
     dad: "papa",
@@ -731,37 +876,28 @@ const vocabulary = {
     ["✅", "all done", "social", "beginner"],
     ["🍽️", "eat", "verb", "beginner"],
     ["🥤", "drink", "verb", "beginner"],
+    ["💗", "like", "verb", "beginner"],
+    ["💪", "can", "little", "beginner"],
     ["👍", "yes", "social", "beginner"],
     ["👎", "no", "social", "beginner"],
-    ["💗", "like", "verb", "intermediate"],
-    ["✖️", "don't", "little", "intermediate"],
-    ["💪", "can", "little", "intermediate"],
-    ["📍", "where", "question", "intermediate"],
-    ["❓", "what", "question", "intermediate"],
     ["🧰", "need", "verb", "intermediate"],
-    ["💬", "because", "little", "intermediate"],
-    ["🔵", "different", "descriptor", "intermediate"],
-    ["👋", "hi", "social", "intermediate"],
-    ["👋", "bye", "social", "intermediate"],
-    ["🙏", "please", "social", "intermediate"],
-    ["💛", "thanks", "social", "intermediate"],
     ["🔁", "again", "verb", "intermediate"],
     ["🏁", "finished", "social", "intermediate"],
     ["🔓", "open", "verb", "intermediate"],
     ["🔒", "close", "verb", "intermediate"],
     ["🎁", "give", "verb", "intermediate"],
     ["👀", "look", "verb", "intermediate"],
-    ["=", "am", "little", "advanced"],
-    ["=", "is", "little", "advanced"],
-    ["=", "are", "little", "advanced"],
-    ["🤲", "my", "pronoun", "advanced"],
-    ["🫵", "your", "pronoun", "advanced"],
-    ["📥", "in", "little", "advanced"],
-    ["📌", "on", "little", "advanced"],
-    ["➕", "with", "little", "advanced"],
-    ["👤", "who", "question", "advanced"],
-    ["⏰", "when", "question", "advanced"],
-    ["🤔", "why", "question", "advanced"],
+    ["👂", "listen", "verb", "intermediate"],
+    ["🙋", "come", "verb", "intermediate"],
+    ["➕", "want more", "verb", "intermediate"],
+    ["✖️", "do not want", "social", "intermediate"],
+    ["🙏", "please", "social", "intermediate"],
+    ["💛", "thanks", "social", "intermediate"],
+    ["👋", "hi", "social", "intermediate"],
+    ["👋", "bye", "social", "intermediate"],
+    ["✖️", "don't", "little", "advanced"],
+    ["💬", "because", "little", "advanced"],
+    ["🔵", "different", "descriptor", "advanced"],
     ["🏠", "stay home", "verb", "advanced"],
     ["😴", "feel tired", "descriptor", "advanced"],
     ["🗣️", "I would rather", "little", "advanced"]
@@ -837,8 +973,57 @@ const vocabulary = {
     ["⏰", "when", "question", "intermediate"],
     ["🤔", "why", "question", "intermediate"],
     ["🧭", "how", "question", "advanced"],
-    ["✅", "yes", "social", "beginner"],
-    ["✖️", "no", "social", "beginner"]
+    ["؟", "question marker", "question", "intermediate"],
+    ["☝️", "which", "question", "advanced"],
+    ["🔢", "how many", "question", "advanced"]
+  ],
+  Grammar: [
+    ["👨", "he", "pronoun", "beginner"],
+    ["👩", "she", "pronoun", "beginner"],
+    ["👫", "we", "pronoun", "intermediate"],
+    ["👥", "they", "pronoun", "intermediate"],
+    ["↩️", "was", "little", "advanced"],
+    ["=", "is", "little", "intermediate"],
+    ["📥", "in", "little", "intermediate"],
+    ["📌", "on", "little", "intermediate"],
+    ["⬇️", "under", "little", "advanced"],
+    ["➕", "with", "little", "intermediate"],
+    ["➡️", "to", "little", "intermediate"],
+    ["⬅️", "from", "little", "advanced"],
+    ["🤲", "for me", "pronoun", "intermediate"],
+    ["🎒", "have", "verb", "advanced"],
+    ["⭐", "mine", "pronoun", "advanced"],
+    ["👉", "this", "pronoun", "intermediate"],
+    ["👉", "this feminine", "pronoun", "intermediate"],
+    ["👈", "that", "pronoun", "advanced"],
+    ["📍", "there", "little", "advanced"]
+  ],
+  Time: [
+    ["⏱️", "now", "little", "beginner"],
+    ["⏳", "later", "little", "beginner"],
+    ["📅", "today", "noun", "intermediate"],
+    ["↩️", "yesterday", "noun", "intermediate"],
+    ["➡️", "tomorrow", "noun", "intermediate"],
+    ["🌅", "morning", "noun", "intermediate"],
+    ["🌙", "evening", "noun", "intermediate"],
+    ["⬅️", "before", "little", "advanced"],
+    ["➡️", "after", "little", "advanced"],
+    ["✋", "wait", "verb", "beginner"]
+  ],
+  QuickPhrases: [
+    ["🗣️", "I want", "social", "beginner"],
+    ["✖️", "do not want", "social", "beginner"],
+    ["🙋", "want help", "social", "beginner"],
+    ["😴", "I am tired", "descriptor", "beginner"],
+    ["🚻", "want bathroom", "social", "beginner"],
+    ["🏠", "go home", "social", "intermediate"],
+    ["🍽️", "I am hungry", "descriptor", "beginner"],
+    ["💧", "I am thirsty", "descriptor", "beginner"],
+    ["😢", "I am sad", "descriptor", "beginner"],
+    ["😊", "I am happy", "descriptor", "beginner"],
+    ["🛑", "stop please", "social", "intermediate"],
+    ["💛", "thanks", "social", "beginner"],
+    ["🙏", "please", "social", "beginner"]
   ],
   Places: [
     ["🏠", "home", "noun", "beginner"],
@@ -852,15 +1037,18 @@ const vocabulary = {
   ],
   Medical: [
     ["🩹", "pain", "descriptor", "beginner"],
-    ["🚻", "bathroom", "noun", "beginner"],
     ["🍽️", "hungry", "descriptor", "beginner"],
     ["💧", "thirsty", "descriptor", "beginner"],
+    ["🚻", "bathroom", "noun", "beginner"],
     ["😴", "tired", "descriptor", "beginner"],
-    ["🚑", "emergency", "noun", "beginner"],
-    ["🩹", "hurt", "descriptor", "intermediate"],
-    ["🧑‍⚕️", "doctor", "noun", "beginner"],
+    ["🤒", "sick", "descriptor", "beginner"],
     ["💊", "medicine", "noun", "intermediate"],
+    ["🧑‍⚕️", "doctor", "noun", "beginner"],
     ["🌡️", "fever", "noun", "intermediate"],
+    ["🚑", "emergency", "noun", "beginner"],
+    ["📍", "pain here", "descriptor", "intermediate"],
+    ["🙋", "need help", "social", "beginner"],
+    ["🩹", "hurt", "descriptor", "intermediate"],
     ["🤕", "headache", "noun", "advanced"],
     ["🫁", "breathe", "verb", "advanced"],
     ["🧘", "break", "noun", "beginner"]
@@ -885,6 +1073,9 @@ const folderTitles = {
   Actions: "Action words for doing and requesting",
   Feelings: "Feelings, body state, and self-advocacy",
   Questions: "Question words for conversation",
+  Grammar: "Grammar words for Arabic sentence building",
+  Time: "Time words for routines and waiting",
+  QuickPhrases: "Quick phrases for urgent everyday messages",
   Places: "Places for school, home, and community",
   Medical: "Health words for urgent needs",
   Family: "Family names and familiar people"
@@ -901,7 +1092,7 @@ const gridSizes = {
 };
 const levelGridDefaults = {
   beginner: "4x4",
-  intermediate: "6x6",
+  intermediate: "5x5",
   advanced: "7x11"
 };
 const fringeRowsByLevel = {
@@ -909,7 +1100,9 @@ const fringeRowsByLevel = {
   intermediate: 1,
   advanced: 2
 };
-const coreLabelSet = new Set(vocabulary.Core.map((item) => item[1]));
+const stableCoreKeys = ["I", "you", "want", "go", "stop", "help", "more", "all done", "eat", "drink", "like", "can", "yes", "no"];
+const stableCoreKeySet = new Set(stableCoreKeys);
+const stableCoreSlots = stableCoreKeys.length;
 const favoriteStorageKey = "samy-aac-favorites";
 const symbolAssets = {};
 
@@ -928,26 +1121,12 @@ const predictions = [
 ];
 
 const voiceProfiles = {
-  boy: {
-    label: "Boy",
-    targetGender: "male",
-    pitch: 1.08,
-    rate: 0.9,
-    keywords: ["eddy", "aaron", "reed", "rocko", "xander", "boy", "young"]
-  },
-  girl: {
-    label: "Girl",
-    targetGender: "female",
-    pitch: 1.16,
-    rate: 0.9,
-    keywords: ["sandy", "shelley", "flo", "kathy", "ellen", "girl", "young"]
-  },
   woman: {
     label: "Woman",
     targetGender: "female",
-    pitch: 1,
-    rate: 0.9,
-    keywords: ["samantha", "karen", "moira", "tessa", "marie", "ellen", "woman", "female"]
+    pitch: 1.04,
+    rate: 0.88,
+    keywords: ["samantha", "karen", "moira", "tessa", "flo", "shelley", "sandy", "marie", "amélie", "ellen", "laila", "zeina", "amira", "woman", "female"]
   },
   man: {
     label: "Man",
@@ -958,29 +1137,21 @@ const voiceProfiles = {
   }
 };
 
-const voiceProfileOrder = ["boy", "girl", "woman", "man"];
+const voiceProfileOrder = ["woman", "man"];
 const preferredVoiceNames = {
   "en-US": {
-    boy: ["Eddy (English (US))", "Eddy (English (United States))", "Aaron", "Nicky", "Reed (English (US))", "Rocko (English (US))"],
-    girl: ["Sandy (English (US))", "Sandy (English (United States))", "Shelley (English (US))", "Shelley (English (United States))", "Flo (English (US))", "Flo (English (United States))", "Kathy"],
     woman: ["Samantha", "Karen", "Moira", "Tessa", "Google US English", "Google UK English Female"],
-    man: ["Daniel", "Daniel (English (United Kingdom))", "Google UK English Male", "Arthur", "Reed (English (US))", "Rocko (English (US))"]
+    man: ["Daniel", "Daniel (English (United Kingdom))", "Google UK English Male", "Arthur", "Reed (English (US))", "Rocko (English (US))", "Aaron"]
   },
   ar: {
-    boy: ["Majed"],
-    girl: ["Majed"],
-    woman: ["Majed"],
-    man: ["Majed"]
+    woman: ["Laila", "Zeina", "Amira", "Google العربية", "Majed"],
+    man: ["Majed", "Tarik", "Google العربية"]
   },
   "fr-FR": {
-    boy: ["Eddy (French (France))", "Rocko (French (France))", "Thomas"],
-    girl: ["Sandy (French (France))", "Shelley (French (France))", "Flo (French (France))", "Marie"],
     woman: ["Flo (French (France))", "Shelley (French (France))", "Marie", "Amélie"],
     man: ["Thomas", "Jacques", "Daniel (French (France))"]
   },
   "nl-NL": {
-    boy: ["Xander"],
-    girl: ["Ellen"],
     woman: ["Ellen"],
     man: ["Xander"]
   }
@@ -1006,11 +1177,12 @@ const state = {
   category: "Core",
   level: "beginner",
   grid: "4x4",
-  language: "en-US",
+  language: "ar",
   mode: "symbols",
   message: [],
   voices: [],
   selectedVoiceURI: "",
+  childMode: false,
   voiceProfile: loadSavedVoiceProfile(),
   personalWords: loadPersonalWords()
 };
@@ -1018,10 +1190,15 @@ const state = {
 const elements = {
   wordGrid: document.querySelector("#wordGrid"),
   messageContent: document.querySelector("#messageContent"),
+  controlStrip: document.querySelector(".control-strip"),
   levelSelect: document.querySelector("#levelSelect"),
   gridSelect: document.querySelector("#gridSelect"),
   languageSelect: document.querySelector("#languageSelect"),
   voiceSelect: document.querySelector("#voiceSelect"),
+  childModeToggle: document.querySelector("#childModeToggle"),
+  largeToggle: document.querySelector("#largeToggle"),
+  keyguardToggle: document.querySelector("#keyguardToggle"),
+  contrastToggle: document.querySelector("#contrastToggle"),
   categoryTitle: document.querySelector("#categoryTitle"),
   categoryEyebrow: document.querySelector("#categoryEyebrow"),
   keyboardPanel: document.querySelector("#keyboardPanel"),
@@ -1047,9 +1224,9 @@ function translate(label) {
 function loadSavedVoiceProfile() {
   try {
     const saved = JSON.parse(localStorage.getItem(speechSettingsKey) || "{}");
-    return voiceProfiles[saved.voiceProfile] ? saved.voiceProfile : "boy";
+    return voiceProfiles[saved.voiceProfile] ? saved.voiceProfile : "woman";
   } catch {
-    return "boy";
+    return "woman";
   }
 }
 
@@ -1096,6 +1273,7 @@ function renderVoiceProfileOptions() {
     elements.voiceSelect.disabled = true;
     return;
   }
+  if (!voiceProfileOrder.includes(state.voiceProfile)) state.voiceProfile = "woman";
   elements.voiceSelect.disabled = false;
   elements.voiceSelect.innerHTML = voiceProfileOrder
     .map((profile) => `<option value="${profile}">${escapeHtml(translate(voiceProfiles[profile].label))}</option>`)
@@ -1146,6 +1324,7 @@ function updateFileStatus() {
 
 function renderStaticText() {
   document.documentElement.lang = state.language;
+  document.documentElement.dir = state.language === "ar" ? "rtl" : "ltr";
 
   setText(".brand small", "AAC communicator");
   setAria(".app-stage", "Samy AAC communicator demo");
@@ -1180,9 +1359,10 @@ function renderStaticText() {
   document.querySelector("#gridSelect").closest("label").querySelector("span").textContent = translate("Grid");
   document.querySelector("#languageSelect").closest("label").querySelector("span").textContent = translate("Language");
   document.querySelector("#voiceSelect").closest("label").querySelector("span").textContent = translate("Voice");
-  document.querySelector("#largeToggle").nextElementSibling.textContent = translate("Large");
-  document.querySelector("#keyguardToggle").nextElementSibling.textContent = translate("Keyguard");
-  document.querySelector("#contrastToggle").nextElementSibling.textContent = translate("Contrast");
+  elements.childModeToggle.nextElementSibling.textContent = translate("Child Mode");
+  elements.largeToggle.nextElementSibling.textContent = translate("Large");
+  elements.keyguardToggle.nextElementSibling.textContent = translate("Keyguard");
+  elements.contrastToggle.nextElementSibling.textContent = translate("Contrast");
 
   setSelectLabels(elements.levelSelect, [
     ["beginner", "Beginner"],
@@ -1201,6 +1381,7 @@ function renderStaticText() {
     folder.querySelector("strong").textContent = translate(folder.dataset.category);
     folder.setAttribute("aria-label", translate(folder.dataset.category));
   });
+  updateFolderVisibility();
   document.querySelectorAll(".tab").forEach((tab) => {
     tab.textContent = translate(tab.dataset.mode === "qwerty" ? "QWERTY" : tab.textContent);
     if (tab.dataset.mode === "symbols") tab.textContent = translate("Symbols");
@@ -1232,10 +1413,10 @@ function renderContentSections() {
     [".feature-grid article:nth-child(4) p", "Pronouns are yellow, verbs green, nouns orange, descriptors blue, and social words pink."],
     [".voice-band .eyebrow", "Voices and languages"],
     [".voice-band h2", "Communication can sound like the person using it."],
-    [".voice-band p:not(.eyebrow)", "Samy supports child, teen, and adult voice choices across English, Arabic, French, and Dutch, including bilingual sentences when families use more than one language."],
-    [".voice-stack button:nth-child(1)", "Child voice"],
-    [".voice-stack button:nth-child(2)", "Adult voice"],
-    [".voice-stack button:nth-child(3)", "Bilingual sentence"],
+    [".voice-band p:not(.eyebrow)", "Samy supports clear woman and man voice profiles across English, Arabic, French, and Dutch, including bilingual sentences when families use more than one language."],
+    [".voice-stack button:nth-child(1)", "Woman voice"],
+    [".voice-stack button:nth-child(2)", "Man voice"],
+    [".voice-stack button:nth-child(3)", "Arabic sentence"],
     [".access-band .eyebrow", "Access for more bodies and brains"],
     [".access-band h2", "Built for early communication, motor access, and literacy."],
     [".access-list article:nth-child(1) strong", "Switch access"],
@@ -1261,10 +1442,23 @@ function renderContentSections() {
   });
 }
 
-function wordObject(item) {
+function wordObject(item, category = "Core", position = 0) {
   const [symbol, label, type, level, symbolId] = item;
   const stableSymbolId = symbolId || String(label).toLowerCase().replace(/\s+/g, "-");
-  return { symbol: resolveSymbol(symbol, stableSymbolId), symbolId: stableSymbolId, label, type, level };
+  return {
+    id: `${category}:${stableSymbolId}`,
+    arabicLabel: translations.ar?.[label] || translations.ar?.[String(label).toLowerCase()] || label,
+    englishKey: label,
+    category,
+    symbol: resolveSymbol(symbol, stableSymbolId),
+    colorType: type,
+    isCore: category === "Core",
+    position,
+    symbolId: stableSymbolId,
+    label,
+    type,
+    level
+  };
 }
 
 function resolveSymbol(fallbackSymbol, symbolId) {
@@ -1275,22 +1469,28 @@ function getLevelMax() {
   return levelOrder[state.level];
 }
 
+function itemLevel(item) {
+  return Array.isArray(item) ? item[3] : item.level;
+}
+
 function isVisibleAtLevel(item) {
-  return levelOrder[item[3]] <= getLevelMax();
+  return levelOrder[itemLevel(item)] <= getLevelMax();
 }
 
 function getBoardLayout() {
   const [columns, totalSlots] = gridSizes[state.grid] || gridSizes["4x4"];
   const fringeRows = fringeRowsByLevel[state.level] || 1;
-  const fringeSlots = Math.min(columns * fringeRows, Math.max(0, totalSlots - columns));
-  return { columns, fringeSlots, coreSlots: Math.max(columns, totalSlots - fringeSlots) };
+  const requestedFringeSlots = Math.min(columns * fringeRows, Math.max(0, totalSlots - columns));
+  const coreSlots = Math.max(stableCoreSlots, columns, totalSlots - requestedFringeSlots);
+  const fringeSlots = Math.max(0, totalSlots - coreSlots);
+  return { columns, fringeSlots, coreSlots };
 }
 
 function getFringeWords() {
   if (state.category === "Core") return [];
   const maxLevel = levelOrder[state.level];
   const categoryWords = (vocabulary[state.category] || []).filter((item) => {
-    return levelOrder[item[3]] <= maxLevel && !coreLabelSet.has(item[1]);
+    return levelOrder[item[3]] <= maxLevel && !stableCoreKeySet.has(item[1]);
   });
   const seen = new Set();
   return categoryWords
@@ -1299,8 +1499,30 @@ function getFringeWords() {
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
-    })
-    .map(wordObject);
+    });
+}
+
+function updateFolderVisibility() {
+  let activeFolderHidden = false;
+  document.querySelectorAll(".folder").forEach((folder) => {
+    const minimumLevel = folder.dataset.minLevel || "beginner";
+    const isVisible = levelOrder[minimumLevel] <= getLevelMax();
+    folder.hidden = !isVisible;
+    if (!isVisible && folder.dataset.category === state.category) activeFolderHidden = true;
+  });
+  if (activeFolderHidden) state.category = "Core";
+  document.querySelectorAll(".folder").forEach((folder) => {
+    folder.classList.toggle("active", folder.dataset.category === state.category);
+  });
+}
+
+function selectCategory(category) {
+  if (!vocabulary[category]) return;
+  const folder = document.querySelector(`.folder[data-category="${category}"]`);
+  if (folder?.hidden) return;
+  state.category = category;
+  updateFolderVisibility();
+  renderWords();
 }
 
 function renderSlots(items, count, options = {}) {
@@ -1308,7 +1530,8 @@ function renderSlots(items, count, options = {}) {
     const item = items[index];
     if (!item) return renderSpacer();
     if (options.keepHiddenSlots && !isVisibleAtLevel(item)) return renderSpacer();
-    return renderWordButton(wordObject(item));
+    const word = Array.isArray(item) ? wordObject(item, options.category, index) : { ...item, position: item.position ?? index };
+    return renderWordButton(word);
   }).join("");
 }
 
@@ -1322,8 +1545,8 @@ function renderWords() {
   elements.wordGrid.style.setProperty("--cols", columns);
   elements.wordGrid.style.setProperty("--fringe-cols", columns);
   elements.wordGrid.innerHTML = `
-    <div class="fringe-grid">${renderSlots(fringeWords.map((word) => [word.symbol, word.label, word.type, word.level, word.symbolId]), fringeSlots)}</div>
-    <div class="core-grid">${renderSlots(vocabulary.Core, coreSlots, { keepHiddenSlots: true })}</div>
+    <div class="fringe-grid">${renderSlots(fringeWords, fringeSlots, { category: state.category })}</div>
+    <div class="core-grid">${renderSlots(vocabulary.Core, coreSlots, { keepHiddenSlots: true, category: "Core" })}</div>
   `;
   elements.categoryTitle.textContent = translate(folderTitles[state.category]);
   elements.categoryEyebrow.textContent = folderEyebrow(state.category);
@@ -1334,7 +1557,7 @@ function renderWordButton(word) {
     ? `<img src="${word.symbol}" alt="" />`
     : word.symbol;
   return `
-    <button class="word-button ${word.type}" type="button" data-word="${escapeHtml(word.label)}" data-symbol="${escapeHtml(word.symbol)}" data-symbol-id="${escapeHtml(word.symbolId)}" aria-label="${escapeHtml(translate(word.label))}">
+    <button class="word-button ${word.colorType || word.type}" type="button" data-id="${escapeHtml(word.id)}" data-word="${escapeHtml(word.label)}" data-english-key="${escapeHtml(word.englishKey)}" data-arabic-label="${escapeHtml(word.arabicLabel)}" data-category="${escapeHtml(word.category)}" data-core="${word.isCore ? "true" : "false"}" data-position="${word.position}" data-symbol="${escapeHtml(word.symbol)}" data-symbol-id="${escapeHtml(word.symbolId)}" aria-label="${escapeHtml(translate(word.label))}">
       <span class="corner" aria-hidden="true"></span>
       <span class="symbol" aria-hidden="true">${image}</span>
       <span class="label">${escapeHtml(translate(word.label))}</span>
@@ -1356,6 +1579,7 @@ function renderMessage() {
     })
     .join("");
   elements.messageContent.scrollLeft = elements.messageContent.scrollWidth;
+  if (document.documentElement.dir === "rtl") elements.messageContent.scrollLeft = 0;
 }
 
 function renderKeyboard(mode = state.mode) {
@@ -1381,7 +1605,7 @@ function renderPredictions() {
 
 function renderPersonalWords() {
   elements.personalList.innerHTML = state.personalWords
-    .map(wordObject)
+    .map((item, index) => wordObject(item, "Favorites", index))
     .map((word, index) => renderFavoriteButton(word, index))
     .join("");
 }
@@ -1437,7 +1661,7 @@ function getSpeechText(label) {
 
 function createSpeechUtterance(text, mode = "word") {
   const utterance = new SpeechSynthesisUtterance(text);
-  const profile = voiceProfiles[state.voiceProfile] || voiceProfiles.boy;
+  const profile = voiceProfiles[state.voiceProfile] || voiceProfiles.woman;
   const voice = resolveSelectedVoice();
   const tuning = getSpeechTuning(profile);
   utterance.volume = 1;
@@ -1489,7 +1713,7 @@ function chooseVoiceForProfile() {
   if (!state.voices.length) return null;
   const base = languageBase();
   const exactLanguage = state.language.toLowerCase();
-  const profile = voiceProfiles[state.voiceProfile] || voiceProfiles.boy;
+  const profile = voiceProfiles[state.voiceProfile] || voiceProfiles.woman;
   const candidates = state.voices.filter((voice) => {
     const name = voice.name.toLowerCase();
     return voice.lang.toLowerCase().startsWith(base) && !unclearVoiceNames.test(name);
@@ -1561,6 +1785,13 @@ function warmSelectedVoice() {
 
   warmupPending = true;
   window.speechSynthesis.speak(utterance);
+}
+
+function updateModeChrome() {
+  const editMode = Boolean(elements.controlStrip.open && !state.childMode);
+  document.body.classList.toggle("child-mode", state.childMode);
+  document.body.classList.toggle("edit-mode", editMode);
+  document.body.classList.toggle("large-mode", state.childMode || elements.largeToggle.checked);
 }
 
 function setMode(mode) {
@@ -1638,9 +1869,7 @@ document.addEventListener("click", (event) => {
 
   const folder = event.target.closest(".folder");
   if (folder) {
-    state.category = folder.dataset.category;
-    document.querySelectorAll(".folder").forEach((item) => item.classList.toggle("active", item === folder));
-    renderWords();
+    selectCategory(folder.dataset.category);
     return;
   }
 
@@ -1676,11 +1905,12 @@ document.querySelector("#clearButton").addEventListener("click", () => {
   renderMessage();
 });
 document.querySelector("#backspaceButton").addEventListener("click", () => {
+  stopSpeech();
   state.message.pop();
   renderMessage();
 });
 document.querySelector("#homeButton").addEventListener("click", () => {
-  document.querySelector('[data-category="Core"]').click();
+  selectCategory("Core");
 });
 document.querySelector("#addTypedButton").addEventListener("click", () => {
   addWord(elements.typedInput.value, "⌨");
@@ -1698,6 +1928,7 @@ elements.levelSelect.addEventListener("change", (event) => {
   state.level = event.target.value;
   state.grid = levelGridDefaults[state.level] || state.grid;
   elements.gridSelect.value = state.grid;
+  updateFolderVisibility();
   renderWords();
 });
 elements.gridSelect.addEventListener("change", (event) => {
@@ -1706,7 +1937,6 @@ elements.gridSelect.addEventListener("change", (event) => {
 });
 elements.languageSelect.addEventListener("change", (event) => {
   state.language = event.target.value;
-  document.documentElement.dir = state.language === "ar" ? "rtl" : "ltr";
   renderStaticText();
   populateVoices();
   renderWords();
@@ -1716,7 +1946,7 @@ elements.languageSelect.addEventListener("change", (event) => {
   renderPersonalWords();
 });
 elements.voiceSelect.addEventListener("change", (event) => {
-  state.voiceProfile = voiceProfiles[event.target.value] ? event.target.value : "boy";
+  state.voiceProfile = voiceProfiles[event.target.value] ? event.target.value : "woman";
   saveVoiceProfile();
   state.selectedVoiceURI = resolveSelectedVoice()?.voiceURI || "";
   warmSelectedVoice();
@@ -1729,13 +1959,17 @@ elements.typedInput.addEventListener("keydown", (event) => {
     renderPredictions();
   }
 });
-document.querySelector("#largeToggle").addEventListener("change", (event) => {
-  document.body.classList.toggle("large-mode", event.target.checked);
+elements.childModeToggle.addEventListener("change", (event) => {
+  state.childMode = event.target.checked;
+  if (state.childMode) elements.controlStrip.open = false;
+  updateModeChrome();
 });
-document.querySelector("#keyguardToggle").addEventListener("change", (event) => {
+elements.controlStrip.addEventListener("toggle", updateModeChrome);
+elements.largeToggle.addEventListener("change", updateModeChrome);
+elements.keyguardToggle.addEventListener("change", (event) => {
   document.body.classList.toggle("keyguard-mode", event.target.checked);
 });
-document.querySelector("#contrastToggle").addEventListener("change", (event) => {
+elements.contrastToggle.addEventListener("change", (event) => {
   document.body.classList.toggle("contrast-mode", event.target.checked);
 });
 
@@ -1752,3 +1986,5 @@ renderMessage();
 renderKeyboard("alphabet");
 renderPredictions();
 renderPersonalWords();
+updateFolderVisibility();
+updateModeChrome();
