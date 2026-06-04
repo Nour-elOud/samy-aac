@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Samy is an AAC communicator for symbols, words, typed text, sentence building, and natural speech."
+    />
+    <title>Samy AAC</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main>
+      <section class="app-stage" aria-label="Samy AAC communicator demo">
+        <header class="site-topbar">
+          <a class="brand" href="#app" aria-label="Samy home">
+            <span class="brand-mark" aria-hidden="true">S</span>
+            <span>
+              <strong>Samy</strong>
+              <small>AAC communicator</small>
+            </span>
+          </a>
+          <nav aria-label="Page sections">
+            <a href="#vocabulary">Vocabulary</a>
+            <a href="#accessibility">Accessibility</a>
+            <a href="#customize">Customize</a>
+          </nav>
+        </header>
+
+        <div class="communicator" id="app">
+          <div class="control-strip" aria-label="Communication settings">
+            <label>
+              <span>Level</span>
+              <select id="levelSelect">
+                <option value="beginner">Beginner</option>
+                <option value="intermediate" selected>Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+            </label>
+            <label>
+              <span>Grid</span>
+              <select id="gridSelect">
+                <option value="3x3">3x3</option>
+                <option value="4x4">4x4</option>
+                <option value="5x5">5x5</option>
+                <option value="6x6" selected>6x6</option>
+                <option value="7x11">7x11</option>
+                <option value="12x12">12x12</option>
+              </select>
+            </label>
+            <label>
+              <span>Language</span>
+              <select id="languageSelect">
+                <option value="en-US" selected>English</option>
+                <option value="ar">Arabic</option>
+                <option value="fr-FR">French</option>
+                <option value="nl-NL">Dutch</option>
+              </select>
+            </label>
+            <label>
+              <span>Voice</span>
+              <select id="voiceSelect">
+                <option>Loading voices</option>
+              </select>
+            </label>
+            <div class="toggle-row">
+              <label class="toggle">
+                <input type="checkbox" id="largeToggle" />
+                <span>Large</span>
+              </label>
+              <label class="toggle">
+                <input type="checkbox" id="keyguardToggle" />
+                <span>Keyguard</span>
+              </label>
+              <label class="toggle">
+                <input type="checkbox" id="contrastToggle" />
+                <span>Contrast</span>
+              </label>
+            </div>
+          </div>
+
+          <section class="message-window" aria-label="Message window">
+            <button class="home-button" type="button" id="homeButton" aria-label="Return to home category">
+              <span aria-hidden="true">⌂</span>
+            </button>
+            <div class="message-content" id="messageContent" aria-live="polite">
+              <span class="placeholder">Tap words or type to build a message</span>
+            </div>
+            <div class="message-actions">
+              <button class="icon-button speak" type="button" id="speakButton" aria-label="Speak message">
+                <span aria-hidden="true">▶</span>
+                <span>Speak</span>
+              </button>
+              <button class="icon-button" type="button" id="backspaceButton" aria-label="Delete last word">⌫</button>
+              <button class="icon-button" type="button" id="clearButton" aria-label="Clear message">×</button>
+            </div>
+          </section>
+
+          <div class="workspace">
+            <aside class="category-rail" aria-label="Vocabulary folders">
+              <button class="folder active" type="button" data-category="Core">
+                <span>●</span>
+                <strong>Core</strong>
+              </button>
+              <button class="folder" type="button" data-category="People"><span>👥</span><strong>People</strong></button>
+              <button class="folder" type="button" data-category="Food"><span>🍕</span><strong>Food</strong></button>
+              <button class="folder" type="button" data-category="Drinks"><span>🥤</span><strong>Drinks</strong></button>
+              <button class="folder" type="button" data-category="Actions"><span>🏃</span><strong>Actions</strong></button>
+              <button class="folder" type="button" data-category="Feelings"><span>😊</span><strong>Feelings</strong></button>
+              <button class="folder" type="button" data-category="Questions"><span>?</span><strong>Questions</strong></button>
+              <button class="folder" type="button" data-category="Places"><span>📍</span><strong>Places</strong></button>
+              <button class="folder" type="button" data-category="Medical"><span>✚</span><strong>Medical</strong></button>
+              <button class="folder" type="button" data-category="Family"><span>🏠</span><strong>Family</strong></button>
+            </aside>
+
+            <section class="board-panel" aria-label="Word board">
+              <div class="board-tabs" role="tablist" aria-label="Input mode">
+                <button class="tab active" type="button" data-mode="symbols">Symbols</button>
+                <button class="tab" type="button" data-mode="alphabet">Alphabet</button>
+                <button class="tab" type="button" data-mode="qwerty">QWERTY</button>
+              </div>
+              <div class="category-header">
+                <div>
+                  <p class="eyebrow" id="categoryEyebrow">Crescendo vocabulary</p>
+                  <h1 id="categoryTitle">Core words for everyday communication</h1>
+                </div>
+                <div class="stats-row" aria-label="Vocabulary statistics">
+                  <span><strong>10k+</strong> fringe words</span>
+                  <span><strong>100+</strong> voices</span>
+                  <span><strong>23</strong> layouts</span>
+                </div>
+              </div>
+              <div class="word-grid" id="wordGrid" aria-label="Symbol word buttons"></div>
+              <div class="keyboard-panel hidden" id="keyboardPanel" aria-label="Typing input">
+                <div class="typed-row">
+                  <input id="typedInput" type="text" autocomplete="off" placeholder="Type a word or sentence" />
+                  <button type="button" class="add-typed" id="addTypedButton">Add</button>
+                </div>
+                <div class="prediction-row" id="predictionRow" aria-label="Word predictions"></div>
+                <div class="letter-grid" id="letterGrid" aria-label="Keyboard"></div>
+              </div>
+            </section>
+
+            <aside class="personal-panel" id="customize" aria-label="Personal vocabulary">
+              <h2>My Words</h2>
+              <p>Personal names, places, photos, and favorites can sit beside core vocabulary.</p>
+              <div class="personal-form">
+                <label>
+                  <span>Word</span>
+                  <input id="customWord" type="text" value="Minecraft" />
+                </label>
+                <label>
+                  <span>Symbol</span>
+                  <input id="customSymbol" type="text" value="🎮" maxlength="4" />
+                </label>
+                <label class="file-picker">
+                  <span>Photo</span>
+                  <input id="customImage" type="file" accept="image/*" />
+                </label>
+                <button type="button" id="addCustomButton">Add button</button>
+              </div>
+              <div class="personal-list" id="personalList"></div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="info-band" id="vocabulary">
+        <div class="section-inner split">
+          <div>
+            <p class="eyebrow">Crescendo vocabulary</p>
+            <h2>Starts with single words, grows into full grammar.</h2>
+          </div>
+          <div class="feature-grid">
+            <article>
+              <strong>Core words</strong>
+              <p>I, you, want, go, stop, help, more, all done, like, do not, can, where, and what.</p>
+            </article>
+            <article>
+              <strong>Fringe words</strong>
+              <p>Personal and specific vocabulary such as pizza, dinosaur, soccer, grandma, Minecraft, and doctor.</p>
+            </article>
+            <article>
+              <strong>Progressive language</strong>
+              <p>Beginner, intermediate, and advanced levels reveal more words as communication skills develop.</p>
+            </article>
+            <article>
+              <strong>Color coding</strong>
+              <p>Pronouns are yellow, verbs green, nouns orange, descriptors blue, and social words pink.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="voice-band">
+        <div class="section-inner voice-layout">
+          <div>
+            <p class="eyebrow">Voices and languages</p>
+            <h2>Communication can sound like the person using it.</h2>
+            <p>
+              Samy supports child, teen, and adult voice choices across English, Arabic, French, and Dutch,
+              including bilingual sentences when families use more than one language.
+            </p>
+          </div>
+          <div class="voice-stack" aria-label="Voice examples">
+            <button type="button" data-demo="I want to play">Child voice</button>
+            <button type="button" data-demo="I need help because I feel tired">Adult voice</button>
+            <button type="button" data-demo="I want pizza maintenant">Bilingual sentence</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="access-band" id="accessibility">
+        <div class="section-inner">
+          <p class="eyebrow">Access for more bodies and brains</p>
+          <h2>Built for early communication, motor access, and literacy.</h2>
+          <div class="access-list">
+            <article>
+              <span>⇥</span>
+              <strong>Switch access</strong>
+              <p>Scanning support helps people select words without direct touch.</p>
+            </article>
+            <article>
+              <span>◐</span>
+              <strong>VoiceOver</strong>
+              <p>Clear labels and focus order support users with visual impairments.</p>
+            </article>
+            <article>
+              <span>▣</span>
+              <strong>Large buttons</strong>
+              <p>Adjustable layouts and bigger targets reduce motor effort.</p>
+            </article>
+            <article>
+              <span>⌗</span>
+              <strong>Keyguards</strong>
+              <p>Physical overlays and generous spacing help prevent accidental taps.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="fit-band">
+        <div class="section-inner fit-layout">
+          <div>
+            <p class="eyebrow">Who Samy supports</p>
+            <h2>Designed for everyday expressive communication.</h2>
+          </div>
+          <ul>
+            <li>Autism</li>
+            <li>Non-speaking autism</li>
+            <li>Down syndrome</li>
+            <li>Emerging communicators</li>
+            <li>Literate AAC users</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+    <script src="/main.js" type="module"></script>
+  </body>
+</html>
