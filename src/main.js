@@ -1144,7 +1144,7 @@ const voiceProfiles = {
     targetGender: "female",
     pitch: 1.12,
     rate: 0.88,
-    keywords: ["samantha", "karen", "moira", "tessa", "ava", "victoria", "allison", "susan", "zoe", "marie", "amélie", "audrey", "aurélie", "denise", "hortense", "sylvie", "ellen", "hoda", "salma", "zariyah", "fatima", "laila", "zeina", "amira", "mariam", "woman", "female"]
+    keywords: ["samantha", "karen", "moira", "tessa", "flo", "ava", "victoria", "allison", "susan", "zoe", "marie", "amélie", "audrey", "aurélie", "denise", "hortense", "sylvie", "ellen", "hoda", "salma", "zariyah", "fatima", "laila", "zeina", "amira", "mariam", "woman", "female"]
   },
   man: {
     label: "Man",
@@ -1191,6 +1191,8 @@ const preferredVoiceNames = {
   },
   "fr-FR": {
     woman: [
+      "Flo (French (France))",
+      "Flo",
       "Microsoft Denise Online (Natural) - French (France)",
       "Microsoft Eloise Online (Natural) - French (France)",
       "Microsoft Sylvie Online (Natural) - French (France)",
@@ -1263,20 +1265,8 @@ const speechLanguageFallbacks = {
 };
 const voiceCache = new Map();
 const warmedVoiceKeys = new Set();
-const audioTtsProfiles = {
-  ar: {
-    language: "ar",
-    label: "Arabic woman"
-  },
-  "fr-FR": {
-    language: "fr-FR",
-    label: "Denise"
-  }
-};
-let audioQueue = Promise.resolve();
-let currentAudio = null;
 let speechRunId = 0;
-let lastAudioSpeech = { key: "", time: 0 };
+let lastSpeech = { key: "", time: 0 };
 const speechSettingsKey = "samy-aac-speech-settings";
 let warmupPending = false;
 
@@ -1796,29 +1786,16 @@ function speak(text = getMessageSpeechText()) {
 function speakAddedWord(label) {
   const phrase = getSpeechText(label);
   if (!phrase) return;
-  if (shouldUseAudioTts()) {
-    speakText(phrase, { interrupt: true, mode: "word" });
-    return;
-  }
-  const chunks = phrase.split(/\s+/).filter(Boolean);
-  (chunks.length ? chunks : [phrase]).forEach((chunk) => {
-    speakText(chunk, { interrupt: false, mode: "word" });
-  });
+  speakText(phrase, { interrupt: true, mode: "word" });
 }
 
 function speakText(text, { interrupt = false, mode = "word" } = {}) {
   const phrase = String(text || "").trim();
   if (!phrase) return;
-  const useAudioTts = shouldUseAudioTts();
 
-  if (useAudioTts && isDuplicateAudioSpeech(phrase, mode)) return;
+  if (mode === "word" && isDuplicateSpeech(phrase, mode)) return;
   if (warmupPending || interrupt) {
-    stopSpeech({ resetDuplicateMemory: !useAudioTts });
-  }
-
-  if (useAudioTts) {
-    audioQueue = playAudioTts(phrase, mode, speechRunId);
-    return;
+    stopSpeech({ resetDuplicateMemory: false });
   }
 
   speakWithSpeechSynthesis(phrase, mode);
@@ -1830,63 +1807,12 @@ function speakWithSpeechSynthesis(text, mode = "word") {
   window.speechSynthesis.speak(utterance);
 }
 
-function shouldUseAudioTts() {
-  return state.voiceProfile === "woman" && Boolean(audioTtsProfiles[state.language]);
-}
-
-function isDuplicateAudioSpeech(text, mode) {
+function isDuplicateSpeech(text, mode) {
   const now = performance.now();
   const key = `${state.language}:${state.voiceProfile}:${mode}:${text}`;
-  const isDuplicate = lastAudioSpeech.key === key && now - lastAudioSpeech.time < 1200;
-  lastAudioSpeech = { key, time: now };
+  const isDuplicate = lastSpeech.key === key && now - lastSpeech.time < 1200;
+  lastSpeech = { key, time: now };
   return isDuplicate;
-}
-
-function queueAudioTts(text, mode, runId) {
-  const phrase = String(text || "").trim();
-  if (!phrase) return;
-  audioQueue = audioQueue
-    .then(() => {
-      if (runId !== speechRunId) return undefined;
-      return playAudioTts(phrase, mode, runId);
-    })
-    .catch(() => {
-      if (runId !== speechRunId) return undefined;
-      return playAudioTts(phrase, mode, runId);
-    });
-}
-
-function playAudioTts(text, mode, runId) {
-  const url = getAudioTtsUrl(text);
-  if (runId !== speechRunId) return Promise.resolve();
-  if (!url) {
-    return Promise.resolve();
-  }
-  return new Promise((resolve) => {
-    const audio = new Audio(url);
-    currentAudio = audio;
-    audio.preload = "auto";
-    audio.volume = 1;
-    audio.onended = () => {
-      if (currentAudio === audio) currentAudio = null;
-      resolve();
-    };
-    audio.onerror = () => {
-      if (currentAudio === audio) currentAudio = null;
-      resolve();
-    };
-    audio.play().catch(() => {
-      if (currentAudio === audio) currentAudio = null;
-      resolve();
-    });
-  });
-}
-
-function getAudioTtsUrl(text) {
-  const profile = audioTtsProfiles[state.language];
-  if (!profile) return "";
-  const query = encodeURIComponent(text.slice(0, 190));
-  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${encodeURIComponent(profile.language)}&q=${query}`;
 }
 
 function getSpeechText(label) {
@@ -1928,14 +1854,8 @@ function getMessageSpeechText() {
 
 function stopSpeech({ resetDuplicateMemory = true } = {}) {
   speechRunId += 1;
-  if (resetDuplicateMemory) lastAudioSpeech = { key: "", time: 0 };
+  if (resetDuplicateMemory) lastSpeech = { key: "", time: 0 };
   if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio.currentTime = 0;
-    currentAudio = null;
-  }
-  audioQueue = Promise.resolve();
   warmupPending = false;
 }
 
@@ -1971,9 +1891,6 @@ function chooseVoiceForProfile() {
     return voice.lang.toLowerCase().startsWith(base) && !unclearVoiceNames.test(name);
   });
   const profileCandidates = filterVoicesForProfile(candidates, profile);
-  if (base === "ar" && profile.targetGender === "female" && candidates.length && !profileCandidates.length) {
-    return null;
-  }
   const fallbackProfileVoices = filterVoicesForProfile(state.voices, profile);
   const pool = profileCandidates.length
     ? profileCandidates
