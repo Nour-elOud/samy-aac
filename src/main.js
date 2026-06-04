@@ -7,6 +7,9 @@ const translations = {
     "Girl": "Girl",
     "Woman": "Woman",
     "Man": "Man",
+    "Favorites": "Favorites",
+    "Delete favorite": "Delete favorite",
+    "Favorite word": "Favorite word",
     mom: "mom",
     dad: "dad"
   },
@@ -62,8 +65,9 @@ const translations = {
     "Keyboard": "لوحة المفاتيح",
     "Space": "مسافة",
     "Personal vocabulary": "المفردات الشخصية",
-    "My Words": "كلماتي",
-    "Personal names, places, photos, and favorites can sit beside core vocabulary.": "يمكن وضع الأسماء والأماكن والصور والمفضلات الشخصية بجانب المفردات الأساسية.",
+    "Favorites": "المفضلة",
+    "Delete favorite": "حذف من المفضلة",
+    "Favorite word": "كلمة مفضلة",
     "Word": "الكلمة",
     "Symbol": "الرمز",
     "Photo": "الصورة",
@@ -98,7 +102,7 @@ const translations = {
     "Core words": "الكلمات الأساسية",
     "I, you, want, go, stop, help, more, all done, like, do not, can, where, and what.": "أنا، أنت، أريد، اذهب، توقف، مساعدة، المزيد، انتهيت، أحب، لا، أستطيع، أين، وماذا.",
     "Fringe words": "الكلمات الخاصة",
-    "Personal and specific vocabulary such as pizza, dinosaur, soccer, grandma, Minecraft, and doctor.": "مفردات شخصية ومحددة مثل بيتزا، ديناصور، كرة قدم، جدتي، ماينكرافت، وطبيب.",
+    "Personal and specific vocabulary such as pizza, dinosaur, soccer, grandma, doctor, and school bus.": "مفردات شخصية ومحددة مثل بيتزا، ديناصور، كرة قدم، جدتي، طبيب، وحافلة المدرسة.",
     "Progressive language": "لغة تدريجية",
     "Beginner, intermediate, and advanced levels reveal more words as communication skills develop.": "تكشف مستويات المبتدئ والمتوسط والمتقدم مزيدا من الكلمات مع تطور مهارات التواصل.",
     "Color coding": "ترميز الألوان",
@@ -154,7 +158,6 @@ const translations = {
     "stay home": "أبقى في المنزل",
     "feel tired": "أشعر بالتعب",
     "I would rather": "أفضل",
-    "make sentence": "تكوين جملة",
     girl: "بنت",
     boy: "ولد",
     we: "نحن",
@@ -209,6 +212,22 @@ const translations = {
     how: "كيف",
     yes: "نعم",
     no: "لا",
+    hi: "مرحبا",
+    bye: "وداعا",
+    please: "من فضلك",
+    thanks: "شكرا",
+    again: "مرة أخرى",
+    finished: "انتهى",
+    open: "افتح",
+    close: "أغلق",
+    am: "أكون",
+    is: "يكون",
+    are: "يكونون",
+    my: "لي",
+    your: "لك",
+    in: "في",
+    on: "على",
+    with: "مع",
     home: "المنزل",
     school: "المدرسة",
     park: "الحديقة",
@@ -218,6 +237,10 @@ const translations = {
     bus: "الحافلة",
     pool: "المسبح",
     hurt: "ألم",
+    pain: "ألم",
+    bathroom: "الحمام",
+    hungry: "جائع",
+    thirsty: "عطشان",
     medicine: "دواء",
     fever: "حرارة",
     headache: "صداع",
@@ -232,8 +255,6 @@ const translations = {
     baby: "طفل",
     dog: "كلب",
     cat: "قطة",
-    Minecraft: "ماينكرافت",
-    Roblox: "روبلوكس",
     "school bus": "حافلة المدرسة",
     "I want": "أريد",
     "I need": "أحتاج"
@@ -270,8 +291,9 @@ const translations = {
     "Type a word or sentence": "Tapez un mot ou une phrase",
     "Add": "Ajouter",
     "Space": "Espace",
-    "My Words": "Mes mots",
-    "Personal names, places, photos, and favorites can sit beside core vocabulary.": "Les noms, lieux, photos et favoris personnels peuvent rester à côté du vocabulaire de base.",
+    "Favorites": "Favoris",
+    "Delete favorite": "Supprimer le favori",
+    "Favorite word": "Mot favori",
     "Word": "Mot",
     "Symbol": "Symbole",
     "Photo": "Photo",
@@ -310,7 +332,7 @@ const translations = {
     "Core words": "Mots de base",
     "I, you, want, go, stop, help, more, all done, like, do not, can, where, and what.": "je, tu, veux, aller, stop, aide, encore, fini, aime, ne pas, peux, où et quoi.",
     "Fringe words": "Mots spécifiques",
-    "Personal and specific vocabulary such as pizza, dinosaur, soccer, grandma, Minecraft, and doctor.": "Vocabulaire personnel et précis comme pizza, dinosaure, football, mamie, Minecraft et docteur.",
+    "Personal and specific vocabulary such as pizza, dinosaur, soccer, grandma, doctor, and school bus.": "Vocabulaire personnel et précis comme pizza, dinosaure, football, mamie, docteur et bus scolaire.",
     "Progressive language": "Langage progressif",
     "Beginner, intermediate, and advanced levels reveal more words as communication skills develop.": "Les niveaux débutant, intermédiaire et avancé révèlent plus de mots à mesure que les compétences de communication progressent.",
     "Color coding": "Codage couleur",
@@ -365,7 +387,6 @@ const translations = {
     "stay home": "rester à la maison",
     "feel tired": "me sens fatigué",
     "I would rather": "je préférerais",
-    "make sentence": "faire une phrase",
     girl: "fille",
     boy: "garçon",
     we: "nous",
@@ -420,6 +441,22 @@ const translations = {
     how: "comment",
     yes: "oui",
     no: "non",
+    hi: "salut",
+    bye: "au revoir",
+    please: "s'il te plaît",
+    thanks: "merci",
+    again: "encore",
+    finished: "terminé",
+    open: "ouvrir",
+    close: "fermer",
+    am: "suis",
+    is: "est",
+    are: "sont",
+    my: "mon",
+    your: "ton",
+    in: "dans",
+    on: "sur",
+    with: "avec",
     home: "maison",
     school: "école",
     park: "parc",
@@ -429,6 +466,10 @@ const translations = {
     bus: "bus",
     pool: "piscine",
     hurt: "douleur",
+    pain: "douleur",
+    bathroom: "toilettes",
+    hungry: "faim",
+    thirsty: "soif",
     medicine: "médicament",
     fever: "fièvre",
     headache: "mal de tête",
@@ -443,8 +484,6 @@ const translations = {
     baby: "bébé",
     dog: "chien",
     cat: "chat",
-    Minecraft: "Minecraft",
-    Roblox: "Roblox",
     "school bus": "bus scolaire",
     "I want": "je veux",
     "I need": "j'ai besoin"
@@ -481,8 +520,9 @@ const translations = {
     "Type a word or sentence": "Typ een woord of zin",
     "Add": "Toevoegen",
     "Space": "Spatie",
-    "My Words": "Mijn woorden",
-    "Personal names, places, photos, and favorites can sit beside core vocabulary.": "Persoonlijke namen, plaatsen, foto's en favorieten kunnen naast de kernwoordenschat staan.",
+    "Favorites": "Favorieten",
+    "Delete favorite": "Favoriet verwijderen",
+    "Favorite word": "Favoriet woord",
     "Word": "Woord",
     "Symbol": "Symbool",
     "Photo": "Foto",
@@ -521,7 +561,7 @@ const translations = {
     "Core words": "Kernwoorden",
     "I, you, want, go, stop, help, more, all done, like, do not, can, where, and what.": "ik, jij, wil, gaan, stop, help, meer, klaar, leuk, niet, kan, waar en wat.",
     "Fringe words": "Specifieke woorden",
-    "Personal and specific vocabulary such as pizza, dinosaur, soccer, grandma, Minecraft, and doctor.": "Persoonlijke en specifieke woorden zoals pizza, dinosaurus, voetbal, oma, Minecraft en dokter.",
+    "Personal and specific vocabulary such as pizza, dinosaur, soccer, grandma, doctor, and school bus.": "Persoonlijke en specifieke woorden zoals pizza, dinosaurus, voetbal, oma, dokter en schoolbus.",
     "Progressive language": "Progressieve taal",
     "Beginner, intermediate, and advanced levels reveal more words as communication skills develop.": "Beginner-, gemiddelde en gevorderde niveaus tonen meer woorden naarmate communicatievaardigheden groeien.",
     "Color coding": "Kleurcodering",
@@ -576,7 +616,6 @@ const translations = {
     "stay home": "thuis blijven",
     "feel tired": "voel me moe",
     "I would rather": "ik wil liever",
-    "make sentence": "zin maken",
     girl: "meisje",
     boy: "jongen",
     we: "wij",
@@ -631,6 +670,22 @@ const translations = {
     how: "hoe",
     yes: "ja",
     no: "nee",
+    hi: "hoi",
+    bye: "dag",
+    please: "alsjeblieft",
+    thanks: "bedankt",
+    again: "opnieuw",
+    finished: "klaar",
+    open: "open",
+    close: "dicht",
+    am: "ben",
+    is: "is",
+    are: "zijn",
+    my: "mijn",
+    your: "jouw",
+    in: "in",
+    on: "op",
+    with: "met",
     home: "thuis",
     school: "school",
     park: "park",
@@ -640,6 +695,10 @@ const translations = {
     bus: "bus",
     pool: "zwembad",
     hurt: "pijn",
+    pain: "pijn",
+    bathroom: "toilet",
+    hungry: "honger",
+    thirsty: "dorst",
     medicine: "medicijn",
     fever: "koorts",
     headache: "hoofdpijn",
@@ -654,8 +713,6 @@ const translations = {
     baby: "baby",
     dog: "hond",
     cat: "kat",
-    Minecraft: "Minecraft",
-    Roblox: "Roblox",
     "school bus": "schoolbus",
     "I want": "ik wil",
     "I need": "ik heb nodig"
@@ -666,26 +723,48 @@ const vocabulary = {
   Core: [
     ["👦", "I", "pronoun", "beginner"],
     ["🫵", "you", "pronoun", "beginner"],
-    ["🤲", "want", "verb", "intermediate"],
+    ["🤲", "want", "verb", "beginner"],
     ["➡️", "go", "verb", "beginner"],
     ["🛑", "stop", "verb", "beginner"],
     ["🙋", "help", "verb", "beginner"],
     ["➕", "more", "descriptor", "beginner"],
     ["✅", "all done", "social", "beginner"],
+    ["🍽️", "eat", "verb", "beginner"],
+    ["🥤", "drink", "verb", "beginner"],
+    ["👍", "yes", "social", "beginner"],
+    ["👎", "no", "social", "beginner"],
     ["💗", "like", "verb", "intermediate"],
     ["✖️", "don't", "little", "intermediate"],
     ["💪", "can", "little", "intermediate"],
     ["📍", "where", "question", "intermediate"],
     ["❓", "what", "question", "intermediate"],
-    ["🍽️", "eat", "verb", "beginner"],
-    ["🥤", "drink", "verb", "beginner"],
     ["🧰", "need", "verb", "intermediate"],
     ["💬", "because", "little", "intermediate"],
     ["🔵", "different", "descriptor", "intermediate"],
+    ["👋", "hi", "social", "intermediate"],
+    ["👋", "bye", "social", "intermediate"],
+    ["🙏", "please", "social", "intermediate"],
+    ["💛", "thanks", "social", "intermediate"],
+    ["🔁", "again", "verb", "intermediate"],
+    ["🏁", "finished", "social", "intermediate"],
+    ["🔓", "open", "verb", "intermediate"],
+    ["🔒", "close", "verb", "intermediate"],
+    ["🎁", "give", "verb", "intermediate"],
+    ["👀", "look", "verb", "intermediate"],
+    ["=", "am", "little", "advanced"],
+    ["=", "is", "little", "advanced"],
+    ["=", "are", "little", "advanced"],
+    ["🤲", "my", "pronoun", "advanced"],
+    ["🫵", "your", "pronoun", "advanced"],
+    ["📥", "in", "little", "advanced"],
+    ["📌", "on", "little", "advanced"],
+    ["➕", "with", "little", "advanced"],
+    ["👤", "who", "question", "advanced"],
+    ["⏰", "when", "question", "advanced"],
+    ["🤔", "why", "question", "advanced"],
     ["🏠", "stay home", "verb", "advanced"],
     ["😴", "feel tired", "descriptor", "advanced"],
-    ["🗣️", "I would rather", "little", "advanced"],
-    ["🧩", "make sentence", "little", "advanced"]
+    ["🗣️", "I would rather", "little", "advanced"]
   ],
   People: [
     ["👧", "girl", "pronoun", "beginner"],
@@ -772,13 +851,18 @@ const vocabulary = {
     ["🏊", "pool", "noun", "advanced"]
   ],
   Medical: [
-    ["🩹", "hurt", "descriptor", "beginner"],
+    ["🩹", "pain", "descriptor", "beginner"],
+    ["🚻", "bathroom", "noun", "beginner"],
+    ["🍽️", "hungry", "descriptor", "beginner"],
+    ["💧", "thirsty", "descriptor", "beginner"],
+    ["😴", "tired", "descriptor", "beginner"],
+    ["🚑", "emergency", "noun", "beginner"],
+    ["🩹", "hurt", "descriptor", "intermediate"],
     ["🧑‍⚕️", "doctor", "noun", "beginner"],
     ["💊", "medicine", "noun", "intermediate"],
     ["🌡️", "fever", "noun", "intermediate"],
     ["🤕", "headache", "noun", "advanced"],
     ["🫁", "breathe", "verb", "advanced"],
-    ["🚑", "emergency", "noun", "advanced"],
     ["🧘", "break", "noun", "beginner"]
   ],
   Family: [
@@ -815,6 +899,19 @@ const gridSizes = {
   "7x11": [11, 77],
   "12x12": [12, 144]
 };
+const levelGridDefaults = {
+  beginner: "4x4",
+  intermediate: "6x6",
+  advanced: "7x11"
+};
+const fringeRowsByLevel = {
+  beginner: 1,
+  intermediate: 1,
+  advanced: 2
+};
+const coreLabelSet = new Set(vocabulary.Core.map((item) => item[1]));
+const favoriteStorageKey = "samy-aac-favorites";
+const symbolAssets = {};
 
 const predictions = [
   "I want",
@@ -907,19 +1004,15 @@ let warmupPending = false;
 
 const state = {
   category: "Core",
-  level: "intermediate",
-  grid: "6x6",
+  level: "beginner",
+  grid: "4x4",
   language: "en-US",
   mode: "symbols",
   message: [],
   voices: [],
   selectedVoiceURI: "",
   voiceProfile: loadSavedVoiceProfile(),
-  personalWords: [
-    ["🎮", "Minecraft", "noun", "beginner"],
-    ["🧱", "Roblox", "noun", "beginner"],
-    ["🚌", "school bus", "noun", "intermediate"]
-  ]
+  personalWords: loadPersonalWords()
 };
 
 const elements = {
@@ -965,6 +1058,31 @@ function saveVoiceProfile() {
     localStorage.setItem(speechSettingsKey, JSON.stringify({ voiceProfile: state.voiceProfile }));
   } catch {
     // Browser storage is optional; speech still works without it.
+  }
+}
+
+function loadPersonalWords() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(favoriteStorageKey) || "[]");
+    return Array.isArray(saved) ? saved.map(normalizePersonalWord).filter(Boolean) : [];
+  } catch {
+    return [];
+  }
+}
+
+function normalizePersonalWord(item) {
+  if (!Array.isArray(item)) return null;
+  const [symbol, label] = item;
+  const cleanLabel = String(label || "").trim();
+  if (!cleanLabel) return null;
+  return [String(symbol || "⭐"), cleanLabel, "noun", "beginner", `favorite:${cleanLabel.toLowerCase()}`];
+}
+
+function savePersonalWords() {
+  try {
+    localStorage.setItem(favoriteStorageKey, JSON.stringify(state.personalWords));
+  } catch {
+    // Favorites still work for this session if storage is unavailable.
   }
 }
 
@@ -1053,8 +1171,8 @@ function renderStaticText() {
   setText('nav a[href="#accessibility"]', "Accessibility");
   setText('nav a[href="#customize"]', "Customize");
   setText("#speakButton span:last-child", "Speak");
-  setText(".personal-panel h2", "My Words");
-  setText(".personal-panel p", "Personal names, places, photos, and favorites can sit beside core vocabulary.");
+  setText(".control-strip summary", "Customize");
+  setText(".personal-panel h2", "Favorites");
   setText("#addCustomButton", "Add button");
   setText("#addTypedButton", "Add");
 
@@ -1090,6 +1208,8 @@ function renderStaticText() {
   });
 
   elements.typedInput.placeholder = translate("Type a word or sentence");
+  document.querySelector("#customWord").placeholder = translate("Favorite word");
+  document.querySelector("#customSymbol").placeholder = "⭐";
   document.querySelector(".personal-form label:nth-child(1) span").textContent = translate("Word");
   document.querySelector(".personal-form label:nth-child(2) span").textContent = translate("Symbol");
   document.querySelector(".file-picker > span:first-child").textContent = translate("Photo");
@@ -1105,7 +1225,7 @@ function renderContentSections() {
     [".feature-grid article:nth-child(1) strong", "Core words"],
     [".feature-grid article:nth-child(1) p", "I, you, want, go, stop, help, more, all done, like, do not, can, where, and what."],
     [".feature-grid article:nth-child(2) strong", "Fringe words"],
-    [".feature-grid article:nth-child(2) p", "Personal and specific vocabulary such as pizza, dinosaur, soccer, grandma, Minecraft, and doctor."],
+    [".feature-grid article:nth-child(2) p", "Personal and specific vocabulary such as pizza, dinosaur, soccer, grandma, doctor, and school bus."],
     [".feature-grid article:nth-child(3) strong", "Progressive language"],
     [".feature-grid article:nth-child(3) p", "Beginner, intermediate, and advanced levels reveal more words as communication skills develop."],
     [".feature-grid article:nth-child(4) strong", "Color coding"],
@@ -1142,20 +1262,38 @@ function renderContentSections() {
 }
 
 function wordObject(item) {
-  const [symbol, label, type, level] = item;
-  return { symbol, label, type, level };
+  const [symbol, label, type, level, symbolId] = item;
+  const stableSymbolId = symbolId || String(label).toLowerCase().replace(/\s+/g, "-");
+  return { symbol: resolveSymbol(symbol, stableSymbolId), symbolId: stableSymbolId, label, type, level };
 }
 
-function getVisibleWords() {
+function resolveSymbol(fallbackSymbol, symbolId) {
+  return symbolAssets[symbolId]?.src || fallbackSymbol;
+}
+
+function getLevelMax() {
+  return levelOrder[state.level];
+}
+
+function isVisibleAtLevel(item) {
+  return levelOrder[item[3]] <= getLevelMax();
+}
+
+function getBoardLayout() {
+  const [columns, totalSlots] = gridSizes[state.grid] || gridSizes["4x4"];
+  const fringeRows = fringeRowsByLevel[state.level] || 1;
+  const fringeSlots = Math.min(columns * fringeRows, Math.max(0, totalSlots - columns));
+  return { columns, fringeSlots, coreSlots: Math.max(columns, totalSlots - fringeSlots) };
+}
+
+function getFringeWords() {
+  if (state.category === "Core") return [];
   const maxLevel = levelOrder[state.level];
-  const categoryWords = (vocabulary[state.category] || []).filter(
-    (item) => levelOrder[item[3]] <= maxLevel
-  );
-  const coreWords = vocabulary.Core.filter((item) => levelOrder[item[3]] <= maxLevel);
-  const personal = state.personalWords.filter((item) => levelOrder[item[3]] <= maxLevel);
-  const merged = state.category === "Core" ? [...coreWords, ...personal] : [...categoryWords, ...coreWords, ...personal];
+  const categoryWords = (vocabulary[state.category] || []).filter((item) => {
+    return levelOrder[item[3]] <= maxLevel && !coreLabelSet.has(item[1]);
+  });
   const seen = new Set();
-  return merged
+  return categoryWords
     .filter((item) => {
       const key = item[1];
       if (seen.has(key)) return false;
@@ -1165,19 +1303,28 @@ function getVisibleWords() {
     .map(wordObject);
 }
 
-function fitWordsToGrid(words, count) {
-  if (words.length >= count) return words.slice(0, count);
-  const pool = Object.values(vocabulary).flat().map(wordObject);
-  const used = new Set(words.map((word) => word.label));
-  const additions = pool.filter((word) => !used.has(word.label));
-  return [...words, ...additions].slice(0, count);
+function renderSlots(items, count, options = {}) {
+  return Array.from({ length: count }, (_, index) => {
+    const item = items[index];
+    if (!item) return renderSpacer();
+    if (options.keepHiddenSlots && !isVisibleAtLevel(item)) return renderSpacer();
+    return renderWordButton(wordObject(item));
+  }).join("");
+}
+
+function renderSpacer() {
+  return `<div class="word-spacer" aria-hidden="true"></div>`;
 }
 
 function renderWords() {
-  const [columns, count] = gridSizes[state.grid];
-  const words = fitWordsToGrid(getVisibleWords(), count);
+  const { columns, fringeSlots, coreSlots } = getBoardLayout();
+  const fringeWords = getFringeWords();
   elements.wordGrid.style.setProperty("--cols", columns);
-  elements.wordGrid.innerHTML = words.map(renderWordButton).join("");
+  elements.wordGrid.style.setProperty("--fringe-cols", columns);
+  elements.wordGrid.innerHTML = `
+    <div class="fringe-grid">${renderSlots(fringeWords.map((word) => [word.symbol, word.label, word.type, word.level, word.symbolId]), fringeSlots)}</div>
+    <div class="core-grid">${renderSlots(vocabulary.Core, coreSlots, { keepHiddenSlots: true })}</div>
+  `;
   elements.categoryTitle.textContent = translate(folderTitles[state.category]);
   elements.categoryEyebrow.textContent = folderEyebrow(state.category);
 }
@@ -1187,7 +1334,7 @@ function renderWordButton(word) {
     ? `<img src="${word.symbol}" alt="" />`
     : word.symbol;
   return `
-    <button class="word-button ${word.type}" type="button" data-word="${escapeHtml(word.label)}" data-symbol="${escapeHtml(word.symbol)}" aria-label="${escapeHtml(translate(word.label))}">
+    <button class="word-button ${word.type}" type="button" data-word="${escapeHtml(word.label)}" data-symbol="${escapeHtml(word.symbol)}" data-symbol-id="${escapeHtml(word.symbolId)}" aria-label="${escapeHtml(translate(word.label))}">
       <span class="corner" aria-hidden="true"></span>
       <span class="symbol" aria-hidden="true">${image}</span>
       <span class="label">${escapeHtml(translate(word.label))}</span>
@@ -1235,9 +1382,17 @@ function renderPredictions() {
 function renderPersonalWords() {
   elements.personalList.innerHTML = state.personalWords
     .map(wordObject)
-    .slice(-6)
-    .map(renderWordButton)
+    .map((word, index) => renderFavoriteButton(word, index))
     .join("");
+}
+
+function renderFavoriteButton(word, index) {
+  return `
+    <div class="favorite-item">
+      ${renderWordButton(word)}
+      <button class="delete-favorite" type="button" data-delete-favorite="${index}" aria-label="${escapeHtml(translate("Delete favorite"))}">×</button>
+    </div>
+  `;
 }
 
 function addWord(label, symbol = "⌨") {
@@ -1433,16 +1588,30 @@ function addCustomWord() {
   if (file) {
     const reader = new FileReader();
     reader.addEventListener("load", () => {
-      state.personalWords.push([reader.result, label, "noun", "beginner"]);
+      state.personalWords.push([reader.result, label, "noun", "beginner", `favorite:${label.toLowerCase()}`]);
+      savePersonalWords();
+      wordInput.value = "";
+      symbolInput.value = "";
       imageInput.value = "";
+      updateFileStatus();
       renderWords();
       renderPersonalWords();
     });
     reader.readAsDataURL(file);
     return;
   }
-  state.personalWords.push([symbolInput.value.trim() || "⭐", label, "noun", "beginner"]);
+  state.personalWords.push([symbolInput.value.trim() || "⭐", label, "noun", "beginner", `favorite:${label.toLowerCase()}`]);
+  savePersonalWords();
+  wordInput.value = "";
+  symbolInput.value = "";
   renderWords();
+  renderPersonalWords();
+}
+
+function deletePersonalWord(index) {
+  if (!Number.isInteger(index) || index < 0 || index >= state.personalWords.length) return;
+  state.personalWords.splice(index, 1);
+  savePersonalWords();
   renderPersonalWords();
 }
 
@@ -1455,6 +1624,12 @@ function escapeHtml(value) {
 }
 
 document.addEventListener("click", (event) => {
+  const deleteFavorite = event.target.closest("[data-delete-favorite]");
+  if (deleteFavorite) {
+    deletePersonalWord(Number(deleteFavorite.dataset.deleteFavorite));
+    return;
+  }
+
   const wordButton = event.target.closest(".word-button");
   if (wordButton) {
     addWord(wordButton.dataset.word, wordButton.dataset.symbol);
@@ -1521,6 +1696,8 @@ document.querySelectorAll(".voice-stack button").forEach((button) => {
 
 elements.levelSelect.addEventListener("change", (event) => {
   state.level = event.target.value;
+  state.grid = levelGridDefaults[state.level] || state.grid;
+  elements.gridSelect.value = state.grid;
   renderWords();
 });
 elements.gridSelect.addEventListener("change", (event) => {
