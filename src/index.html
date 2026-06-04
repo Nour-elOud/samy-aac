@@ -67,6 +67,14 @@
                   <option>Loading voices</option>
                 </select>
               </label>
+              <label class="advanced-control">
+                <span>Touch delay</span>
+                <select id="touchDelaySelect">
+                  <option value="0" selected>Off</option>
+                  <option value="300">Short</option>
+                  <option value="600">Long</option>
+                </select>
+              </label>
               <div class="toggle-row">
                 <label class="toggle child-toggle">
                   <input type="checkbox" id="childModeToggle" />
@@ -77,12 +85,20 @@
                   <span>Large</span>
                 </label>
                 <label class="toggle advanced-control">
+                  <input type="checkbox" id="extraLargeToggle" />
+                  <span>Extra large</span>
+                </label>
+                <label class="toggle advanced-control">
                   <input type="checkbox" id="keyguardToggle" />
                   <span>Keyguard</span>
                 </label>
                 <label class="toggle advanced-control">
                   <input type="checkbox" id="contrastToggle" />
-                  <span>Contrast</span>
+                  <span>High contrast</span>
+                </label>
+                <label class="toggle advanced-control">
+                  <input type="checkbox" id="auditoryFeedbackToggle" checked />
+                  <span>Auditory feedback</span>
                 </label>
               </div>
             </div>
@@ -142,6 +158,7 @@
                   <span><strong>23</strong> layouts</span>
                 </div>
               </div>
+              <div class="sentence-builder-row" id="sentenceBuilderRow" aria-label="Sentence builder words"></div>
               <div class="word-grid" id="wordGrid" aria-label="Symbol word buttons"></div>
               <div class="keyboard-panel hidden" id="keyboardPanel" aria-label="Typing input">
                 <div class="typed-row">

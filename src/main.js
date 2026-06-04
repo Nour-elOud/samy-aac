@@ -1,3 +1,5 @@
+import { folderTitles, sentenceBuilderVocabulary, stableCoreKeys, vocabulary } from "./vocabulary.js";
+
 const translations = {
   "en-US": {
     "Space": "Space",
@@ -10,6 +12,7 @@ const translations = {
     "Arabic sentence": "Arabic sentence",
     "I want pizza now": "I want pizza now",
     "Child Mode": "Child Mode",
+    "High contrast": "High contrast",
     "Grammar": "Grammar",
     "Time": "Time",
     "Quick Phrases": "Quick Phrases",
@@ -24,7 +27,7 @@ const translations = {
     dad: "dad"
   },
   ar: {
-    "AAC communicator": "جهاز تواصل AAC",
+    "AAC communicator": "جهاز تواصل بديل ومعزز",
     "Vocabulary": "المفردات",
     "Accessibility": "إمكانية الوصول",
     "Customize": "التخصيص",
@@ -46,6 +49,7 @@ const translations = {
     "Large": "كبير",
     "Keyguard": "واقي المفاتيح",
     "Contrast": "تباين",
+    "High contrast": "تباين عال",
     "Tap words or type to build a message": "اضغط الكلمات أو اكتب لبناء رسالة",
     "Speak": "تحدث",
     "Return to home category": "العودة إلى الفئة الرئيسية",
@@ -57,9 +61,16 @@ const translations = {
     "Input mode": "طريقة الإدخال",
     "Symbols": "الرموز",
     "Alphabet": "الأبجدية",
-    "QWERTY": "QWERTY",
+    "QWERTY": "لوحة مفاتيح",
+    "Touch delay": "تأخير اللمس",
+    "Off": "إيقاف",
+    "Short": "قصير",
+    "Long": "طويل",
+    "Extra large": "كبير جداً",
+    "Auditory feedback": "تغذية صوتية",
+    "Sentence builder words": "كلمات بناء الجملة",
     "folder": "مجلد",
-    "Crescendo vocabulary": "مفردات Crescendo",
+    "Crescendo vocabulary": "مفردات أساسية تدريجية",
     "Vocabulary statistics": "إحصاءات المفردات",
     "10k+": "+10 آلاف",
     "100+": "+100",
@@ -129,7 +140,7 @@ const translations = {
     "Progressive language": "لغة تدريجية",
     "Beginner, intermediate, and advanced levels reveal more words as communication skills develop.": "تكشف مستويات المبتدئ والمتوسط والمتقدم مزيدا من الكلمات مع تطور مهارات التواصل.",
     "Color coding": "ترميز الألوان",
-    "Pronouns are yellow, verbs green, nouns orange, descriptors blue, and social words pink.": "الضمائر باللون الأصفر، والأفعال بالأخضر، والأسماء بالبرتقالي، والصفات بالأزرق، والكلمات الاجتماعية بالوردي.",
+    "Pronouns are yellow, verbs green, nouns orange, descriptors blue, questions gray, social words pink, and medical words light blue.": "الضمائر بالأصفر، والأفعال بالأخضر، والأسماء بالبرتقالي، والصفات بالأزرق، والأسئلة بالرمادي، والكلمات الاجتماعية بالوردي، والكلمات الطبية بالأزرق الفاتح.",
     "Voices and languages": "الأصوات واللغات",
     "Communication can sound like the person using it.": "يمكن أن يبدو التواصل بصوت يشبه الشخص الذي يستخدمه.",
     "Samy supports clear woman and man voice profiles across English, Arabic, French, and Dutch, including bilingual sentences when families use more than one language.": "يدعم Samy ملفات صوت واضحة لامرأة ورجل بالإنجليزية والعربية والفرنسية والهولندية، بما في ذلك الجمل ثنائية اللغة عندما تستخدم الأسرة أكثر من لغة.",
@@ -164,7 +175,7 @@ const translations = {
     more: "المزيد",
     "all done": "انتهيت",
     like: "أحب",
-    "don't": "لا",
+    "don't": "لا تفعل",
     can: "أستطيع",
     where: "أين",
     what: "ماذا",
@@ -213,6 +224,7 @@ const translations = {
     see: "أرى",
     write: "أكتب",
     listen: "اسمع",
+    look: "انظر",
     read: "أقرأ",
     wash: "أغسل",
     sleep: "أنام",
@@ -284,7 +296,7 @@ const translations = {
     store: "المتجر",
     bus: "الحافلة",
     pool: "المسبح",
-    hurt: "ألم",
+    hurt: "يؤلمني",
     pain: "ألم",
     bathroom: "الحمام",
     hungry: "جائع",
@@ -310,6 +322,28 @@ const translations = {
     dad: "أبي",
     grandma: "جدتي",
     grandpa: "جدي",
+    brother: "أخ",
+    sister: "أخت",
+    classroom: "الصف",
+    kitchen: "المطبخ",
+    car: "السيارة",
+    mosque: "المسجد",
+    "stomach hurts": "بطني يؤلمني",
+    "head hurts": "رأسي يؤلمني",
+    "feel cold": "أشعر بالبرد",
+    "feel hot": "أشعر بالحر",
+    "need rest": "أحتاج راحة",
+    "call doctor": "اتصل بالطبيب",
+    "where is it": "أين هو؟",
+    "where is mom": "أين أمي؟",
+    "need break": "أحتاج استراحة",
+    "do not understand": "لا أفهم",
+    "repeat that": "أعد ذلك",
+    "help me": "ساعدني",
+    "I am okay": "أنا بخير",
+    "want play": "أريد اللعب",
+    "want eat": "أريد الأكل",
+    "want drink": "أريد الشرب",
     "cousin Ahmed": "ابن عمي أحمد",
     baby: "طفل",
     dog: "كلب",
@@ -876,223 +910,6 @@ const translations = {
   }
 };
 
-const vocabulary = {
-  Core: [
-    ["👦", "I", "pronoun", "beginner"],
-    ["🫵", "you", "pronoun", "beginner"],
-    ["🤲", "want", "verb", "beginner"],
-    ["➡️", "go", "verb", "beginner"],
-    ["🛑", "stop", "verb", "beginner"],
-    ["🙋", "help", "verb", "beginner"],
-    ["➕", "more", "descriptor", "beginner"],
-    ["✅", "all done", "social", "beginner"],
-    ["🍽️", "eat", "verb", "beginner"],
-    ["🥤", "drink", "verb", "beginner"],
-    ["💗", "like", "verb", "beginner"],
-    ["💪", "can", "little", "beginner"],
-    ["👍", "yes", "social", "beginner"],
-    ["👎", "no", "social", "beginner"],
-    ["🧰", "need", "verb", "intermediate"],
-    ["🔁", "again", "verb", "intermediate"],
-    ["🏁", "finished", "social", "intermediate"],
-    ["🔓", "open", "verb", "intermediate"],
-    ["🔒", "close", "verb", "intermediate"],
-    ["🎁", "give", "verb", "intermediate"],
-    ["👀", "look", "verb", "intermediate"],
-    ["👂", "listen", "verb", "intermediate"],
-    ["🙋", "come", "verb", "intermediate"],
-    ["➕", "want more", "verb", "intermediate"],
-    ["✖️", "do not want", "social", "intermediate"],
-    ["🙏", "please", "social", "intermediate"],
-    ["💛", "thanks", "social", "intermediate"],
-    ["👋", "hi", "social", "intermediate"],
-    ["👋", "bye", "social", "intermediate"],
-    ["✖️", "don't", "little", "advanced"],
-    ["💬", "because", "little", "advanced"],
-    ["🔵", "different", "descriptor", "advanced"],
-    ["🏠", "stay home", "verb", "advanced"],
-    ["😴", "feel tired", "descriptor", "advanced"],
-    ["🗣️", "I would rather", "little", "advanced"]
-  ],
-  People: [
-    ["👧", "girl", "pronoun", "beginner"],
-    ["👦", "boy", "pronoun", "beginner"],
-    ["🧑", "I", "pronoun", "beginner"],
-    ["👫", "we", "pronoun", "intermediate"],
-    ["👨", "he", "pronoun", "intermediate"],
-    ["👩", "she", "pronoun", "intermediate"],
-    ["👥", "they", "pronoun", "intermediate"],
-    ["👩‍🏫", "teacher", "noun", "beginner"],
-    ["🧑‍⚕️", "doctor", "noun", "intermediate"],
-    ["🧑‍🍳", "cook", "noun", "advanced"],
-    ["🧑‍🦽", "friend", "noun", "beginner"],
-    ["🧑‍💻", "therapist", "noun", "advanced"]
-  ],
-  Food: [
-    ["🍕", "pizza", "noun", "beginner"],
-    ["🍎", "apple", "noun", "beginner"],
-    ["🍌", "banana", "noun", "beginner"],
-    ["🥪", "sandwich", "noun", "intermediate"],
-    ["🍚", "rice", "noun", "intermediate"],
-    ["🍝", "pasta", "noun", "intermediate"],
-    ["🍰", "cake", "noun", "beginner"],
-    ["🍫", "chocolate", "noun", "intermediate"],
-    ["🥣", "cereal", "noun", "advanced"],
-    ["🥕", "carrot", "noun", "advanced"],
-    ["🍟", "fries", "noun", "beginner"],
-    ["🍦", "ice cream", "noun", "beginner"]
-  ],
-  Drinks: [
-    ["💧", "water", "noun", "beginner"],
-    ["🥛", "milk", "noun", "beginner"],
-    ["🧃", "juice", "noun", "beginner"],
-    ["☕", "tea", "noun", "intermediate"],
-    ["🥤", "soda", "noun", "intermediate"],
-    ["🍫", "hot chocolate", "noun", "advanced"],
-    ["🧊", "cold", "descriptor", "intermediate"],
-    ["🔥", "hot", "descriptor", "intermediate"]
-  ],
-  Actions: [
-    ["🍽️", "eat", "verb", "beginner"],
-    ["🥤", "drink", "verb", "beginner"],
-    ["🏃", "run", "verb", "beginner"],
-    ["🎮", "play", "verb", "beginner"],
-    ["👀", "see", "verb", "intermediate"],
-    ["✍️", "write", "verb", "intermediate"],
-    ["👂", "listen", "verb", "intermediate"],
-    ["📖", "read", "verb", "advanced"],
-    ["🧼", "wash", "verb", "advanced"],
-    ["🛌", "sleep", "verb", "beginner"],
-    ["🎁", "give", "verb", "advanced"],
-    ["📦", "put", "verb", "advanced"]
-  ],
-  Feelings: [
-    ["😊", "happy", "descriptor", "beginner"],
-    ["😢", "sad", "descriptor", "beginner"],
-    ["😡", "mad", "descriptor", "beginner"],
-    ["😨", "scared", "descriptor", "intermediate"],
-    ["😴", "tired", "descriptor", "beginner"],
-    ["🤒", "sick", "descriptor", "intermediate"],
-    ["🤩", "excited", "descriptor", "advanced"],
-    ["😌", "calm", "descriptor", "advanced"],
-    ["🫶", "safe", "descriptor", "advanced"],
-    ["🧠", "overwhelmed", "descriptor", "advanced"]
-  ],
-  Questions: [
-    ["❓", "what", "question", "beginner"],
-    ["📍", "where", "question", "beginner"],
-    ["👤", "who", "question", "intermediate"],
-    ["⏰", "when", "question", "intermediate"],
-    ["🤔", "why", "question", "intermediate"],
-    ["🧭", "how", "question", "advanced"],
-    ["؟", "question marker", "question", "intermediate"],
-    ["☝️", "which", "question", "advanced"],
-    ["🔢", "how many", "question", "advanced"]
-  ],
-  Grammar: [
-    ["👨", "he", "pronoun", "beginner"],
-    ["👩", "she", "pronoun", "beginner"],
-    ["👫", "we", "pronoun", "intermediate"],
-    ["👥", "they", "pronoun", "intermediate"],
-    ["↩️", "was", "little", "advanced"],
-    ["=", "is", "little", "intermediate"],
-    ["📥", "in", "little", "intermediate"],
-    ["📌", "on", "little", "intermediate"],
-    ["⬇️", "under", "little", "advanced"],
-    ["➕", "with", "little", "intermediate"],
-    ["➡️", "to", "little", "intermediate"],
-    ["⬅️", "from", "little", "advanced"],
-    ["🤲", "for me", "pronoun", "intermediate"],
-    ["🎒", "have", "verb", "advanced"],
-    ["⭐", "mine", "pronoun", "advanced"],
-    ["👉", "this", "pronoun", "intermediate"],
-    ["👉", "this feminine", "pronoun", "intermediate"],
-    ["👈", "that", "pronoun", "advanced"],
-    ["📍", "there", "little", "advanced"]
-  ],
-  Time: [
-    ["⏱️", "now", "little", "beginner"],
-    ["⏳", "later", "little", "beginner"],
-    ["📅", "today", "noun", "intermediate"],
-    ["↩️", "yesterday", "noun", "intermediate"],
-    ["➡️", "tomorrow", "noun", "intermediate"],
-    ["🌅", "morning", "noun", "intermediate"],
-    ["🌙", "evening", "noun", "intermediate"],
-    ["⬅️", "before", "little", "advanced"],
-    ["➡️", "after", "little", "advanced"],
-    ["✋", "wait", "verb", "beginner"]
-  ],
-  QuickPhrases: [
-    ["🗣️", "I want", "social", "beginner"],
-    ["✖️", "do not want", "social", "beginner"],
-    ["🙋", "want help", "social", "beginner"],
-    ["😴", "I am tired", "descriptor", "beginner"],
-    ["🚻", "want bathroom", "social", "beginner"],
-    ["🏠", "go home", "social", "intermediate"],
-    ["🍽️", "I am hungry", "descriptor", "beginner"],
-    ["💧", "I am thirsty", "descriptor", "beginner"],
-    ["😢", "I am sad", "descriptor", "beginner"],
-    ["😊", "I am happy", "descriptor", "beginner"],
-    ["🛑", "stop please", "social", "intermediate"],
-    ["💛", "thanks", "social", "beginner"],
-    ["🙏", "please", "social", "beginner"]
-  ],
-  Places: [
-    ["🏠", "home", "noun", "beginner"],
-    ["🏫", "school", "noun", "beginner"],
-    ["🛝", "park", "noun", "beginner"],
-    ["🏥", "hospital", "noun", "intermediate"],
-    ["🍽️", "restaurant", "noun", "intermediate"],
-    ["🛒", "store", "noun", "intermediate"],
-    ["🚌", "bus", "noun", "advanced"],
-    ["🏊", "pool", "noun", "advanced"]
-  ],
-  Medical: [
-    ["🩹", "pain", "descriptor", "beginner"],
-    ["🍽️", "hungry", "descriptor", "beginner"],
-    ["💧", "thirsty", "descriptor", "beginner"],
-    ["🚻", "bathroom", "noun", "beginner"],
-    ["😴", "tired", "descriptor", "beginner"],
-    ["🤒", "sick", "descriptor", "beginner"],
-    ["💊", "medicine", "noun", "intermediate"],
-    ["🧑‍⚕️", "doctor", "noun", "beginner"],
-    ["🌡️", "fever", "noun", "intermediate"],
-    ["🚑", "emergency", "noun", "beginner"],
-    ["📍", "pain here", "descriptor", "intermediate"],
-    ["🙋", "need help", "social", "beginner"],
-    ["🩹", "hurt", "descriptor", "intermediate"],
-    ["🤕", "headache", "noun", "advanced"],
-    ["🫁", "breathe", "verb", "advanced"],
-    ["🧘", "break", "noun", "beginner"]
-  ],
-  Family: [
-    ["👩", "mom", "noun", "beginner"],
-    ["👨", "dad", "noun", "beginner"],
-    ["👵", "grandma", "noun", "beginner"],
-    ["👴", "grandpa", "noun", "beginner"],
-    ["🧒", "cousin Ahmed", "noun", "intermediate"],
-    ["👶", "baby", "noun", "intermediate"],
-    ["🐶", "dog", "noun", "advanced"],
-    ["🐱", "cat", "noun", "advanced"]
-  ]
-};
-
-const folderTitles = {
-  Core: "Core words for everyday communication",
-  People: "People, pronouns, names, and roles",
-  Food: "Foods, snacks, and mealtime words",
-  Drinks: "Drinks and temperature words",
-  Actions: "Action words for doing and requesting",
-  Feelings: "Feelings, body state, and self-advocacy",
-  Questions: "Question words for conversation",
-  Grammar: "Grammar words for Arabic sentence building",
-  Time: "Time words for routines and waiting",
-  QuickPhrases: "Quick phrases for urgent everyday messages",
-  Places: "Places for school, home, and community",
-  Medical: "Health words for urgent needs",
-  Family: "Family names and familiar people"
-};
-
 const levelOrder = { beginner: 0, intermediate: 1, advanced: 2 };
 const gridSizes = {
   "3x3": [3, 9],
@@ -1110,9 +927,8 @@ const levelGridDefaults = {
 const fringeRowsByLevel = {
   beginner: 1,
   intermediate: 1,
-  advanced: 2
+  advanced: 3
 };
-const stableCoreKeys = ["I", "you", "want", "go", "stop", "help", "more", "all done", "eat", "drink", "like", "can", "yes", "no"];
 const stableCoreKeySet = new Set(stableCoreKeys);
 const stableCoreSlots = stableCoreKeys.length;
 const favoriteStorageKey = "samy-aac-favorites";
@@ -1266,6 +1082,7 @@ let lastSpeech = { key: "", time: 0 };
 let currentAudio = null;
 const speechSettingsKey = "samy-aac-speech-settings";
 let warmupPending = false;
+let touchDelayTimer = null;
 
 const state = {
   category: "Core",
@@ -1277,6 +1094,8 @@ const state = {
   voices: [],
   selectedVoiceURI: "",
   childMode: false,
+  auditoryFeedback: true,
+  touchDelayMs: 0,
   voiceProfile: loadSavedVoiceProfile(),
   editingPersonalIndex: null,
   personalWords: loadPersonalWords()
@@ -1290,12 +1109,16 @@ const elements = {
   gridSelect: document.querySelector("#gridSelect"),
   languageSelect: document.querySelector("#languageSelect"),
   voiceSelect: document.querySelector("#voiceSelect"),
+  touchDelaySelect: document.querySelector("#touchDelaySelect"),
   childModeToggle: document.querySelector("#childModeToggle"),
   largeToggle: document.querySelector("#largeToggle"),
+  extraLargeToggle: document.querySelector("#extraLargeToggle"),
   keyguardToggle: document.querySelector("#keyguardToggle"),
   contrastToggle: document.querySelector("#contrastToggle"),
+  auditoryFeedbackToggle: document.querySelector("#auditoryFeedbackToggle"),
   categoryTitle: document.querySelector("#categoryTitle"),
   categoryEyebrow: document.querySelector("#categoryEyebrow"),
+  sentenceBuilderRow: document.querySelector("#sentenceBuilderRow"),
   keyboardPanel: document.querySelector("#keyboardPanel"),
   letterGrid: document.querySelector("#letterGrid"),
   predictionRow: document.querySelector("#predictionRow"),
@@ -1365,10 +1188,14 @@ function normalizePersonalWord(item) {
   return {
     symbol: String(symbol || "⭐"),
     label: cleanLabel,
+    englishKey: source.englishKey || cleanLabel,
+    arabicLabel: source.arabicLabel || cleanLabel,
     type: source.type || "noun",
+    colorType: source.colorType || source.type || "noun",
     level: source.level || "beginner",
     id: source.id || `favorite:${cleanCategory}:${cleanLabel.toLowerCase()}`,
-    category: cleanCategory
+    category: cleanCategory,
+    imageUrl: source.imageUrl || ""
   };
 }
 
@@ -1453,6 +1280,7 @@ function renderStaticText() {
   setAria(".board-tabs", "Input mode");
   setAria(".stats-row", "Vocabulary statistics");
   setAria(".word-grid", "Symbol word buttons");
+  setAria(".sentence-builder-row", "Sentence builder words");
   setAria(".keyboard-panel", "Typing input");
   setAria(".prediction-row", "Word predictions");
   setAria(".letter-grid", "Keyboard");
@@ -1477,10 +1305,13 @@ function renderStaticText() {
   document.querySelector("#gridSelect").closest("label").querySelector("span").textContent = translate("Grid");
   document.querySelector("#languageSelect").closest("label").querySelector("span").textContent = translate("Language");
   document.querySelector("#voiceSelect").closest("label").querySelector("span").textContent = translate("Voice");
+  elements.touchDelaySelect.closest("label").querySelector("span").textContent = translate("Touch delay");
   elements.childModeToggle.nextElementSibling.textContent = translate("Child Mode");
   elements.largeToggle.nextElementSibling.textContent = translate("Large");
+  elements.extraLargeToggle.nextElementSibling.textContent = translate("Extra large");
   elements.keyguardToggle.nextElementSibling.textContent = translate("Keyguard");
-  elements.contrastToggle.nextElementSibling.textContent = translate("Contrast");
+  elements.contrastToggle.nextElementSibling.textContent = translate("High contrast");
+  elements.auditoryFeedbackToggle.nextElementSibling.textContent = translate("Auditory feedback");
 
   setSelectLabels(elements.levelSelect, [
     ["beginner", "Beginner"],
@@ -1492,6 +1323,11 @@ function renderStaticText() {
     ["ar", "Arabic"],
     ["fr-FR", "French"],
     ["nl-NL", "Dutch"]
+  ]);
+  setSelectLabels(elements.touchDelaySelect, [
+    ["0", "Off"],
+    ["300", "Short"],
+    ["600", "Long"]
   ]);
   renderVoiceProfileOptions();
 
@@ -1516,6 +1352,7 @@ function renderStaticText() {
   renderStats();
   renderContentSections();
   renderEmojiPalette();
+  renderSentenceBuilderRow();
 }
 
 function renderContentSections() {
@@ -1529,7 +1366,7 @@ function renderContentSections() {
     [".feature-grid article:nth-child(3) strong", "Progressive language"],
     [".feature-grid article:nth-child(3) p", "Beginner, intermediate, and advanced levels reveal more words as communication skills develop."],
     [".feature-grid article:nth-child(4) strong", "Color coding"],
-    [".feature-grid article:nth-child(4) p", "Pronouns are yellow, verbs green, nouns orange, descriptors blue, and social words pink."],
+    [".feature-grid article:nth-child(4) p", "Pronouns are yellow, verbs green, nouns orange, descriptors blue, questions gray, social words pink, and medical words light blue."],
     [".voice-band .eyebrow", "Voices and languages"],
     [".voice-band h2", "Communication can sound like the person using it."],
     [".voice-band p:not(.eyebrow)", "Samy supports clear woman and man voice profiles across English, Arabic, French, and Dutch, including bilingual sentences when families use more than one language."],
@@ -1572,18 +1409,22 @@ function wordObject(item, category = "Core", position = 0) {
         category
       }
     : item;
-  const { symbol, label, type, level } = source;
+  const label = source.label || source.englishKey;
+  const symbol = source.symbol || "⭐";
+  const type = source.type || source.colorType || "noun";
+  const level = source.level || "beginner";
   const itemCategory = source.category || category;
   const symbolId = source.symbolId || source.id;
   const stableSymbolId = symbolId || String(label).toLowerCase().replace(/\s+/g, "-");
   return {
-    id: `${itemCategory}:${stableSymbolId}`,
-    arabicLabel: translations.ar?.[label] || translations.ar?.[String(label).toLowerCase()] || label,
-    englishKey: label,
+    id: source.id || `${itemCategory}:${stableSymbolId}`,
+    arabicLabel: source.arabicLabel || translations.ar?.[label] || translations.ar?.[String(label).toLowerCase()] || label,
+    englishKey: source.englishKey || label,
     category: itemCategory,
     symbol: resolveSymbol(symbol, stableSymbolId),
+    imageUrl: source.imageUrl || "",
     colorType: type,
-    isCore: itemCategory === "Core",
+    isCore: source.isCore ?? itemCategory === "Core",
     position,
     symbolId: stableSymbolId,
     label,
@@ -1596,6 +1437,11 @@ function wordObject(item, category = "Core", position = 0) {
 
 function resolveSymbol(fallbackSymbol, symbolId) {
   return symbolAssets[symbolId]?.src || fallbackSymbol;
+}
+
+function getDisplayLabel(word) {
+  if (state.language === "ar" && word?.arabicLabel) return word.arabicLabel;
+  return translate(word?.label || word?.englishKey || "");
 }
 
 function getLevelMax() {
@@ -1623,7 +1469,8 @@ function getFringeWords() {
   if (state.category === "Core") return [];
   const maxLevel = levelOrder[state.level];
   const builtInWords = (vocabulary[state.category] || []).filter((item) => {
-    return levelOrder[item[3]] <= maxLevel && !stableCoreKeySet.has(item[1]);
+    const key = getItemEnglishKey(item);
+    return levelOrder[itemLevel(item)] <= maxLevel && !stableCoreKeySet.has(key);
   });
   const personalWords = state.personalWords
     .map((item, favoriteIndex) => ({ ...item, favoriteIndex, custom: true }))
@@ -1632,11 +1479,16 @@ function getFringeWords() {
   const seen = new Set();
   return categoryWords
     .filter((item) => {
-      const key = Array.isArray(item) ? item[1] : item.id || item.label;
+      const key = getItemEnglishKey(item) || item.id;
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
     });
+}
+
+function getItemEnglishKey(item) {
+  if (Array.isArray(item)) return item[1];
+  return item.englishKey || item.label;
 }
 
 function updateFolderVisibility() {
@@ -1690,17 +1542,32 @@ function renderWords() {
 }
 
 function renderWordButton(word) {
-  const image = word.symbol.startsWith("data:")
-    ? `<img src="${word.symbol}" alt="" />`
-    : word.symbol;
+  const image = getSymbolMarkup(word);
   const favoriteIndex = Number.isInteger(word.favoriteIndex) ? ` data-favorite-index="${word.favoriteIndex}"` : "";
   return `
-    <button class="word-button ${word.colorType || word.type}" type="button" data-id="${escapeHtml(word.id)}" data-word="${escapeHtml(word.label)}" data-english-key="${escapeHtml(word.englishKey)}" data-arabic-label="${escapeHtml(word.arabicLabel)}" data-category="${escapeHtml(word.category)}" data-core="${word.isCore ? "true" : "false"}" data-custom="${word.custom ? "true" : "false"}"${favoriteIndex} data-position="${word.position}" data-symbol="${escapeHtml(word.symbol)}" data-symbol-id="${escapeHtml(word.symbolId)}" aria-label="${escapeHtml(translate(word.label))}">
+    <button class="word-button ${word.colorType || word.type}" type="button" data-id="${escapeHtml(word.id)}" data-word="${escapeHtml(word.label)}" data-english-key="${escapeHtml(word.englishKey)}" data-arabic-label="${escapeHtml(word.arabicLabel)}" data-category="${escapeHtml(word.category)}" data-core="${word.isCore ? "true" : "false"}" data-custom="${word.custom ? "true" : "false"}"${favoriteIndex} data-position="${word.position}" data-symbol="${escapeHtml(word.symbol)}" data-image-url="${escapeHtml(word.imageUrl)}" data-symbol-id="${escapeHtml(word.symbolId)}" aria-label="${escapeHtml(getDisplayLabel(word))}">
       <span class="corner" aria-hidden="true"></span>
       <span class="symbol" aria-hidden="true">${image}</span>
-      <span class="label">${escapeHtml(translate(word.label))}</span>
+      <span class="label">${escapeHtml(getDisplayLabel(word))}</span>
     </button>
   `;
+}
+
+function getSymbolMarkup(word) {
+  const imageSource = word.imageUrl || (String(word.symbol).startsWith("data:") ? word.symbol : "");
+  return imageSource ? `<img src="${escapeHtml(imageSource)}" alt="" />` : escapeHtml(word.symbol);
+}
+
+function renderSentenceBuilderRow() {
+  elements.sentenceBuilderRow.innerHTML = sentenceBuilderVocabulary
+    .map((item, index) => wordObject(item, item.category, index))
+    .map((word) => `
+      <button class="sentence-builder-button ${word.colorType || word.type}" type="button" data-word="${escapeHtml(word.label)}" data-symbol="${escapeHtml(word.symbol)}" data-image-url="${escapeHtml(word.imageUrl)}" data-arabic-label="${escapeHtml(word.arabicLabel)}" aria-label="${escapeHtml(getDisplayLabel(word))}">
+        <span class="symbol" aria-hidden="true">${getSymbolMarkup(word)}</span>
+        <span class="label">${escapeHtml(getDisplayLabel(word))}</span>
+      </button>
+    `)
+    .join("");
 }
 
 function renderEditableWordButton(word) {
@@ -1720,14 +1587,20 @@ function renderMessage() {
   }
   elements.messageContent.innerHTML = state.message
     .map((word) => {
-      const symbol = word.symbol?.startsWith("data:")
-        ? `<img src="${word.symbol}" alt="" width="32" height="32" />`
+      const imageSource = word.imageUrl || (word.symbol?.startsWith("data:") ? word.symbol : "");
+      const symbol = imageSource
+        ? `<img src="${escapeHtml(imageSource)}" alt="" width="32" height="32" />`
         : `<span class="token-symbol" aria-hidden="true">${escapeHtml(word.symbol || "⌨")}</span>`;
-      return `<span class="token">${symbol}<span>${escapeHtml(translate(word.label))}</span></span>`;
+      return `<span class="token">${symbol}<span>${escapeHtml(getMessageDisplayLabel(word))}</span></span>`;
     })
     .join("");
   elements.messageContent.scrollLeft = elements.messageContent.scrollWidth;
   if (document.documentElement.dir === "rtl") elements.messageContent.scrollLeft = 0;
+}
+
+function getMessageDisplayLabel(word) {
+  if (state.language === "ar" && word.arabicLabel) return word.arabicLabel;
+  return translate(word.label);
 }
 
 function renderKeyboard(mode = state.mode) {
@@ -1768,20 +1641,27 @@ function renderFavoriteButton(word, index) {
   `;
 }
 
-function addWord(label, symbol = "⌨") {
-  const phrase = label.trim();
+function addWord(label, symbol = "⌨", options = {}) {
+  const phrase = String(label || "").trim();
   if (!phrase) return;
-  state.message.push({ label: phrase, symbol });
+  const word = {
+    label: phrase,
+    symbol,
+    arabicLabel: options.arabicLabel || "",
+    imageUrl: options.imageUrl || ""
+  };
+  state.message.push(word);
   renderMessage();
-  speakAddedWord(label);
+  speakAddedWord(word);
 }
 
 function speak(text = getMessageSpeechText()) {
   speakText(text, { interrupt: true, mode: "sentence" });
 }
 
-function speakAddedWord(label) {
-  const phrase = getSpeechText(label);
+function speakAddedWord(word) {
+  if (!state.auditoryFeedback) return;
+  const phrase = getSpeechTextForWord(word);
   if (!phrase) return;
   speakText(phrase, { interrupt: true, mode: "word" });
 }
@@ -1921,6 +1801,14 @@ function getSpeechText(label) {
   return languageOverrides[label] || languageOverrides[displayText] || displayText;
 }
 
+function getSpeechTextForWord(word) {
+  if (state.language === "ar" && word.arabicLabel) {
+    const languageOverrides = speechTextOverrides.ar || {};
+    return languageOverrides[word.label] || languageOverrides[word.arabicLabel] || word.arabicLabel;
+  }
+  return getSpeechText(word.label);
+}
+
 function createSpeechUtterance(text, mode = "word", options = {}) {
   const utterance = new SpeechSynthesisUtterance(text);
   const profile = voiceProfiles[state.voiceProfile] || voiceProfiles.woman;
@@ -1949,7 +1837,7 @@ function getSpeechTuning(profile) {
 }
 
 function getMessageSpeechText() {
-  return state.message.map((word) => getSpeechText(word.label)).join(" ");
+  return state.message.map((word) => getSpeechTextForWord(word)).join(" ");
 }
 
 function stopSpeech({ resetDuplicateMemory = true } = {}) {
@@ -2120,6 +2008,7 @@ function updateModeChrome() {
   document.body.classList.toggle("child-mode", state.childMode);
   document.body.classList.toggle("edit-mode", editMode);
   document.body.classList.toggle("large-mode", state.childMode || elements.largeToggle.checked);
+  document.body.classList.toggle("extra-large-mode", elements.extraLargeToggle.checked);
 }
 
 function setMode(mode) {
@@ -2182,10 +2071,14 @@ function addCustomWord() {
     const nextWord = {
       symbol,
       label,
+      englishKey: label,
+      arabicLabel: label,
       type: "noun",
+      colorType: "noun",
       level: "beginner",
       id: editingItem?.id || getPersonalWordId(category, label),
-      category
+      category,
+      imageUrl: ""
     };
     if (editingItem) {
       state.personalWords[state.editingPersonalIndex] = nextWord;
@@ -2269,7 +2162,13 @@ document.addEventListener("click", (event) => {
 
   const wordButton = event.target.closest(".word-button");
   if (wordButton) {
-    addWord(wordButton.dataset.word, wordButton.dataset.symbol);
+    queueWordSelection(wordButton);
+    return;
+  }
+
+  const sentenceButton = event.target.closest(".sentence-builder-button");
+  if (sentenceButton) {
+    queueWordSelection(sentenceButton);
     return;
   }
 
@@ -2303,6 +2202,27 @@ document.addEventListener("click", (event) => {
     renderPredictions();
   }
 });
+
+function queueWordSelection(button) {
+  const applySelection = () => {
+    button.classList.remove("pending-touch");
+    addWord(button.dataset.word, button.dataset.symbol, {
+      arabicLabel: button.dataset.arabicLabel,
+      imageUrl: button.dataset.imageUrl
+    });
+  };
+  if (!state.touchDelayMs) {
+    applySelection();
+    return;
+  }
+  if (touchDelayTimer) window.clearTimeout(touchDelayTimer);
+  document.querySelectorAll(".pending-touch").forEach((item) => item.classList.remove("pending-touch"));
+  button.classList.add("pending-touch");
+  touchDelayTimer = window.setTimeout(() => {
+    touchDelayTimer = null;
+    applySelection();
+  }, state.touchDelayMs);
+}
 
 document.querySelector("#speakButton").addEventListener("click", () => speak());
 document.querySelector("#clearButton").addEventListener("click", () => {
@@ -2372,8 +2292,15 @@ elements.childModeToggle.addEventListener("change", (event) => {
   if (state.childMode) elements.controlStrip.open = false;
   updateModeChrome();
 });
+elements.touchDelaySelect.addEventListener("change", (event) => {
+  state.touchDelayMs = Number(event.target.value) || 0;
+});
+elements.auditoryFeedbackToggle.addEventListener("change", (event) => {
+  state.auditoryFeedback = event.target.checked;
+});
 elements.controlStrip.addEventListener("toggle", updateModeChrome);
 elements.largeToggle.addEventListener("change", updateModeChrome);
+elements.extraLargeToggle.addEventListener("change", updateModeChrome);
 elements.keyguardToggle.addEventListener("change", (event) => {
   document.body.classList.toggle("keyguard-mode", event.target.checked);
 });

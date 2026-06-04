@@ -12,6 +12,7 @@
   --pink: #ffb1d8;
   --purple: #d8b6ff;
   --gray: #efeff2;
+  --medical: #d8f3ff;
   --red: #ff7970;
   --tile-min: 108px;
   --gap: 10px;
@@ -163,7 +164,7 @@ a {
 
 .control-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(124px, 1fr));
+  grid-template-columns: repeat(5, minmax(124px, 1fr));
   gap: 8px;
   margin-top: 10px;
   direction: ltr;
@@ -314,7 +315,7 @@ html[dir="rtl"] .toggle {
 
 .workspace {
   display: grid;
-  grid-template-columns: 118px minmax(0, 1fr);
+  grid-template-columns: 118px minmax(0, 1fr) 190px;
   background: #050505;
 }
 
@@ -387,6 +388,44 @@ body.edit-mode .workspace {
 
 .category-header {
   display: none;
+}
+
+.sentence-builder-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  overflow-x: auto;
+  padding-bottom: 3px;
+  direction: rtl;
+}
+
+.sentence-builder-row:empty {
+  display: none;
+}
+
+.sentence-builder-button {
+  display: grid;
+  flex: 0 0 auto;
+  min-width: 74px;
+  min-height: 58px;
+  place-items: center;
+  border: 3px solid var(--tile-border, var(--line));
+  border-radius: 8px;
+  background: var(--tile-bg, #fff);
+  color: var(--ink);
+  padding: 5px 8px;
+  font-weight: 950;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.48);
+}
+
+.sentence-builder-button .symbol {
+  font-size: 1.28rem;
+  line-height: 1;
+}
+
+.sentence-builder-button .label {
+  font-size: 0.9rem;
+  line-height: 1.05;
 }
 
 .eyebrow {
@@ -540,39 +579,59 @@ h2 {
   -webkit-line-clamp: 2;
 }
 
-.word-button.pronoun {
+.word-button.pronoun,
+.sentence-builder-button.pronoun {
   --tile-bg: #fff7a7;
   --tile-border: #f4bd00;
 }
 
-.word-button.verb {
+.word-button.verb,
+.sentence-builder-button.verb {
   --tile-bg: #baf8bd;
   --tile-border: #16a848;
 }
 
-.word-button.noun {
+.word-button.noun,
+.sentence-builder-button.noun {
   --tile-bg: #ffd39d;
   --tile-border: #f18b21;
 }
 
-.word-button.descriptor {
+.word-button.descriptor,
+.sentence-builder-button.descriptor {
   --tile-bg: #c2e9ff;
   --tile-border: #2da8db;
 }
 
-.word-button.social {
+.word-button.social,
+.sentence-builder-button.social {
   --tile-bg: #ffc1df;
   --tile-border: #e4469b;
 }
 
-.word-button.question {
+.word-button.question,
+.sentence-builder-button.question {
   --tile-bg: #eeeeef;
   --tile-border: #242424;
 }
 
-.word-button.little {
+.word-button.medical,
+.sentence-builder-button.medical {
+  --tile-bg: var(--medical);
+  --tile-border: #39a9d6;
+}
+
+.word-button.little,
+.sentence-builder-button.little {
   --tile-bg: #ffe7f2;
   --tile-border: #e4469b;
+}
+
+.word-button.pending-touch,
+.sentence-builder-button.pending-touch {
+  outline: 4px solid #111;
+  outline-offset: 3px;
+  filter: saturate(0.85);
 }
 
 .keyboard-panel {
@@ -642,8 +701,12 @@ h2 {
   background: #fff8ec;
 }
 
-body:not(.edit-mode) .personal-panel,
-body.child-mode .personal-panel {
+body:not(.edit-mode) .personal-form,
+body:not(.edit-mode) .edit-favorite,
+body:not(.edit-mode) .delete-favorite,
+body.child-mode .personal-form,
+body.child-mode .edit-favorite,
+body.child-mode .delete-favorite {
   display: none;
 }
 
@@ -980,6 +1043,10 @@ body.child-mode .inline-delete {
 
 body.large-mode {
   --tile-min: 116px;
+}
+
+body.extra-large-mode {
+  --tile-min: 138px;
 }
 
 body.child-mode {
