@@ -833,31 +833,64 @@ const predictions = [
 const voiceProfiles = {
   boy: {
     label: "Boy",
-    pitch: 1.18,
-    rate: 0.86,
-    keywords: ["boy", "child", "kid", "junior", "young", "aaron", "eddy", "rocko", "sandy"]
+    targetGender: "male",
+    pitch: 1.04,
+    rate: 0.88,
+    keywords: ["aaron", "daniel", "thomas", "jacques", "xander", "majed", "boy", "young"]
   },
   girl: {
     label: "Girl",
-    pitch: 1.22,
-    rate: 0.86,
-    keywords: ["girl", "child", "kid", "junior", "young", "kathy", "flo", "shelley", "sandy"]
+    targetGender: "female",
+    pitch: 1.04,
+    rate: 0.88,
+    keywords: ["samantha", "marie", "ellen", "flo", "shelley", "kathy", "girl", "young"]
   },
   woman: {
     label: "Woman",
+    targetGender: "female",
     pitch: 1,
     rate: 0.9,
-    keywords: ["woman", "female", "samantha", "karen", "moira", "tessa", "martha", "flo", "shelley", "grandma"]
+    keywords: ["samantha", "marie", "ellen", "karen", "moira", "tessa", "martha", "woman", "female"]
   },
   man: {
     label: "Man",
-    pitch: 0.88,
+    targetGender: "male",
+    pitch: 1,
     rate: 0.9,
-    keywords: ["man", "male", "daniel", "arthur", "fred", "ralph", "majed", "tarik", "grandpa"]
+    keywords: ["daniel", "aaron", "thomas", "jacques", "xander", "majed", "arthur", "man", "male"]
   }
 };
 
 const voiceProfileOrder = ["boy", "girl", "woman", "man"];
+const preferredVoiceNames = {
+  "en-US": {
+    boy: ["Aaron", "Nicky", "Eddy (English (United States))"],
+    girl: ["Samantha", "Shelley (English (United States))", "Flo (English (United States))"],
+    woman: ["Samantha", "Karen", "Moira"],
+    man: ["Daniel (English (United Kingdom))", "Aaron", "Arthur"]
+  },
+  ar: {
+    boy: ["Majed"],
+    girl: ["Majed"],
+    woman: ["Majed"],
+    man: ["Majed"]
+  },
+  "fr-FR": {
+    boy: ["Thomas", "Jacques", "Daniel (French (France))"],
+    girl: ["Marie", "Flo (French (France))", "Shelley (French (France))"],
+    woman: ["Marie", "Amélie"],
+    man: ["Thomas", "Jacques", "Daniel (French (France))"]
+  },
+  "nl-NL": {
+    boy: ["Xander"],
+    girl: ["Ellen"],
+    woman: ["Ellen"],
+    man: ["Xander"]
+  }
+};
+const femaleVoiceNames = /^(samantha|karen|moira|tessa|martha|flo|shelley|kathy|nicky|marie|amélie|ellen|grandma)\b/i;
+const maleVoiceNames = /^(daniel|aaron|arthur|fred|ralph|thomas|jacques|xander|majed|grandpa)\b/i;
+const unclearVoiceNames = /(bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|albert|fred|ralph|junior)/i;
 const voiceCache = new Map();
 const warmedVoiceKeys = new Set();
 const speechSettingsKey = "samy-aac-speech-settings";
@@ -1235,14 +1268,29 @@ function speakText(text, { interrupt = false, mode = "word" } = {}) {
 function createSpeechUtterance(text, mode = "word") {
   const utterance = new SpeechSynthesisUtterance(text);
   const profile = voiceProfiles[state.voiceProfile] || voiceProfiles.boy;
-  utterance.lang = state.language;
-  utterance.volume = 1;
-  utterance.rate = mode === "word" ? Math.max(0.78, profile.rate - 0.04) : profile.rate;
-  utterance.pitch = profile.pitch;
-
   const voice = resolveSelectedVoice();
+  const tuning = getSpeechTuning(profile, voice);
+  utterance.volume = 1;
+  utterance.rate = mode === "word" ? Math.max(0.82, tuning.rate - 0.02) : tuning.rate;
+  utterance.pitch = tuning.pitch;
+
+  utterance.lang = voice?.lang || state.language;
   if (voice) utterance.voice = voice;
   return utterance;
+}
+
+function getSpeechTuning(profile, voice) {
+  const lang = (voice?.lang || state.language).toLowerCase();
+  const requestedFemale = profile.targetGender === "female";
+  const requestedMale = profile.targetGender === "male";
+  const mismatchedFemale = requestedFemale && voice && maleVoiceNames.test(voice.name);
+  const mismatchedMale = requestedMale && voice && femaleVoiceNames.test(voice.name);
+
+  if (lang.startsWith("ar") || mismatchedFemale || mismatchedMale) {
+    return { pitch: 1, rate: Math.min(profile.rate, 0.88) };
+  }
+
+  return { pitch: profile.pitch, rate: profile.rate };
 }
 
 function getMessageText() {
@@ -1275,7 +1323,10 @@ function chooseVoiceForProfile() {
   const base = languageBase();
   const exactLanguage = state.language.toLowerCase();
   const profile = voiceProfiles[state.voiceProfile] || voiceProfiles.boy;
-  const candidates = state.voices.filter((voice) => voice.lang.toLowerCase().startsWith(base));
+  const candidates = state.voices.filter((voice) => {
+    const name = voice.name.toLowerCase();
+    return voice.lang.toLowerCase().startsWith(base) && !unclearVoiceNames.test(name);
+  });
   const pool = candidates.length ? candidates : state.voices;
 
   return pool
@@ -1286,22 +1337,44 @@ function chooseVoiceForProfile() {
 function scoreVoice(voice, exactLanguage, base, profile) {
   const name = voice.name.toLowerCase();
   const lang = voice.lang.toLowerCase();
+  const preferredNames = getPreferredVoiceNames();
+  const preferredIndex = preferredNames.findIndex((preferredName) => voiceNameMatches(voice, preferredName));
   let score = 0;
-  if (lang === exactLanguage) score += 100;
-  else if (lang.startsWith(base)) score += 75;
-  if (voice.default) score += 8;
+  if (preferredIndex >= 0) score += 1000 - preferredIndex * 20;
+  if (lang === exactLanguage) score += 180;
+  else if (lang.startsWith(base)) score += 130;
+  if (voice.localService) score += 20;
+  if (voice.default) score += 6;
+  if (unclearVoiceNames.test(name)) score -= 500;
+
   profile.keywords.forEach((keyword, index) => {
-    if (name.includes(keyword)) score += 30 - Math.min(index, 20);
+    if (name.includes(keyword)) score += 22 - Math.min(index, 14);
   });
-  if (profile === voiceProfiles.boy || profile === voiceProfiles.man) {
-    if (/(male|man|boy|junior|daniel|arthur|fred|ralph|majed|tarik|aaron)/i.test(name)) score += 18;
-    if (/(female|woman|girl|samantha|karen|moira|tessa|martha|shelley)/i.test(name)) score -= 10;
+
+  if (profile.targetGender === "male") {
+    if (maleVoiceNames.test(voice.name)) score += 80;
+    if (femaleVoiceNames.test(voice.name)) score -= 140;
   }
-  if (profile === voiceProfiles.girl || profile === voiceProfiles.woman) {
-    if (/(female|woman|girl|samantha|karen|moira|tessa|martha|flo|shelley|kathy)/i.test(name)) score += 18;
-    if (/(male|man|boy|daniel|arthur|fred|ralph|majed|tarik)/i.test(name)) score -= 10;
+  if (profile.targetGender === "female") {
+    if (femaleVoiceNames.test(voice.name)) score += 80;
+    if (maleVoiceNames.test(voice.name)) score -= 140;
   }
   return score;
+}
+
+function getPreferredVoiceNames() {
+  const exact = preferredVoiceNames[state.language]?.[state.voiceProfile];
+  if (exact) return exact;
+  return preferredVoiceNames[languageBase()]?.[state.voiceProfile] || [];
+}
+
+function voiceNameMatches(voice, preferredName) {
+  const normalize = (value) =>
+    String(value)
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  return normalize(voice.name) === normalize(preferredName) || normalize(voice.voiceURI) === normalize(preferredName);
 }
 
 function warmSelectedVoice() {
