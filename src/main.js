@@ -1172,21 +1172,7 @@ const preferredVoiceNames = {
     ]
   },
   ar: {
-    woman: [
-      "Microsoft Hoda Online (Natural) - Arabic (Egypt)",
-      "Microsoft Salma Online (Natural) - Arabic (Egypt)",
-      "Microsoft Zariyah Online (Natural) - Arabic (Saudi Arabia)",
-      "Microsoft Fatima Online (Natural) - Arabic (United Arab Emirates)",
-      "Hoda",
-      "Salma",
-      "Zariyah",
-      "Fatima",
-      "Laila",
-      "Zeina",
-      "Amira",
-      "Mariam",
-      "Google العربية"
-    ],
+    woman: ["Microsoft Hoda Online (Natural) - Arabic (Egypt)", "Hoda"],
     man: ["Majed", "Maged", "Tarik", "Naayf", "Microsoft Hamed Online (Natural) - Arabic (Saudi Arabia)", "Google العربية"]
   },
   "fr-FR": {
@@ -1214,23 +1200,7 @@ const preferredVoiceNames = {
 };
 const reliableVoiceNames = {
   ar: {
-    woman: [
-      "Microsoft Hoda Online (Natural) - Arabic (Egypt)",
-      "Microsoft Salma Online (Natural) - Arabic (Egypt)",
-      "Microsoft Zariyah Online (Natural) - Arabic (Saudi Arabia)",
-      "Microsoft Fatima Online (Natural) - Arabic (United Arab Emirates)",
-      "Hoda",
-      "Salma",
-      "Zariyah",
-      "Fatima",
-      "Laila",
-      "Zeina",
-      "Amira",
-      "Mariam",
-      "Google العربية",
-      "Majed",
-      "Maged"
-    ]
+    woman: ["Microsoft Hoda Online (Natural) - Arabic (Egypt)", "Hoda"]
   },
   "fr-FR": {
     woman: ["Amélie", "Amelie", "Thomas", "Google français"]
@@ -1904,7 +1874,7 @@ function resolveSelectedVoice() {
   const key = `${state.language}:${state.voiceProfile}`;
   const cachedVoiceURI = voiceCache.get(key);
   const cachedVoice = state.voices.find((voice) => voice.voiceURI === cachedVoiceURI);
-  if (cachedVoice) return cachedVoice;
+  if (cachedVoice && !shouldRefreshReliableVoice(cachedVoice)) return cachedVoice;
 
   const voice = chooseVoiceForProfile();
   if (voice) {
@@ -1912,6 +1882,11 @@ function resolveSelectedVoice() {
     state.selectedVoiceURI = voice.voiceURI;
   }
   return voice;
+}
+
+function shouldRefreshReliableVoice(voice) {
+  const reliableNames = reliableVoiceNames[state.language]?.[state.voiceProfile] || [];
+  return reliableNames.length > 0 && !reliableNames.some((name) => voiceNameMatches(voice, name) || voiceNameIncludes(voice, name));
 }
 
 function chooseVoiceForProfile() {
