@@ -1212,6 +1212,14 @@ const preferredVoiceNames = {
     man: ["Xander"]
   }
 };
+const reliableVoiceNames = {
+  ar: {
+    woman: ["Majed", "Maged", "Microsoft Hamed Online (Natural) - Arabic (Saudi Arabia)", "Google العربية"]
+  },
+  "fr-FR": {
+    woman: ["Amélie", "Amelie", "Thomas", "Google français"]
+  }
+};
 const speechTextOverrides = {
   "en-US": {
     I: "eye",
@@ -1801,9 +1809,18 @@ function speakText(text, { interrupt = false, mode = "word" } = {}) {
   speakWithSpeechSynthesis(phrase, mode);
 }
 
-function speakWithSpeechSynthesis(text, mode = "word") {
+function speakWithSpeechSynthesis(text, mode = "word", options = {}) {
   if (!("speechSynthesis" in window)) return;
-  const utterance = createSpeechUtterance(text, mode);
+  const utterance = createSpeechUtterance(text, mode, options);
+  let started = false;
+  utterance.onstart = () => {
+    started = true;
+  };
+  utterance.onerror = () => {
+    if (!started && options.retryWithoutVoice !== false && options.useSelectedVoice !== false) {
+      speakWithSpeechSynthesis(text, mode, { retryWithoutVoice: false, useSelectedVoice: false });
+    }
+  };
   window.speechSynthesis.speak(utterance);
 }
 
@@ -1821,10 +1838,10 @@ function getSpeechText(label) {
   return languageOverrides[label] || languageOverrides[displayText] || displayText;
 }
 
-function createSpeechUtterance(text, mode = "word") {
+function createSpeechUtterance(text, mode = "word", options = {}) {
   const utterance = new SpeechSynthesisUtterance(text);
   const profile = voiceProfiles[state.voiceProfile] || voiceProfiles.woman;
-  const voice = resolveSelectedVoice();
+  const voice = options.useSelectedVoice === false ? null : resolveSelectedVoice();
   const tuning = getSpeechTuning(profile);
   utterance.volume = 1;
   utterance.rate = mode === "word" ? Math.max(0.82, tuning.rate - 0.02) : tuning.rate;
@@ -1890,6 +1907,8 @@ function chooseVoiceForProfile() {
     const name = voice.name.toLowerCase();
     return voice.lang.toLowerCase().startsWith(base) && !unclearVoiceNames.test(name);
   });
+  const reliableVoice = chooseReliableVoice(candidates);
+  if (reliableVoice) return reliableVoice;
   const profileCandidates = filterVoicesForProfile(candidates, profile);
   const fallbackProfileVoices = filterVoicesForProfile(state.voices, profile);
   const pool = profileCandidates.length
@@ -1903,6 +1922,15 @@ function chooseVoiceForProfile() {
   return pool
     .map((voice) => ({ voice, score: scoreVoice(voice, exactLanguage, base, profile) }))
     .sort((a, b) => b.score - a.score)[0]?.voice || null;
+}
+
+function chooseReliableVoice(voices) {
+  const reliableNames = reliableVoiceNames[state.language]?.[state.voiceProfile] || [];
+  for (const reliableName of reliableNames) {
+    const voice = voices.find((candidate) => voiceNameMatches(candidate, reliableName) || voiceNameIncludes(candidate, reliableName));
+    if (voice) return voice;
+  }
+  return null;
 }
 
 function filterVoicesForProfile(voices, profile) {
@@ -1962,6 +1990,15 @@ function voiceNameMatches(voice, preferredName) {
       .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase();
   return normalize(voice.name) === normalize(preferredName) || normalize(voice.voiceURI) === normalize(preferredName);
+}
+
+function voiceNameIncludes(voice, preferredName) {
+  const normalize = (value) =>
+    String(value)
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  return normalize(voice.name).includes(normalize(preferredName)) || normalize(voice.voiceURI).includes(normalize(preferredName));
 }
 
 function warmSelectedVoice() {
