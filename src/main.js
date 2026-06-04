@@ -1214,7 +1214,23 @@ const preferredVoiceNames = {
 };
 const reliableVoiceNames = {
   ar: {
-    woman: ["Majed", "Maged", "Microsoft Hamed Online (Natural) - Arabic (Saudi Arabia)", "Google العربية"]
+    woman: [
+      "Microsoft Hoda Online (Natural) - Arabic (Egypt)",
+      "Microsoft Salma Online (Natural) - Arabic (Egypt)",
+      "Microsoft Zariyah Online (Natural) - Arabic (Saudi Arabia)",
+      "Microsoft Fatima Online (Natural) - Arabic (United Arab Emirates)",
+      "Hoda",
+      "Salma",
+      "Zariyah",
+      "Fatima",
+      "Laila",
+      "Zeina",
+      "Amira",
+      "Mariam",
+      "Google العربية",
+      "Majed",
+      "Maged"
+    ]
   },
   "fr-FR": {
     woman: ["Amélie", "Amelie", "Thomas", "Google français"]
@@ -1854,7 +1870,7 @@ function createSpeechUtterance(text, mode = "word", options = {}) {
 
 function getSpeechTuning(profile) {
   if (state.language === "ar" && state.voiceProfile === "woman") {
-    return { pitch: 1.55, rate: 0.8 };
+    return { pitch: 1.22, rate: 0.82 };
   }
   if (state.language === "en-US" && state.voiceProfile === "man") {
     return { pitch: 0.78, rate: 0.88 };
