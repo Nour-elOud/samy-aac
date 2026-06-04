@@ -2,7 +2,9 @@ const translations = {
   "en-US": {
     "Space": "Space",
     "No photo selected": "No photo selected",
-    "Choose photo": "Choose photo"
+    "Choose photo": "Choose photo",
+    mom: "mom",
+    dad: "dad"
   },
   ar: {
     "AAC communicator": "جهاز تواصل AAC",
