@@ -1259,6 +1259,8 @@ const speechLanguageFallbacks = {
 };
 const voiceCache = new Map();
 const warmedVoiceKeys = new Set();
+const audioFallbackCache = new Map();
+const failedAudioFallbackUrls = new Set();
 let speechRunId = 0;
 let lastSpeech = { key: "", time: 0 };
 let currentAudio = null;
@@ -1827,31 +1829,90 @@ function isDuplicateSpeech(text, mode) {
 
 function shouldUseArabicWomanAudioFallback() {
   if (state.language !== "ar" || state.voiceProfile !== "woman") return false;
-  return !resolveSelectedVoice();
+  return true;
 }
 
 function playArabicWomanAudio(text, runId) {
   if (runId !== speechRunId) return;
+  const sources = getArabicWomanAudioSources(text).filter((url) => !failedAudioFallbackUrls.has(url));
+  playAudioFallbackSources(sources.length ? sources : getArabicWomanAudioSources(text), text, runId);
+}
+
+function getArabicWomanAudioSources(text) {
   const query = encodeURIComponent(text.slice(0, 190));
-  const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ar&q=${query}`);
+  return [
+    `https://translate.googleapis.com/translate_tts?ie=UTF-8&client=gtx&tl=ar&q=${query}`,
+    `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ar&q=${query}`,
+    `https://translate.googleapis.com/translate_tts?ie=UTF-8&client=gtx&tl=ar-EG&q=${query}`,
+    `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ar-EG&q=${query}`
+  ];
+}
+
+function playAudioFallbackSources(sources, text, runId, index = 0) {
+  if (runId !== speechRunId) return;
+  const source = sources[index];
+  if (!source) {
+    speakWithSpeechSynthesis(text, "word", { retryWithoutVoice: false, useSelectedVoice: false });
+    return;
+  }
+  const audio = getCachedAudioFallback(source);
   let started = false;
+  let settled = false;
+  const failTimer = window.setTimeout(() => failToNextSource(), 3200);
   currentAudio = audio;
-  audio.preload = "auto";
   audio.volume = 1;
+  try {
+    audio.pause();
+    audio.currentTime = 0;
+  } catch {
+    // Some browsers refuse currentTime before metadata is ready.
+  }
   audio.onplaying = () => {
     started = true;
+    window.clearTimeout(failTimer);
   };
   audio.onended = () => {
+    settled = true;
+    window.clearTimeout(failTimer);
     if (currentAudio === audio) currentAudio = null;
   };
   audio.onerror = () => {
-    if (currentAudio === audio) currentAudio = null;
-    if (!started && runId === speechRunId) speakWithSpeechSynthesis(text, "word", { retryWithoutVoice: false, useSelectedVoice: false });
+    failToNextSource();
   };
   audio.play().catch(() => {
-    if (currentAudio === audio) currentAudio = null;
-    if (!started && runId === speechRunId) speakWithSpeechSynthesis(text, "word", { retryWithoutVoice: false, useSelectedVoice: false });
+    failToNextSource();
   });
+
+  function failToNextSource() {
+    if (settled) return;
+    settled = true;
+    window.clearTimeout(failTimer);
+    failedAudioFallbackUrls.add(source);
+    audioFallbackCache.delete(source);
+    if (currentAudio === audio) {
+      try {
+        audio.pause();
+      } catch {
+        // Nothing to stop.
+      }
+      currentAudio = null;
+    }
+    if (!started && runId === speechRunId) playAudioFallbackSources(sources, text, runId, index + 1);
+  }
+}
+
+function getCachedAudioFallback(source) {
+  const cached = audioFallbackCache.get(source);
+  if (cached) return cached;
+  const audio = new Audio(source);
+  audio.preload = "auto";
+  audioFallbackCache.set(source, audio);
+  try {
+    audio.load();
+  } catch {
+    // Loading will be retried when play() is called.
+  }
+  return audio;
 }
 
 function getSpeechText(label) {
@@ -2036,6 +2097,7 @@ function voiceNameIncludes(voice, preferredName) {
 
 function warmSelectedVoice() {
   if (!("speechSynthesis" in window) || !state.voices.length) return;
+  if (shouldUseArabicWomanAudioFallback()) return;
   const key = `${state.language}:${state.voiceProfile}`;
   if (warmedVoiceKeys.has(key)) return;
 
