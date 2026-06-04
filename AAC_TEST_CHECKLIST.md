@@ -4,13 +4,14 @@ Use this checklist before publishing changes that touch vocabulary, layout, spee
 
 - Core words stay in the same physical slot across every folder: أنا, أنت, أريد, اذهب, توقف, مساعدة, المزيد, انتهيت, أكل, أشرب, أحب, أستطيع, نعم, لا.
 - Only the top fringe/category section changes when switching folders.
-- The sentence-building row shows أنا, أنت, هو, هي, نحن, كان, يكون, في, على, تحت, مع, إلى, من, هذا, هذه, ذلك.
+- Favorites and category words stay above the fixed core vocabulary; there is no separate sentence-building row.
+- Grammar words remain available through their folders/top category area without moving core buttons.
 - Arabic mode sets the page to RTL and the sentence bar reads Arabic in the order tapped.
 - Speak reads the full selected message as one natural sentence.
 - Tapping a word adds it to the message and speaks that word when auditory feedback is enabled.
 - Delete stops speech and removes only the last word.
 - Clear stops speech and clears the whole message.
-- Child Mode hides editing tools and advanced controls, but keeps favorite buttons visible.
+- Child Mode hides editing tools and advanced controls, but keeps favorite buttons visible in the top category area.
 - Favorites editing appears only in Customize/Edit mode.
 - The الأسئلة folder includes ماذا, أين, من, متى, لماذا, كيف, هل, أي, كم.
 - The الأماكن folder includes المنزل, المدرسة, الصف, المطبخ, الحمام, المستشفى, الحديقة, السيارة, المتجر, المسجد.

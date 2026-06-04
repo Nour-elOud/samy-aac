@@ -80,25 +80,6 @@ export const grammarVocabulary = [
   vocabItem("Grammar", "📍", "there", "هناك", "social", "advanced")
 ];
 
-export const sentenceBuilderVocabulary = [
-  "I",
-  "you",
-  "he",
-  "she",
-  "we",
-  "was",
-  "is",
-  "in",
-  "on",
-  "under",
-  "with",
-  "to",
-  "from",
-  "this",
-  "this feminine",
-  "that"
-].map((key) => grammarVocabulary.find((item) => item.englishKey === key)).filter(Boolean);
-
 export const questionVocabulary = [
   vocabItem("Questions", "❓", "what", "ماذا", "question"),
   vocabItem("Questions", "📍", "where", "أين", "question"),

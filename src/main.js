@@ -1,4 +1,4 @@
-import { folderTitles, sentenceBuilderVocabulary, stableCoreKeys, vocabulary } from "./vocabulary.js";
+import { folderTitles, stableCoreKeys, vocabulary } from "./vocabulary.js";
 
 const translations = {
   "en-US": {
@@ -68,7 +68,6 @@ const translations = {
     "Long": "طويل",
     "Extra large": "كبير جداً",
     "Auditory feedback": "تغذية صوتية",
-    "Sentence builder words": "كلمات بناء الجملة",
     "folder": "مجلد",
     "Crescendo vocabulary": "مفردات أساسية تدريجية",
     "Vocabulary statistics": "إحصاءات المفردات",
@@ -927,7 +926,7 @@ const levelGridDefaults = {
 const fringeRowsByLevel = {
   beginner: 1,
   intermediate: 1,
-  advanced: 3
+  advanced: 2
 };
 const stableCoreKeySet = new Set(stableCoreKeys);
 const stableCoreSlots = stableCoreKeys.length;
@@ -1118,7 +1117,6 @@ const elements = {
   auditoryFeedbackToggle: document.querySelector("#auditoryFeedbackToggle"),
   categoryTitle: document.querySelector("#categoryTitle"),
   categoryEyebrow: document.querySelector("#categoryEyebrow"),
-  sentenceBuilderRow: document.querySelector("#sentenceBuilderRow"),
   keyboardPanel: document.querySelector("#keyboardPanel"),
   letterGrid: document.querySelector("#letterGrid"),
   predictionRow: document.querySelector("#predictionRow"),
@@ -1280,7 +1278,6 @@ function renderStaticText() {
   setAria(".board-tabs", "Input mode");
   setAria(".stats-row", "Vocabulary statistics");
   setAria(".word-grid", "Symbol word buttons");
-  setAria(".sentence-builder-row", "Sentence builder words");
   setAria(".keyboard-panel", "Typing input");
   setAria(".prediction-row", "Word predictions");
   setAria(".letter-grid", "Keyboard");
@@ -1352,7 +1349,6 @@ function renderStaticText() {
   renderStats();
   renderContentSections();
   renderEmojiPalette();
-  renderSentenceBuilderRow();
 }
 
 function renderContentSections() {
@@ -1531,10 +1527,14 @@ function renderSpacer() {
 function renderWords() {
   const { columns, fringeSlots, coreSlots } = getBoardLayout();
   const fringeWords = getFringeWords();
+  const visibleFringeCount = Math.min(fringeWords.length, fringeSlots);
+  const fringeMarkup = visibleFringeCount
+    ? `<div class="fringe-grid">${renderSlots(fringeWords, visibleFringeCount, { category: state.category, editableCustoms: true })}</div>`
+    : "";
   elements.wordGrid.style.setProperty("--cols", columns);
   elements.wordGrid.style.setProperty("--fringe-cols", columns);
   elements.wordGrid.innerHTML = `
-    <div class="fringe-grid">${renderSlots(fringeWords, fringeSlots, { category: state.category, editableCustoms: true })}</div>
+    ${fringeMarkup}
     <div class="core-grid">${renderSlots(vocabulary.Core, coreSlots, { keepHiddenSlots: true, category: "Core" })}</div>
   `;
   elements.categoryTitle.textContent = translate(folderTitles[state.category]);
@@ -1556,18 +1556,6 @@ function renderWordButton(word) {
 function getSymbolMarkup(word) {
   const imageSource = word.imageUrl || (String(word.symbol).startsWith("data:") ? word.symbol : "");
   return imageSource ? `<img src="${escapeHtml(imageSource)}" alt="" />` : escapeHtml(word.symbol);
-}
-
-function renderSentenceBuilderRow() {
-  elements.sentenceBuilderRow.innerHTML = sentenceBuilderVocabulary
-    .map((item, index) => wordObject(item, item.category, index))
-    .map((word) => `
-      <button class="sentence-builder-button ${word.colorType || word.type}" type="button" data-word="${escapeHtml(word.label)}" data-symbol="${escapeHtml(word.symbol)}" data-image-url="${escapeHtml(word.imageUrl)}" data-arabic-label="${escapeHtml(word.arabicLabel)}" aria-label="${escapeHtml(getDisplayLabel(word))}">
-        <span class="symbol" aria-hidden="true">${getSymbolMarkup(word)}</span>
-        <span class="label">${escapeHtml(getDisplayLabel(word))}</span>
-      </button>
-    `)
-    .join("");
 }
 
 function renderEditableWordButton(word) {
@@ -2163,12 +2151,6 @@ document.addEventListener("click", (event) => {
   const wordButton = event.target.closest(".word-button");
   if (wordButton) {
     queueWordSelection(wordButton);
-    return;
-  }
-
-  const sentenceButton = event.target.closest(".sentence-builder-button");
-  if (sentenceButton) {
-    queueWordSelection(sentenceButton);
     return;
   }
 
